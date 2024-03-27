@@ -2,12 +2,15 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArticleFeaturedController;
+use App\Http\Controllers\ArticleHomepageController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('articles')->name('articles.')->group(function () {
     Route::get('', [ArticleController::class, 'index'])->name('index');
+
+    Route::get('homepage', ArticleHomepageController::class)->name('homepage');
 
     Route::get('featured', ArticleFeaturedController::class)->name('featured');
 

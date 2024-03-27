@@ -4,27 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleController extends Controller
 {
-    public function index(): JsonResource
+    public function index(Request $request): JsonResource
     {
-        $featuredArticles = Article::where('is_featured', true)
-            ->orderByDesc('id')
-            ->limit(6)
-            ->get()
-            ->pluck('id');
-
         $articles = Article::with([
             'categories',
             'author',
             'review',
             'media',
         ])
-            ->whereNotIn('id', $featuredArticles->toArray())
             ->orderByDesc('id')
-            ->paginate(15);
+            ->paginate($request->query('perPage', 15));
 
         return ArticleResource::collection($articles);
     }
