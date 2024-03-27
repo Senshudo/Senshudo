@@ -10,11 +10,19 @@ class ArticleController extends Controller
 {
     public function index(): JsonResource
     {
+        $featuredArticles = Article::where('is_featured', true)
+            ->orderByDesc('id')
+            ->limit(6)
+            ->get()
+            ->pluck('id');
+
         $articles = Article::with([
-            'category',
+            'categories',
             'author',
             'review',
+            'media',
         ])
+            ->whereNotIn('id', $featuredArticles->toArray())
             ->orderByDesc('id')
             ->paginate(15);
 
@@ -24,9 +32,10 @@ class ArticleController extends Controller
     public function show(Article $article): JsonResource
     {
         return ArticleResource::make($article->load([
-            'category',
+            'categories',
             'author',
             'review',
+            'media',
         ]));
     }
 }

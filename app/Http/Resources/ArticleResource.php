@@ -16,12 +16,14 @@ class ArticleResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'category' => CategoryResource::make($this->whenLoaded('category')),
+            'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'author' => AuthorResource::make($this->whenLoaded('author')),
             'event' => EventResource::make($this->whenLoaded('event')),
             'review' => ReviewResource::make($this->whenLoaded('review')),
             'title' => $this->title,
             'slug' => $this->slug,
+            'thumbnail' => $this->whenLoaded('media', fn () => $this->thumbnail),
+            'background' => $this->whenLoaded('media', fn () => $this->background),
             'excerpt' => $this->excerpt,
             'content' => $this->content,
             'keywords' => $this->keywords,
