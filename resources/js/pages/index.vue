@@ -15,7 +15,7 @@ defineProps({
     <div class="mx-auto max-w-7xl p-4">
         <AppHead />
 
-        <!--<live-stream />-->
+        <LiveStream />
 
         <ArticlesFeatured :article="featured.data.at(0)" />
 
