@@ -295,6 +295,7 @@
     "watchWithFilter": true,
     "whenever": true,
     "useRemember": true,
-    "useRoute": true
+    "useRoute": true,
+    "useEcho": true
   }
 }
