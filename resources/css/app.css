@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    @apply w-full h-full;
+}
+
+body {
+    @apply w-full h-full antialiased dark:bg-base-100 dark:text-base-content font-sans;
+}
+
+.bg-gradient-cover {
+    @apply bg-gradient-to-t from-neutral to-transparent;
+}
+
+.kbd {
+    @apply py-0.5 px-1 rounded text-sm border bg-gray-200 border-gray-300 dark:bg-neutral dark:border-base-content/20 inline-flex align-middle justify-center;
+}
+
+.hero-banner {
+    height: 35vh;
+    width: 100%;
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        background: linear-gradient(0deg, rgb(42, 48, 60), rgba(42, 48, 60, 0) 100%);
+        inset: 0px;
+        height: initial;
+        z-index: 1;
+    }
+
+    & > .hero-copy {
+        @apply relative z-[2] pt-[160px] pb-[10px] dark:text-white mx-auto max-w-7xl px-2 text-center;
+
+        & > h1 {
+            @apply font-black text-6xl;
+        }
+
+        & > .scroll-indicator {
+            @apply h-[80px] w-[2px] mx-auto relative;
+
+            & > span {
+                content: "";
+                display: block;
+                position: absolute;
+                top: -40px;
+                left: 0px;
+                animation-name: scrollIndicator;
+                animation-duration: 2s;
+                animation-iteration-count: infinite;
+                animation-timing-function: cubic-bezier(0, 0.42, 0.2, 0.99);
+                animation-play-state: running;
+                width: 2px;
+                height: 0px;
+                background: rgb(255, 255, 255);
+            }
+        }
+    }
+}
+
+.hexagon {
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    @apply p-2 flex items-center justify-center font-semibold bg-indigo-500 text-white;
+}
+
+@keyframes scrollIndicator {
+    0% {
+        top: 0px;
+        height: 0px;
+    }
+
+    40% {
+        top: 0px;
+        height: 80px;
+    }
+
+    85% {
+        top: 80px;
+        height: 0px;
+    }
+
+    100% {
+        top: 80px;
+        height: 0px;
+    }
+}

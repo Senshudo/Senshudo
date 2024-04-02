@@ -12,7 +12,7 @@ class SearchController extends Controller
 {
     public function __invoke(Request $request): JsonResource
     {
-        $articles = Article::search($request->query('query'))
+        $articles = Article::search($request->query('q'))
             ->query(fn (Builder $query) => $query->with([
                 'categories',
                 'author',

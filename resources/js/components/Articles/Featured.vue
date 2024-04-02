@@ -1,0 +1,75 @@
+<script setup>
+defineProps({
+    article: {
+        type: Object,
+        required: true,
+    },
+    isLoading: {
+        type: Boolean,
+        default: false,
+    },
+})
+</script>
+
+<template>
+    <article class="relative my-4 w-full overflow-hidden">
+        <div v-if="isLoading" class="flex flex-col">
+            <div
+                class="relative flex h-full w-auto transform-none flex-col items-end justify-center"
+            >
+                <div class="h-[500px] w-[900px] rounded bg-gray-300"></div>
+            </div>
+            <div
+                class="absolute top-1/2 z-[2] h-full w-full -translate-y-1/2 bg-white blur-lg dark:bg-base-100/30 sm:w-1/2"
+            ></div>
+            <div
+                class="absolute top-[80%] z-[3] flex w-full -translate-y-1/2 animate-pulse flex-col gap-4 p-2 dark:text-white sm:top-1/2 sm:w-1/2"
+            >
+                <div class="h-6 rounded bg-base-100/30 dark:bg-slate-700"></div>
+                <div class="h-4 w-1/2 rounded bg-base-100/30 dark:bg-slate-700"></div>
+                <div class="h-4 rounded bg-base-100/30 dark:bg-slate-700"></div>
+                <div class="h-4 rounded bg-base-100/30 dark:bg-slate-700"></div>
+                <div class="h-4 rounded bg-base-100/30 dark:bg-slate-700"></div>
+            </div>
+        </div>
+        <template v-else>
+            <InertiaLink class="flex flex-col" :href="`/news/${article.slug}`">
+                <div
+                    class="relative flex h-full w-auto transform-none flex-col items-end justify-center"
+                >
+                    <div class="relative h-[500px] w-[900px] rounded bg-gray-300">
+                        <img
+                            v-if="article.thumbnail"
+                            :src="article.thumbnail"
+                            loading="lazy"
+                            decoding="async"
+                            alt="Placeholder"
+                            class="h-full w-full rounded object-cover"
+                        />
+                        <div v-if="article.review" class="hexagon absolute right-2 top-2 w-[50px]">
+                            <div>{{ article.review.overall }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="absolute top-1/2 z-[2] h-full w-full -translate-y-1/2 bg-white blur-lg dark:bg-base-100/30 sm:w-1/2"
+                ></div>
+                <div
+                    class="absolute top-1/2 z-[3] flex w-full -translate-y-1/2 flex-col gap-4 p-2 dark:text-white sm:w-1/2"
+                >
+                    <h2
+                        class="font-blac text-nowrapk mb-2 overflow-hidden text-ellipsis text-5xl"
+                        v-html="article.title"
+                    />
+                    <div class="flex flex-row gap-4">
+                        <div class="border-l-4 border-red-600 pl-2">{{ article.author?.name }}</div>
+                        <div class="border-l-4 border-red-600 pl-2">
+                            {{ useDayJs(article.published_at).format('DD/MM/YYYY HH:mm z') }}
+                        </div>
+                    </div>
+                    <p v-html="article.excerpt" />
+                </div>
+            </InertiaLink>
+        </template>
+    </article>
+</template>

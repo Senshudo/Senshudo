@@ -7,6 +7,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class AuthorResource extends JsonResource
 {
+    public static $wrap = null;
+
     /**
      * Transform the resource into an array.
      *
@@ -20,7 +22,10 @@ class AuthorResource extends JsonResource
             'slug' => $this->slug,
             'is_active' => $this->is_active,
             'position' => $this->position,
+            'twitter' => $this->twitter,
             'articles' => ArticleResource::collection($this->whenLoaded('articles')),
+            'article_count' => $this->whenCounted('articles'),
+            'avatar' => $this->avatar,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

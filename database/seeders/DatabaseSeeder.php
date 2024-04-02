@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => $author->url,
                 'is_active' => $author->active,
                 'position' => $author->position,
+                'twitter' => $author->twitter,
             ]);
         }
 
@@ -85,11 +86,8 @@ class DatabaseSeeder extends Seeder
                 'articles.categories as categories',
                 'articles.published as published_at',
                 'articles.modified as updated_at',
-
                 'team.url as author_slug',
-
                 'events.url as event_slug',
-
                 'reviews.oneliner',
                 'reviews.quote',
                 'reviews.overall',
@@ -111,6 +109,8 @@ class DatabaseSeeder extends Seeder
                 'sources' => $article->sources,
                 'is_featured' => (bool) $article->is_featured,
                 'published_at' => Carbon::parse($article->published_at),
+                'created_at' => Carbon::parse($article->published_at),
+                'updated_at' => $article->updated_at ? Carbon::parse($article->updated_at) : Carbon::parse($article->published_at),
             ]);
 
             if ($article->categories) {
@@ -130,6 +130,8 @@ class DatabaseSeeder extends Seeder
                     'story' => $article->story,
                     'gameplay' => $article->gameplay,
                     'graphics' => $article->graphics,
+                    'created_at' => Carbon::parse($article->published_at),
+                    'updated_at' => $article->updated_at ? Carbon::parse($article->updated_at) : Carbon::parse($article->published_at),
                 ]);
             }
         }

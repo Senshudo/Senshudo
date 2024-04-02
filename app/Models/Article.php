@@ -14,6 +14,9 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+/**
+ * @mixin IdeHelperArticle
+ */
 class Article extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, Searchable;
@@ -80,7 +83,7 @@ class Article extends Model implements HasMedia
 
     public function review(): BelongsTo
     {
-        return $this->belongsTo(Review::class);
+        return $this->belongsTo(Review::class, 'id', 'article_id');
     }
 
     public function getBackgroundAttribute(): ?string

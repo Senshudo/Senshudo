@@ -7,6 +7,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleResource extends JsonResource
 {
+    public static $wrap = null;
+
     /**
      * Transform the resource into an array.
      *
@@ -20,11 +22,11 @@ class ArticleResource extends JsonResource
             'author' => AuthorResource::make($this->whenLoaded('author')),
             'event' => EventResource::make($this->whenLoaded('event')),
             'review' => ReviewResource::make($this->whenLoaded('review')),
-            'title' => $this->title,
+            'title' => html_entity_decode($this->title),
             'slug' => $this->slug,
             'thumbnail' => $this->whenLoaded('media', fn () => $this->thumbnail),
             'background' => $this->whenLoaded('media', fn () => $this->background),
-            'excerpt' => $this->excerpt,
+            'excerpt' => html_entity_decode($this->excerpt),
             'content' => $this->content,
             'keywords' => $this->keywords,
             'sources' => $this->sources,
