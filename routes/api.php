@@ -5,6 +5,7 @@ use App\Http\Controllers\ArticleFeaturedController;
 use App\Http\Controllers\ArticleHomepageController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\TwitchWebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('articles')->name('articles.')->group(function () {
@@ -20,3 +21,5 @@ Route::prefix('articles')->name('articles.')->group(function () {
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 
 Route::get('search', SearchController::class)->name('search');
+
+Route::post('webhook/twitch', TwitchWebhookController::class)->name('webhook.twitch');

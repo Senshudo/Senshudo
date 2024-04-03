@@ -12,11 +12,13 @@
         "filament/filament": "^3.2.62",
         "inertiajs/inertia-laravel": "^1.0",
         "laravel/framework": "^11.2.0",
+        "laravel/horizon": "^5.23",
         "laravel/reverb": "@beta",
         "laravel/sanctum": "^4.0.1",
         "laravel/scout": "^10.8.5",
         "laravel/tinker": "^2.9",
         "php-http/curl-client": "^2.3.2",
+        "predis/predis": "^2.2",
         "spatie/laravel-medialibrary": "^11.4.6",
         "tightenco/ziggy": "^2.1",
         "typesense/typesense-php": "^4.9.1"

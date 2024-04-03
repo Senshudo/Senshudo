@@ -31,4 +31,11 @@ return [
         ],
     ],
 
+    'twitch' => [
+        'client_id' => env('TWITCH_CLIENT_ID'),
+        'client_secret' => env('TWITCH_CLIENT_SECRET'),
+        'token' => env('TWITCH_TOKEN'),
+        'webhook_secret' => env('TWITCH_WEBHOOK_SECRET'),
+    ],
+
 ];
