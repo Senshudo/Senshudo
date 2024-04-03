@@ -4,8 +4,8 @@
     "browserslist": "> 0.2%, last 2 versions, Firefox ESR, not dead",
     "scripts": {
         "dev": "run-p routes && vite --mode development",
-        "build:dev": "run-p routes lint && vite build --mode development && vite build --mode development --ssr",
-        "build:prod": "run-p routes lint && vite build && vite build --ssr",
+        "build:dev": "run-p routes && vite build --mode development && vite build --mode development --ssr",
+        "build:prod": "run-p routes && vite build && vite build --ssr",
         "lint": "eslint \"resources/js/**/*.{js,vue}\" . --fix",
         "test:lint": "eslint \"resources/js/**/*.{js,vue}\" .",
         "routes": "php artisan ziggy:generate"
