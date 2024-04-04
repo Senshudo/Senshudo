@@ -17,8 +17,10 @@ export default () => {
         return null
     }
 
+    Pusher.logToConsole = true
+
     /*if (['local', 'staging'].includes(usePage().props.env)) {
-        Pusher.logToConsole = true
+
     }*/
 
     return new Echo({
