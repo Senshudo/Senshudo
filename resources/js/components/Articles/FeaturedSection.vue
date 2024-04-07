@@ -54,7 +54,9 @@ defineProps({
                             </div>
                             <div class="border-l-2 border-red-600 pl-1">
                                 {{
-                                    useDayJs(articles.at(0)?.published_at).format('DD/MM/YYYY HH:mm z')
+                                    useDayJs(articles.at(0)?.published_at).format(
+                                        'DD/MM/YYYY HH:mm z',
+                                    )
                                 }}
                             </div>
                         </div>

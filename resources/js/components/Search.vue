@@ -18,7 +18,7 @@ const results = ref(null)
 const searchBox = ref(null)
 
 const isMac = computed(() =>
-    navigator !== undefined ? navigator.userAgent.includes('Mac OS') : false,
+    typeof navigator !== 'undefined' ? navigator.userAgent.includes('Mac OS') : false,
 )
 
 usePlatformShortcut('k', () => (!showModal.value ? (showModal.value = true) : undefined))
@@ -35,8 +35,9 @@ watch(
         }
     },
     {
-        immediate: true, deep: true,
-    }
+        immediate: true,
+        deep: true,
+    },
 )
 
 watchDebounced(search, () => handleSearch(), { debounce: 500, maxWait: 1000 })

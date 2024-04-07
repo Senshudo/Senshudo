@@ -6,8 +6,8 @@
         "dev": "run-p routes && vite --mode development",
         "build:dev": "run-p routes && vite build --mode development && vite build --mode development --ssr",
         "build:prod": "run-p routes && vite build && vite build --ssr",
-        "lint": "eslint \"resources/js/**/*.{js,vue}\" . --fix",
-        "test:lint": "eslint \"resources/js/**/*.{js,vue}\" .",
+        "lint": "eslint --fix --ext .js,.vue \"resources/js/**/*\"",
+        "test:lint": "eslint --ext .js,.vue \"resources/js/**/*\"",
         "routes": "php artisan ziggy:generate"
     },
     "dependencies": {
