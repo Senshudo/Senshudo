@@ -69,6 +69,6 @@ export default defineConfig({
         manifestSRI(),
     ],
     ssr: {
-        noExternal: ['@inertiajs/vue3/server', 'lodash'],
+        noExternal: ['@inertiajs/vue3/server', 'lodash', 'laravel-echo', 'pusher-js'],
     },
 })

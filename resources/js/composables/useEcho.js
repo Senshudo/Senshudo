@@ -2,6 +2,10 @@ import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 
 export default () => {
+    if (typeof window === 'undefined') {
+        return null
+    }
+
     const options = {
         broadcaster: 'reverb',
         cluster: '',
@@ -17,11 +21,9 @@ export default () => {
         return null
     }
 
-    Pusher.logToConsole = true
-
-    /*if (['local', 'staging'].includes(usePage().props.env)) {
-
-    }*/
+    if (['local', 'staging'].includes(usePage().props.env)) {
+        Pusher.logToConsole = true
+    }
 
     return new Echo({
         ...options,

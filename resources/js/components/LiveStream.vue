@@ -1,6 +1,4 @@
 <script setup>
-import { onBeforeMount } from 'vue'
-
 const echo = useEcho()
 
 const activeChannel = ref('senshudo')
