@@ -21,7 +21,7 @@ createServer((page) =>
                 },
             ),
         setup({ App, props, plugin }) {
-            const app = createSSRApp({
+            return createSSRApp({
                 render: () => h(App, props),
             })
                 .use(plugin)
@@ -29,8 +29,6 @@ createServer((page) =>
                     ...page.props.ziggy,
                     location: new URL(page.props.location),
                 })
-
-            return app
         },
     }),
 )
