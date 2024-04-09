@@ -3,7 +3,12 @@ import merge from 'lodash/merge'
 
 export default () => {
     const axiosService = axios.create({
-        baseURL: process.env.NODE_ENV ? 'http://localhost:8000/api' : 'https://senshudo.tv/api',
+        baseURL:
+            usePage().props.env === 'local'
+                ? 'http://localhost:8000/api'
+                : usePage().props.env === 'production'
+                  ? 'https://senshudo.tv/api'
+                  : 'https://staging.senshudo.tv/api',
         withCredentials: true,
         headers: {
             Accept: 'application/json',
