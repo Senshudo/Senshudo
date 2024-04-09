@@ -43,8 +43,12 @@ watch(
 watchDebounced(search, () => handleSearch(), { debounce: 500, maxWait: 1000 })
 
 async function handleSearch() {
+    if (search.value.trim() === '') {
+        return
+    }
+
     await useAxios()
-        .get('/search', { params: { q: search.value } })
+        .get('/search', { params: { q: search.value.trim() } })
         .then((response) => {
             results.value = response
             hasResults.value = true
