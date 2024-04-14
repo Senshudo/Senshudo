@@ -17,6 +17,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -24,12 +25,13 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->domain('admin.senshudo.tv')
             ->id('admin')
             ->path('admin')
             ->login()
+            ->passwordReset()
             ->colors([
                 'primary' => Color::Amber,
+                'gray' => Color::Slate,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -54,6 +56,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->plugins([
+                FilamentBackgroundsPlugin::make(),
             ]);
     }
 }

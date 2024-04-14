@@ -13,11 +13,11 @@ class VerifyTwitchHmacRequest
 
         $secret = config('services.twitch.webhook_secret');
 
-        $message = $messageId . $timestamp . $body;
+        $message = $messageId.$timestamp.$body;
 
-        $calculatedSignature = 'sha256=' . hash_hmac('sha256', $message, $secret);
+        $calculatedSignature = 'sha256='.hash_hmac('sha256', $message, $secret);
 
-        if (!hash_equals($signature, $calculatedSignature)) {
+        if (! hash_equals($signature, $calculatedSignature)) {
             abort(403, 'Invalid signature');
         }
 

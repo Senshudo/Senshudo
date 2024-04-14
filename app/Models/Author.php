@@ -7,13 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 /**
  * @mixin IdeHelperAuthor
  */
 class Author extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory, HasSlug, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -38,6 +40,16 @@ class Author extends Model implements HasMedia
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
     }
 
     public function registerMediaCollections(): void

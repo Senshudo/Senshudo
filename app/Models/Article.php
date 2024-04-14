@@ -9,17 +9,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Scout\Searchable;
-use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 /**
  * @mixin IdeHelperArticle
  */
 class Article extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia, Searchable;
+    use HasFactory, HasSlug, InteractsWithMedia, Searchable;
 
     protected $fillable = [
         'author_id',
@@ -53,17 +53,25 @@ class Article extends Model implements HasMedia
         return 'slug';
     }
 
-    public function registerMediaCollections(): void
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions(): SlugOptions
     {
-        $this->addMediaCollection('images');
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug');
     }
 
-    public function registerMediaConversions(?Media $media = null): void
+    public function registerMediaCollections(): void
     {
-        $this->addMediaConversion('thumbnail')
-            ->performOnCollections('images')
-            ->fit(Fit::Contain, 300, 154)
-            ->nonQueued();
+        $this->addMediaCollection('background')
+            ->singleFile();
+
+        $this->addMediaCollection('thumbnail')
+            ->singleFile();
+
+        $this->addMediaCollection('images');
     }
 
     public function categories(): BelongsToMany
@@ -84,16 +92,6 @@ class Article extends Model implements HasMedia
     public function review(): BelongsTo
     {
         return $this->belongsTo(Review::class, 'id', 'article_id');
-    }
-
-    public function getBackgroundAttribute(): ?string
-    {
-        return $this->getFirstMediaUrl('images');
-    }
-
-    public function getThumbnailAttribute(): ?string
-    {
-        return $this->getFirstMediaUrl('images', 'thumbnail');
     }
 
     public function isPublished(): bool

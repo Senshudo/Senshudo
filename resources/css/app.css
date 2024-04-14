@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 html {
-    @apply w-full h-full;
+    @apply h-full w-full;
 }
 
 body {
-    @apply w-full h-full antialiased dark:bg-base-100 dark:text-base-content font-sans;
+    @apply h-full w-full font-sans antialiased dark:bg-base-100 dark:text-base-content;
 }
 
 .bg-gradient-cover {
@@ -15,7 +15,15 @@ body {
 }
 
 .kbd {
-    @apply py-0.5 px-1 rounded text-sm border bg-gray-200 border-gray-300 dark:bg-neutral dark:border-base-content/20 inline-flex align-middle justify-center;
+    @apply inline-flex justify-center rounded border border-gray-300 bg-gray-200 px-1 py-0.5 align-middle text-sm dark:border-base-content/20 dark:bg-neutral;
+}
+
+.btn-primary {
+    @apply flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:hover:bg-indigo-400 dark:bg-indigo-500 dark:focus-visible:outline-indigo-500;
+}
+
+.form-input {
+    @apply block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-white/5 dark:ring-white/10 dark:focus:ring-indigo-500 dark:text-white;
 }
 
 .hero-banner {
@@ -24,7 +32,7 @@ body {
     position: relative;
 
     &::before {
-        content: "";
+        content: '';
         position: absolute;
         background: linear-gradient(0deg, rgb(42, 48, 60), rgba(42, 48, 60, 0) 100%);
         inset: 0px;
@@ -33,17 +41,17 @@ body {
     }
 
     & > .hero-copy {
-        @apply relative z-[2] pt-[160px] pb-[10px] dark:text-white mx-auto max-w-7xl px-2 text-center;
+        @apply relative z-[2] mx-auto max-w-7xl px-2 pb-[10px] pt-[160px] text-center dark:text-white;
 
         & > h1 {
-            @apply font-black text-6xl;
+            @apply text-6xl font-black;
         }
 
         & > .scroll-indicator {
-            @apply h-[80px] w-[2px] mx-auto relative;
+            @apply relative mx-auto h-[80px] w-[2px];
 
             & > span {
-                content: "";
+                content: '';
                 display: block;
                 position: absolute;
                 top: -40px;
@@ -63,7 +71,7 @@ body {
 
 .hexagon {
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-    @apply p-2 flex items-center justify-center font-semibold bg-indigo-500 text-white;
+    @apply flex items-center justify-center bg-indigo-500 p-2 font-semibold text-white;
 }
 
 @keyframes scrollIndicator {

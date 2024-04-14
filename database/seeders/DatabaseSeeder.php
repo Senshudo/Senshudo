@@ -101,9 +101,9 @@ class DatabaseSeeder extends Seeder
             $newArticle = Article::create([
                 'author_id' => Author::firstWhere('slug', $article->author_slug)?->id,
                 'event_id' => Event::firstWhere('slug', $article->event_slug)?->id,
-                'title' => $article->title,
+                'title' => html_entity_decode($article->title),
                 'slug' => $article->slug,
-                'excerpt' => $article->excerpt,
+                'excerpt' => html_entity_decode($article->excerpt),
                 'content' => $article->content,
                 'keywords' => $article->keywords,
                 'sources' => $article->sources,

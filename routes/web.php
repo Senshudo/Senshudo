@@ -5,6 +5,8 @@ use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\VideoVerificationController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomepageController::class)->name('home');
@@ -19,3 +21,13 @@ Route::get('reviews', ReviewController::class)->name('reviews');
 Route::get('schedule', ScheduleController::class)->name('schedule');
 
 Route::get('about', AboutController::class)->name('about');
+
+Route::prefix('/embed/video_verification')->name('video_verification.')->group(function () {
+    Route::get('/', [VideoVerificationController::class, 'index'])->name('index');
+    Route::post('/', [VideoVerificationController::class, 'store'])->name('store');
+    Route::get('/{video}', [VideoVerificationController::class, 'show'])->name('show');
+});
+
+Route::get('/ajax/video_verify.php', function (Request $request) {
+    return redirect()->route('video_verification.index', $request->query(), 301);
+});
