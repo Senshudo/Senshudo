@@ -31,12 +31,4 @@ class LiveStreamUpdated implements ShouldBroadcast
             new PrivateChannel('App.Stream'),
         ];
     }
-
-    /**
-     * The event's broadcast name.
-     */
-    public function broadcastAs(): string
-    {
-        return 'LiveStreamUpdated';
-    }
 }
