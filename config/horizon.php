@@ -70,7 +70,8 @@ return [
     |
     */
 
-    'middleware' => ['web', 'auth.very_basic:senshudo,s3cr3ts3np4ss'],
+    //'middleware' => ['web', 'auth.very_basic:senshudo,s3cr3ts3np4ss'],
+    'middleware' => ['web'],
 
     /*
     |--------------------------------------------------------------------------
