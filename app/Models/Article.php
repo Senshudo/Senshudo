@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -66,12 +67,25 @@ class Article extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('background')
+            ->useFallbackUrl('https://via.placeholder.com/800x400')
             ->singleFile();
 
         $this->addMediaCollection('thumbnail')
+            ->useFallbackUrl('https://via.placeholder.com/800x400')
+            ->singleFile();
+
+        $this->addMediaCollection('socialThumbnail')
             ->singleFile();
 
         $this->addMediaCollection('images');
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->performOnCollections('background')
+            ->width(900)
+            ->height(500);
     }
 
     public function categories(): BelongsToMany

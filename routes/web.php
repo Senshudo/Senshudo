@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ScheduleController;
@@ -31,3 +32,5 @@ Route::prefix('/embed/video_verification')->name('video_verification.')->group(f
 Route::get('/ajax/video_verify.php', function (Request $request) {
     return redirect()->route('video_verification.index', $request->query(), 301);
 });
+
+Route::get('media/{media:uuid}/{filename?}', MediaController::class)->name('media.show');

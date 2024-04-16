@@ -22,7 +22,7 @@ function getPercentage(value) {
 
         <div class="hero-banner">
             <img
-                src="https://via.placeholder.com/800x400"
+                :src="article.background"
                 loading="lazy"
                 decoding="async"
                 class="absolute h-full w-full object-cover"

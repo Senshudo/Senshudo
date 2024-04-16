@@ -25,15 +25,17 @@ class NewsController extends Controller
         ]);
     }
 
-    public function show(Article $article): Response
+    public function show(Request $request, Article $article): Response
     {
+        $article->load([
+            'categories',
+            'author',
+            'review',
+            'media',
+        ]);
+
         return inertia('news/view', [
-            'article' => ArticleResource::make($article->load([
-                'categories',
-                'author',
-                'review',
-                'media',
-            ])),
+            'article' => ArticleResource::make($article),
         ]);
     }
 }
