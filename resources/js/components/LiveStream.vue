@@ -26,7 +26,7 @@ onBeforeUnmount(() => {
         <div class="flex-1">
             <div class="aspect-video w-full overflow-hidden rounded">
                 <iframe
-                    :src="`https://player.twitch.tv/?channel=${activeChannel}&autoplay=true&muted=true&parent=senshudo.tv`"
+                    :src="`https://player.twitch.tv/?channel=${activeChannel}&autoplay=true&muted=true&parent=senshudo.tv&parent=staging.senshudo.tv`"
                     frameborder="0"
                     allowfullscreen="true"
                     scrolling="no"
@@ -36,7 +36,7 @@ onBeforeUnmount(() => {
         </div>
         <iframe
             id="twitch-chat-embed"
-            :src="`https://www.twitch.tv/embed/${activeChannel}/chat?parent=senshudo.tv`"
+            :src="`https://www.twitch.tv/embed/${activeChannel}/chat?parent=senshudo.tv&parent=staging.senshudo.tv`"
             class="hidden rounded sm:flex md:min-w-[350px]"
         ></iframe>
     </div>
