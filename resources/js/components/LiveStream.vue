@@ -6,7 +6,7 @@ const activeChannel = ref('senshudo')
 const isLive = ref(false)
 
 onMounted(() => {
-    echo?.listen('App.Stream', 'LiveStreamUpdated', (event) => {
+    echo?.private('App.Stream')?.listen('LiveStreamUpdated', (event) => {
         if (event.isLive) {
             isLive.value = true
             activeChannel.value = event.channel
