@@ -26,6 +26,5 @@ export default () => {
 
     return new Echo({
         ...options,
-        client: new Pusher(options.key, options),
     })
 }
