@@ -9,7 +9,7 @@ onMounted(() => {
     echo?.channel('App.Stream')?.listen('LiveStreamUpdated', (event) => {
         if (event.isLive) {
             isLive.value = true
-            activeChannel.value = event.channel
+            activeChannel.value = event.channelName
         } else {
             isLive.value = false
         }
