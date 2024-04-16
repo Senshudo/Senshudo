@@ -6,7 +6,7 @@ const activeChannel = ref('senshudo')
 const isLive = ref(false)
 
 onMounted(() => {
-    echo?.listen('stream', 'LiveStreamUpdated', (event) => {
+    echo?.listen('App.Stream', 'LiveStreamUpdated', (event) => {
         if (event.isLive) {
             isLive.value = true
             activeChannel.value = event.channel
@@ -17,7 +17,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-    echo?.leave('stream')
+    echo?.leave('App.Stream')
 })
 </script>
 
