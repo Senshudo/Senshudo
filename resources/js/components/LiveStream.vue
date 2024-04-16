@@ -24,12 +24,13 @@ onBeforeUnmount(() => {
 <template>
     <div v-if="isLive" class="mb-4 flex flex-col gap-4 lg:flex-row">
         <div class="flex-1">
-            <div class="aspect-h-9 aspect-w-16 overflow-hidden rounded">
+            <div class="aspect-video w-full overflow-hidden rounded">
                 <iframe
                     :src="`https://player.twitch.tv/?channel=${activeChannel}&autoplay=true&muted=true&parent=senshudo.tv`"
                     frameborder="0"
                     allowfullscreen="true"
                     scrolling="no"
+                    class="aspect-video w-full"
                 ></iframe>
             </div>
         </div>
