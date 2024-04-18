@@ -19,7 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
             ->throttleApi()
             ->web(append: [
                 HandleInertiaRequests::class,
-            ]);
+            ])
+            ->validateCsrfTokens(except: ['webhooks/*']);
     })
     ->withProviders([
         App\Providers\AppServiceProvider::class,

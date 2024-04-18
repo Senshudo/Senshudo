@@ -34,3 +34,5 @@ Route::get('/ajax/video_verify.php', function (Request $request) {
 });
 
 Route::get('media/{media:uuid}/{filename?}', MediaController::class)->name('media.show');
+
+Route::webhooks('webhooks/twitch', 'twitch');
