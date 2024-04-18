@@ -13,6 +13,6 @@ onMounted(() => {
 
 <style>
 #app {
-    @apply w-full h-full;
+    @apply h-full w-full;
 }
 </style>

@@ -12,6 +12,6 @@ class ScheduleController extends Controller
     {
         $liveStream = Channel::where('is_online', true)->inRandomOrder()->first();
 
-        return inertia('schedule', ['liveStream' => ChannelResource::make($liveStream)]);
+        return inertia('schedule', ['liveStream' => $liveStream ? ChannelResource::make($liveStream) : null]);
     }
 }

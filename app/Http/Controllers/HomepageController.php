@@ -38,7 +38,7 @@ class HomepageController extends Controller
         return inertia('index', [
             'featured' => ArticleResource::collection($featuredArticles),
             'articles' => ArticleResource::collection($articles),
-            'liveStream' => ChannelResource::make($liveStream),
+            'liveStream' => $liveStream ? ChannelResource::make($liveStream) : null,
         ]);
     }
 }
