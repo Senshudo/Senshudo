@@ -164,6 +164,7 @@ class Article extends Model implements HasMedia
             'author' => $this->author->name,
             'title' => html_entity_decode($this->title),
             'content' => strip_tags(html_entity_decode($this->content)),
+            'status' => $this->status->value,
             'created_at' => $this->created_at->timestamp,
         ]);
     }
