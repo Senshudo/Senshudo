@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Laravel\Horizon\Horizon;
 use Laravel\Horizon\HorizonApplicationServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class HorizonServiceProvider extends HorizonApplicationServiceProvider
 {
@@ -16,15 +17,15 @@ class HorizonServiceProvider extends HorizonApplicationServiceProvider
     }
 
     /**
-     * Configure the Horizon authorization services.
+     * Register the Horizon gate.
+     *
+     * This gate determines who can access Horizon in non-local environments.
      *
      * @return void
      */
-    protected function authorization()
+    protected function gate()
     {
-        $this->gate();
-
-        Horizon::auth(function ($request) {
+        Gate::define('viewHorizon', function ($user) {
             return true;
         });
     }
