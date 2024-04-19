@@ -20,7 +20,7 @@ class SearchController extends Controller
                 'review',
                 'media',
             ])->where('status', ArticleStatus::PUBLISHED))
-            ->orderBy('created_at', 'desc')
+            ->orderBy('published_at', 'desc')
             ->get();
 
         return ArticleResource::collection($articles);
