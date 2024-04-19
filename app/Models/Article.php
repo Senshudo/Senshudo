@@ -159,13 +159,12 @@ class Article extends Model implements HasMedia
      */
     public function toSearchableArray(): array
     {
-        return array_merge($this->toArray(), [
+        return [
             'id' => (string) $this->id,
             'author' => $this->author->name,
-            'title' => html_entity_decode($this->title),
+            'title' => $this->title,
             'content' => strip_tags(html_entity_decode($this->content)),
-            'status' => $this->status->value,
-            'created_at' => $this->created_at->timestamp,
-        ]);
+            'published_at' => $this->published_at->timestamp,
+        ];
     }
 }

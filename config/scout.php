@@ -196,38 +196,16 @@ return [
                             'type' => 'string',
                         ],
                         [
-                            'name' => 'created_at',
+                            'name' => 'published_at',
                             'type' => 'int64',
                         ],
                     ],
-                    'default_sorting_field' => 'created_at',
+                    'default_sorting_field' => 'published_at',
                 ],
                 'search-parameters' => [
                     'query_by' => 'title,content,author',
                 ],
             ],
-            // User::class => [
-            //     'collection-schema' => [
-            //         'fields' => [
-            //             [
-            //                 'name' => 'id',
-            //                 'type' => 'string',
-            //             ],
-            //             [
-            //                 'name' => 'name',
-            //                 'type' => 'string',
-            //             ],
-            //             [
-            //                 'name' => 'created_at',
-            //                 'type' => 'int64',
-            //             ],
-            //         ],
-            //         'default_sorting_field' => 'created_at',
-            //     ],
-            //     'search-parameters' => [
-            //         'query_by' => 'name'
-            //     ],
-            // ],
         ],
     ],
 
