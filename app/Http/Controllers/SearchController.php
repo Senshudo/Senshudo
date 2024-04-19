@@ -19,8 +19,7 @@ class SearchController extends Controller
                 'author',
                 'review',
                 'media',
-            ]))
-            ->where('status', ArticleStatus::PUBLISHED)
+            ])->where('status', ArticleStatus::PUBLISHED))
             ->orderBy('created_at', 'desc')
             ->get();
 
