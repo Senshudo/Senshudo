@@ -37,7 +37,7 @@ defineProps({
                 <div
                     class="relative flex h-full w-auto transform-none flex-col items-end justify-center"
                 >
-                    <div class="relative h-[500px] w-[900px] rounded bg-gray-300">
+                    <div class="relative h-[500px] w-full rounded bg-gray-300 sm:w-[900px]">
                         <img
                             v-if="article.thumbnail"
                             :src="article.thumbnail"
@@ -52,13 +52,13 @@ defineProps({
                     </div>
                 </div>
                 <div
-                    class="absolute top-1/2 z-[2] h-full w-full -translate-y-1/2 bg-white blur-lg dark:bg-base-100/30 sm:w-1/2"
+                    class="absolute top-1/2 z-[2] h-full w-full -translate-y-1/2 rounded bg-white blur-lg dark:bg-base-100/30 sm:w-1/2"
                 ></div>
                 <div
-                    class="absolute top-1/2 z-[3] flex w-full -translate-y-1/2 flex-col gap-4 p-2 dark:text-white sm:w-1/2"
+                    class="absolute top-[70%] z-[3] flex w-full -translate-y-1/2 flex-col gap-4 rounded p-2 dark:text-white sm:top-1/2 sm:w-1/2"
                 >
                     <h2
-                        class="font-blac text-nowrapk mb-2 overflow-hidden text-ellipsis text-5xl"
+                        class="text-nowrapk mb-2 overflow-hidden text-ellipsis text-5xl font-black"
                         v-html="article.title"
                     />
                     <div class="flex flex-row gap-4">

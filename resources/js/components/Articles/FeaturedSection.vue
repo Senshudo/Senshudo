@@ -12,8 +12,8 @@ defineProps({
 </script>
 
 <template>
-    <div class="grid grid-cols-1 gap-y-1 lg:grid-cols-2 lg:gap-x-1 lg:gap-y-0">
-        <article class="relative overflow-hidden rounded">
+    <div class="grid grid-cols-1 gap-y-4 sm:gap-y-1 lg:grid-cols-2 lg:gap-x-1 lg:gap-y-0">
+        <article class="relative hidden overflow-hidden rounded sm:block">
             <div v-if="isLoading">
                 <div class="h-auto min-h-[319px] w-full rounded bg-gray-300 lg:max-w-[638px]"></div>
                 <div
@@ -65,8 +65,10 @@ defineProps({
             </template>
         </article>
 
-        <div class="grid grid-cols-1 gap-1 sm:grid-cols-2">
-            <article class="relative overflow-hidden rounded">
+        <articles-card class="block sm:hidden" :article="articles.at(0)" />
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-1">
+            <article class="relative hidden overflow-hidden rounded sm:block">
                 <div v-if="isLoading">
                     <div
                         class="h-auto min-h-[158px] w-full rounded bg-gray-300 lg:max-w-[317px]"
@@ -110,7 +112,9 @@ defineProps({
                 </template>
             </article>
 
-            <article class="relative overflow-hidden rounded">
+            <articles-card class="block sm:hidden" :article="articles.at(1)" />
+
+            <article class="relative hidden overflow-hidden rounded sm:block">
                 <div v-if="isLoading">
                     <div class="min-h-[158px] w-full rounded bg-gray-300 lg:max-w-[317px]"></div>
                     <div
@@ -152,7 +156,9 @@ defineProps({
                 </template>
             </article>
 
-            <article class="relative overflow-hidden rounded">
+            <articles-card class="block sm:hidden" :article="articles.at(2)" />
+
+            <article class="relative hidden overflow-hidden rounded sm:block">
                 <div v-if="isLoading">
                     <div class="min-h-[158px] w-full rounded bg-gray-300 lg:max-w-[317px]"></div>
                     <div
@@ -194,7 +200,9 @@ defineProps({
                 </template>
             </article>
 
-            <article class="relative overflow-hidden rounded">
+            <articles-card class="block sm:hidden" :article="articles.at(3)" />
+
+            <article class="relative hidden overflow-hidden rounded sm:block">
                 <div v-if="isLoading">
                     <div class="min-h-[158px] w-full rounded bg-gray-300 lg:max-w-[317px]"></div>
                     <div
@@ -235,6 +243,8 @@ defineProps({
                     </InertiaLink>
                 </template>
             </article>
+
+            <articles-card class="block sm:hidden" :article="articles.at(4)" />
         </div>
     </div>
 </template>

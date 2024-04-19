@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ArticleStatus;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ class NewsController extends Controller
             'review',
             'media',
         ])
+            ->where('status', ArticleStatus::PUBLISHED)
             ->orderByDesc('id')
             ->paginate($request->query('perPage', 17));
 

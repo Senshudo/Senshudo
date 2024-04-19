@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ArticleStatus;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,6 +20,7 @@ class SearchController extends Controller
                 'review',
                 'media',
             ]))
+            ->where('status', ArticleStatus::PUBLISHED)
             ->orderBy('created_at', 'desc')
             ->get();
 

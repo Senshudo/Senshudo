@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ArticleStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,7 +33,9 @@ class Article extends Model implements HasMedia
         'keywords',
         'sources',
         'is_featured',
+        'status',
         'published_at',
+        'scheduled_for',
     ];
 
     /**
@@ -43,9 +46,11 @@ class Article extends Model implements HasMedia
     protected function casts(): array
     {
         return [
+            'status' => ArticleStatus::class,
             'sources' => 'array',
             'is_featured' => 'boolean',
             'published_at' => 'datetime',
+            'scheduled_at' => 'datetime',
         ];
     }
 

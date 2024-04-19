@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\Author;
 use App\Models\Category;
@@ -108,6 +109,7 @@ class DatabaseSeeder extends Seeder
                 'keywords' => $article->keywords,
                 'sources' => $article->sources,
                 'is_featured' => (bool) $article->is_featured,
+                'status' => ArticleStatus::PUBLISHED,
                 'published_at' => Carbon::parse($article->published_at),
                 'created_at' => Carbon::parse($article->published_at),
                 'updated_at' => $article->updated_at ? Carbon::parse($article->updated_at) : Carbon::parse($article->published_at),

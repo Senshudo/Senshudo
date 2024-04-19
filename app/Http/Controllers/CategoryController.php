@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ArticleStatus;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
@@ -23,6 +24,7 @@ class CategoryController extends Controller
         return ArticleResource::collection(
             $category->articles()
                 ->with('category', 'author', 'review')
+                ->where('status', ArticleStatus::PUBLISHED)
                 ->orderByDesc('id')
                 ->paginate(15)
         );

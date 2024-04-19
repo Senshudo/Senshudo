@@ -47,7 +47,7 @@ function getPercentage(value) {
 
         <div
             v-if="article.review"
-            class="mx-auto flex max-w-6xl items-center gap-6 rounded-md bg-base-100/20 p-4 shadow dark:bg-neutral"
+            class="mx-auto flex max-w-6xl flex-col items-center gap-6 rounded-md bg-base-100/20 p-4 shadow dark:bg-neutral sm:flex-row"
         >
             <div class="hexagon h-[180px] w-[200px] text-6xl">{{ article.review.overall }}</div>
             <div class="flex flex-1 flex-col gap-y-4">

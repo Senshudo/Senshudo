@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ArticleStatus;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ChannelResource;
 use App\Models\Article;
@@ -19,6 +20,7 @@ class HomepageController extends Controller
             'media',
         ])
             ->where('is_featured', true)
+            ->where('status', ArticleStatus::PUBLISHED)
             ->orderByDesc('id')
             ->limit(6)
             ->get();
@@ -30,6 +32,7 @@ class HomepageController extends Controller
             'media',
         ])
             ->whereNotIn('id', $featuredArticles->pluck('id')->toArray())
+            ->where('status', ArticleStatus::PUBLISHED)
             ->orderByDesc('id')
             ->paginate(15);
 

@@ -8,7 +8,6 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * // TODO: Types? 3 = Review | 0 = Article
      */
     public function up(): void
     {
@@ -23,7 +22,9 @@ return new class extends Migration
             $table->mediumText('keywords')->nullable();
             $table->json('sources')->nullable();
             $table->boolean('is_featured')->default(false);
+            $table->string('status')->default('draft');
             $table->timestamp('published_at')->nullable();
+            $table->timestamp('scheduled_for')->nullable();
             $table->timestamps();
         });
     }
