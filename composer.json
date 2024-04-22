@@ -9,8 +9,8 @@
     ],
     "require": {
         "php": "^8.2",
-        "filament/filament": "^3.2.70",
-        "filament/spatie-laravel-media-library-plugin": "^3.2.70",
+        "filament/filament": "^3.2.71",
+        "filament/spatie-laravel-media-library-plugin": "^3.2.71",
         "inertiajs/inertia-laravel": "^1.0",
         "laravel/framework": "^11.4.0",
         "laravel/horizon": "^5.24.2",

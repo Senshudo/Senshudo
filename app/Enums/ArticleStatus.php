@@ -34,4 +34,13 @@ enum ArticleStatus: string
             self::PUBLISHED => 'heroicon-o-check-badge',
         };
     }
+
+    public static function toSelectOptions(): array
+    {
+        return [
+            self::DRAFT->value => 'Draft',
+            self::SCHEDULED->value => 'Scheduled',
+            self::PUBLISHED->value => 'Published',
+        ];
+    }
 }

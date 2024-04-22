@@ -2,16 +2,20 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\ArticleStatus;
 use App\Filament\Resources\ArticleResource\Pages;
-use App\Filament\Resources\ArticleResource\RelationManagers;
 use App\Models\Article;
+use App\Models\Review;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
 
 class ArticleResource extends Resource
 {
@@ -26,48 +30,56 @@ class ArticleResource extends Resource
 
     public static function form(Form $form): Form
     {
+        if ($form->getRecord() === null) {
+            $bladeAction = <<<'BLADE'
+                <x-filament::button
+                    type="submit"
+                    size="sm"
+                >
+                    Create
+                </x-filament::button>
+            BLADE;
+        } else {
+            $bladeAction = <<<'BLADE'
+                <x-filament::button
+                    type="submit"
+                    size="sm"
+                >
+                    Create
+                </x-filament::button>
+            BLADE;
+        }
+
         return $form
             ->schema([
-                Forms\Components\Select::make('author_id')
-                    ->relationship('author', 'name', fn ($query) => $query->where('is_active', true))
-                    ->default(fn () => auth()->id())
-                    ->required(),
-
-                Forms\Components\Select::make('event_id')
-                    ->relationship('event', 'name'),
-
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255)
-                    ->columnSpanFull(),
-
-                Forms\Components\SpatieMediaLibraryFileUpload::make('thumbnail')
-                    ->collection('thumbnail')
-                    ->columnSpanFull(),
-
-                Forms\Components\SpatieMediaLibraryFileUpload::make('background')
-                    ->collection('background')
-                    ->columnSpanFull(),
-
-                TinyEditor::make('content')
-                    ->required()
-                    ->columnSpanFull(),
-
-                Forms\Components\TagsInput::make('keywords')
-                    ->separator(',')
-                    ->columnSpanFull(),
-
-                Forms\Components\Repeater::make('sources')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required(),
-                        Forms\Components\TextInput::make('url')
-                            ->required(),
+                Forms\Components\Select::make('type')
+                    ->label('Article Type')
+                    ->options([
+                        'article' => 'Article',
+                        'review' => 'Review',
                     ])
+                    ->required()
+                    ->live()
+                    ->default($form->getRecord()?->review !== null ? 'review' : 'article')
+                    ->disabled($form->getRecord() !== null)
                     ->columnSpanFull(),
 
-                Forms\Components\Toggle::make('is_featured')
-                    ->required(),
+                Forms\Components\Wizard::make([
+                    Forms\Components\Wizard\Step::make('Article')
+                        ->icon('heroicon-o-newspaper')
+                        ->schema(Article::getForm()),
+                    Forms\Components\Wizard\Step::make('Review')
+                        ->icon('heroicon-o-star')
+                        ->schema(Review::getForm($form->getRecord())),
+                ])
+                    ->hidden(fn (Get $get): bool => $get('type') !== 'review')
+                    ->columnSpanFull()
+                    ->submitAction(new HtmlString(Blade::render($bladeAction))),
+
+                Forms\Components\Section::make('Article')
+                    ->schema(Article::getForm())
+                    ->hidden(fn (Get $get): bool => $get('type') !== 'article')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -84,9 +96,13 @@ class ArticleResource extends Resource
                 Tables\Columns\TextColumn::make('author.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('published_at')
-                    ->dateTime()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn ($state): string => match ($state->value) {
+                        'draft' => 'gray',
+                        'scheduled' => 'warning',
+                        'published' => 'success',
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -97,7 +113,8 @@ class ArticleResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->options(ArticleStatus::toSelectOptions()),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -107,13 +124,6 @@ class ArticleResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            RelationManagers\ReviewRelationManager::class,
-        ];
     }
 
     public static function getPages(): array

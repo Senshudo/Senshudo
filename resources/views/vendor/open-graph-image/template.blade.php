@@ -50,13 +50,13 @@
             "
         >
             <div class="relative flex h-full w-full bg-gradient-to-t from-[#2A303C]/90 p-4">
-                @if ($score)
+                @if (isset($score))
                     <div class="hexagon flex items-center justify-center bg-indigo-500 p-2 font-semibold text-white absolute bottom-10 left-10 h-[80px] w-[100px]">
                         <div class="text-4xl">{{ $score }}</div>
                     </div>
                 @endif
 
-                <div class="absolute bottom-10 {{ $score ? 'left-[180px]' : 'left-10' }} max-w-full">
+                <div class="absolute bottom-10 {{ isset($score) ? 'left-[180px]' : 'left-10' }} max-w-full">
                     <h1 class="truncate text-5xl font-semibold text-white">
                         {{ $title }}
                     </h1>

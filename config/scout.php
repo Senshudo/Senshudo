@@ -196,6 +196,10 @@ return [
                             'type' => 'string',
                         ],
                         [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                        ],
+                        [
                             'name' => 'published_at',
                             'type' => 'int64',
                         ],

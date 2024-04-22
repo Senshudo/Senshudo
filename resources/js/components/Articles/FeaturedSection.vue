@@ -29,7 +29,7 @@ defineProps({
                 </div>
             </div>
             <template v-else>
-                <InertiaLink class="block" :href="`/news/${articles.at(0)?.slug}`">
+                <InertiaLink class="relative block" :href="`/news/${articles.at(0)?.slug}`">
                     <img
                         :src="
                             articles.at(0)?.thumbnail
@@ -41,6 +41,12 @@ defineProps({
                         alt="Placeholder"
                         class="mx-auto h-auto w-full max-w-full"
                     />
+                    <div
+                        v-if="articles.at(0)?.review"
+                        class="hexagon absolute right-2 top-2 w-[50px]"
+                    >
+                        <div>{{ articles.at(0)?.review?.overall }}</div>
+                    </div>
                     <div
                         class="bg-gradient-cover absolute bottom-0 w-full space-y-2 rounded-b px-4 pb-4 pt-7"
                     >
@@ -85,7 +91,7 @@ defineProps({
                     </div>
                 </div>
                 <template v-else>
-                    <InertiaLink class="block" :href="`/news/${articles.at(1)?.slug}`">
+                    <InertiaLink class="relative block" :href="`/news/${articles.at(1)?.slug}`">
                         <img
                             :src="
                                 articles.at(1)?.thumbnail
@@ -97,6 +103,12 @@ defineProps({
                             alt="Placeholder"
                             class="mx-auto h-auto w-full max-w-full"
                         />
+                        <div
+                            v-if="articles.at(1)?.review"
+                            class="hexagon absolute right-2 top-2 w-[50px]"
+                        >
+                            <div>{{ articles.at(1)?.review?.overall }}</div>
+                        </div>
                         <div class="bg-gradient-cover absolute bottom-0 w-full px-4 pb-4 pt-7">
                             <h2
                                 class="mb-1 text-lg font-bold capitalize leading-tight text-white"
@@ -129,7 +141,7 @@ defineProps({
                     </div>
                 </div>
                 <template v-else>
-                    <InertiaLink class="block" :href="`/news/${articles.at(2)?.slug}`">
+                    <InertiaLink class="relative block" :href="`/news/${articles.at(2)?.slug}`">
                         <img
                             :src="
                                 articles.at(2)?.thumbnail
@@ -141,6 +153,12 @@ defineProps({
                             alt="Placeholder"
                             class="mx-auto h-auto w-full max-w-full"
                         />
+                        <div
+                            v-if="articles.at(3)?.review"
+                            class="hexagon absolute right-2 top-2 w-[50px]"
+                        >
+                            <div>{{ articles.at(3)?.review?.overall }}</div>
+                        </div>
                         <div class="bg-gradient-cover absolute bottom-0 w-full px-4 pb-4 pt-7">
                             <h2
                                 class="mb-1 text-lg font-bold capitalize leading-tight text-white"
@@ -173,7 +191,7 @@ defineProps({
                     </div>
                 </div>
                 <template v-else>
-                    <InertiaLink class="block" :href="`/news/${articles.at(3)?.slug}`">
+                    <InertiaLink class="relative block" :href="`/news/${articles.at(3)?.slug}`">
                         <img
                             :src="
                                 articles.at(3)?.thumbnail
@@ -185,6 +203,12 @@ defineProps({
                             alt="Placeholder"
                             class="mx-auto h-auto w-full max-w-full"
                         />
+                        <div
+                            v-if="articles.at(3)?.review"
+                            class="hexagon absolute right-2 top-2 w-[50px]"
+                        >
+                            <div>{{ articles.at(3)?.review?.overall }}</div>
+                        </div>
                         <div class="bg-gradient-cover absolute bottom-0 w-full px-4 pb-4 pt-7">
                             <h2
                                 class="mb-1 text-lg font-bold capitalize leading-tight text-white"
@@ -217,7 +241,7 @@ defineProps({
                     </div>
                 </div>
                 <template v-else>
-                    <InertiaLink class="block" :href="`/news/${articles.at(4)?.slug}`">
+                    <InertiaLink class="relative block" :href="`/news/${articles.at(4)?.slug}`">
                         <img
                             :src="
                                 articles.at(4)?.thumbnail
@@ -229,6 +253,12 @@ defineProps({
                             alt="Placeholder"
                             class="mx-auto h-auto w-full max-w-full"
                         />
+                        <div
+                            v-if="articles.at(4)?.review"
+                            class="hexagon absolute right-2 top-2 w-[50px]"
+                        >
+                            <div>{{ articles.at(4)?.review?.overall }}</div>
+                        </div>
                         <div class="bg-gradient-cover absolute bottom-0 w-full px-4 pb-4 pt-7">
                             <h2
                                 class="mb-1 overflow-hidden text-ellipsis text-nowrap text-lg font-bold capitalize leading-tight text-white"

@@ -3,22 +3,32 @@
 namespace App\Models;
 
 use App\Enums\ArticleStatus;
+use App\Observers\ArticleObserver;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\TagsInput;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Validation\Rules\File;
 use Laravel\Scout\Searchable;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
 /**
  * @mixin IdeHelperArticle
  */
+#[ObservedBy(ArticleObserver::class)]
 class Article extends Model implements HasMedia
 {
     use HasFactory, HasSlug, InteractsWithMedia, Searchable;
@@ -83,14 +93,6 @@ class Article extends Model implements HasMedia
             ->singleFile();
 
         $this->addMediaCollection('images');
-    }
-
-    public function registerMediaConversions(?Media $media = null): void
-    {
-        $this->addMediaConversion('thumb')
-            ->performOnCollections('background')
-            ->width(900)
-            ->height(500);
     }
 
     public function categories(): BelongsToMany
@@ -164,7 +166,76 @@ class Article extends Model implements HasMedia
             'author' => $this->author->name,
             'title' => $this->title,
             'content' => strip_tags(html_entity_decode($this->content)),
+            'created_at' => $this->created_at->timestamp,
             'published_at' => $this->published_at->timestamp,
+        ];
+    }
+
+    public static function getForm(): array
+    {
+        return [
+            TextInput::make('title')
+                ->required()
+                ->minLength(3)
+                ->maxLength(255)
+                ->columnSpanFull(),
+
+            Select::make('author_id')
+                ->default(fn () => auth()->id())
+                ->disabled(fn () => ! auth()->user()->is_super)
+                ->relationship('author', 'name', fn ($query) => $query->where('is_active', true))
+                ->required(),
+
+            Select::make('event_id')
+                ->relationship('event', 'name'),
+
+            SpatieMediaLibraryFileUpload::make('thumbnail')
+                ->collection('thumbnail')
+                ->hint('Recommended size: 800x400, must be no larger than 2MB')
+                ->image()
+                ->disk(config('media-library.disk_name'))
+                ->rules([
+                    File::image()->max('2mb'),
+                ])
+                ->required()
+                ->columnSpanFull(),
+
+            SpatieMediaLibraryFileUpload::make('background')
+                ->collection('background')
+                ->hint('Recommended size: 1920x1080, must be no larger than 2MB')
+                ->image()
+                ->disk(config('media-library.disk_name'))
+                ->rules([
+                    File::image()->max('2mb'),
+                ])
+                ->required()
+                ->columnSpanFull(),
+
+            TinyEditor::make('content')
+                ->required()
+                ->columnSpanFull(),
+
+            TagsInput::make('keywords')
+                ->separator(',')
+                ->columnSpanFull(),
+
+            Repeater::make('sources')
+                ->schema([
+                    TextInput::make('name')
+                        ->required(),
+                    TextInput::make('url')
+                        ->required(),
+                ])
+                ->default([])
+                ->columnSpanFull(),
+
+            Toggle::make('is_featured'),
+
+            Select::make('status')
+                ->options(ArticleStatus::toSelectOptions())
+                ->default(ArticleStatus::DRAFT->value)
+                ->required()
+                ->hidden(fn () => ! auth()->user()->is_super),
         ];
     }
 }

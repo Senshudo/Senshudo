@@ -15,6 +15,8 @@ class ArticleObserver
             $article->published_at = now();
         }
 
+        $article->excerpt = substr(strip_tags($article->content), 0, 255);
+
         if ($article->status === ArticleStatus::SCHEDULED) {
             ScheduledArticleJob::dispatch($article)->delay(now()->diffInSeconds($article->scheduled_for));
         }
@@ -22,13 +24,18 @@ class ArticleObserver
 
     public function created(Article $article)
     {
-        GenerateSocialThumbnail::dispatch($article);
+        GenerateSocialThumbnail::dispatch($article)->delay(now()->addSeconds(30));
+    }
+
+    public function updating(Article $article)
+    {
+        $article->excerpt = substr(strip_tags($article->content), 0, 255);
     }
 
     public function updated(Article $article)
     {
         if ($article->isDirty('title')) {
-            GenerateSocialThumbnail::dispatch($article);
+            GenerateSocialThumbnail::dispatch($article)->delay(now()->addSeconds(30));
         }
 
         if ($article->isDirty('status') && $article->status === ArticleStatus::PUBLISHED && $article->published_at === null) {
