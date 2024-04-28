@@ -8,7 +8,7 @@ const navigationItems = ref([
     { name: 'Reviews', href: '/reviews', route: 'reviews', current: false },
     //{ name: 'Guides', href: '/guides', route: 'guides', current: false },
     { name: 'Schedule', href: '/schedule', route: 'schedule', current: false },
-    { name: 'About', href: '/about', route: 'about', current: false },
+    //{ name: 'About', href: '/about', route: 'about', current: false },
 ])
 
 onBeforeMount(() => {
