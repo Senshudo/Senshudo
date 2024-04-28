@@ -41,14 +41,16 @@ const errorDescription = computed(() => {
 </script>
 
 <template>
-    <main class="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <main class="grid min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8">
         <AppHead :title="errorTitle" />
         <div class="text-center">
-            <p class="text-base font-semibold text-indigo-600">{{ status }}</p>
-            <h1 class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+            <p class="text-base font-semibold text-indigo-600 dark:text-white">{{ status }}</p>
+            <h1
+                class="mt-4 text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl"
+            >
                 {{ errorHeaderTitle }}
             </h1>
-            <p class="mt-6 text-base leading-7 text-gray-600">
+            <p class="mt-6 text-base leading-7 text-gray-600 dark:text-base-content">
                 {{ errorDescription }}
             </p>
             <div class="mt-10 flex items-center justify-center gap-x-6">
