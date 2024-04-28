@@ -11,11 +11,31 @@ body {
 }
 
 .bg-gradient-cover {
-    @apply bg-gradient-to-t from-neutral to-transparent;
+    @apply bg-gradient-to-t from-gray-500 dark:from-neutral to-transparent;
 }
 
 .kbd {
     @apply inline-flex justify-center rounded border border-gray-300 bg-gray-200 px-1 py-0.5 align-middle text-sm dark:border-base-content/20 dark:bg-neutral;
+}
+
+[class*='btn-'] {
+    @apply rounded border border-transparent p-2 px-4 text-center text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
+}
+
+[class*='btn-']:disabled {
+    @apply cursor-not-allowed opacity-50;
+}
+
+.btn-sm {
+    @apply p-1 px-3 text-sm;
+}
+
+.btn-default {
+    @apply border-gray-300 bg-white dark:border-base-300 dark:bg-base-300 font-medium text-gray-900 shadow-sm dark:text-white/60;
+}
+
+.btn-default:not([disabled]) {
+    @apply hover:bg-gray-100 hover:shadow-none dark:hover:bg-base-100 dark:hover:text-white
 }
 
 .btn-primary {
@@ -34,10 +54,11 @@ body {
     &::before {
         content: '';
         position: absolute;
-        background: linear-gradient(0deg, rgb(42, 48, 60), rgba(42, 48, 60, 0) 100%);
         inset: 0px;
         height: initial;
         z-index: 1;
+
+        @apply bg-gradient-to-t from-[#fff] dark:from-[#2a303c];
     }
 
     & > .hero-copy {

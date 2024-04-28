@@ -124,7 +124,7 @@ function calcPageRange() {
                 >
                     <button
                         type="button"
-                        class="btn btn-sm btn-default relative inline-flex"
+                        class="btn btn-sm btn-default relative inline-flex items-center"
                         :class="{ disabled: data.page.current <= 1 && data.page.previous === 0 }"
                         @click.prevent="
                             data.page.current <= 1 && data.page.previous === 0
@@ -151,7 +151,7 @@ function calcPageRange() {
                     </button>
                     <button
                         type="button"
-                        class="btn btn-sm btn-default relative inline-flex"
+                        class="btn btn-sm btn-default relative inline-flex items-center"
                         :class="{
                             disabled: data.page.current >= data.page.last,
                         }"

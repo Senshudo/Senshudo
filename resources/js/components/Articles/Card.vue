@@ -14,7 +14,7 @@ defineProps({
 <template>
     <article class="flex overflow-hidden rounded bg-white shadow dark:bg-neutral">
         <div v-if="isLoading" class="flex w-full flex-col">
-            <div class="h-[154px] w-full bg-gray-300"></div>
+            <div class="h-[168.75px] w-full bg-gray-300"></div>
             <div class="flex flex-col gap-2 p-2">
                 <div class="h-6 animate-pulse rounded bg-base-100/30 dark:bg-slate-700"></div>
                 <div class="flex flex-row justify-between gap-x-4 text-sm">
@@ -51,7 +51,7 @@ defineProps({
                         loading="lazy"
                         decoding="async"
                         alt="Placeholder"
-                        class="w-full object-cover"
+                        class="h-[168.75px] w-full object-cover"
                     />
                     <div v-if="article.review" class="hexagon absolute right-2 top-2 w-[50px]">
                         <div>{{ article.review.overall }}</div>

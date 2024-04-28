@@ -15,7 +15,7 @@ defineProps({
     <div class="grid grid-cols-1 gap-y-4 sm:gap-y-1 lg:grid-cols-2 lg:gap-x-1 lg:gap-y-0">
         <article class="relative hidden overflow-hidden rounded sm:block">
             <div v-if="isLoading">
-                <div class="h-auto min-h-[319px] w-full rounded bg-gray-300 lg:max-w-[638px]"></div>
+                <div class="h-auto min-h-[350px] w-full rounded bg-gray-300 lg:max-w-[638px]"></div>
                 <div
                     class="bg-gradient-cover absolute bottom-0 w-full space-y-2 rounded-b px-4 pb-4 pt-7"
                 >
@@ -39,7 +39,7 @@ defineProps({
                         loading="lazy"
                         decoding="async"
                         alt="Placeholder"
-                        class="mx-auto h-auto w-full max-w-full"
+                        class="mx-auto h-[350px] w-full max-w-full rounded"
                     />
                     <div
                         v-if="articles.at(0)?.review"
@@ -48,7 +48,7 @@ defineProps({
                         <div>{{ articles.at(0)?.review?.overall }}</div>
                     </div>
                     <div
-                        class="bg-gradient-cover absolute bottom-0 w-full space-y-2 rounded-b px-4 pb-4 pt-7"
+                        class="bg-gradient-cover absolute bottom-0 w-full space-y-2 rounded rounded-b px-4 pb-4 pt-7"
                     >
                         <h2
                             class="mb-3 text-lg font-bold capitalize text-white lg:text-3xl"
@@ -77,7 +77,7 @@ defineProps({
             <article class="relative hidden overflow-hidden rounded sm:block">
                 <div v-if="isLoading">
                     <div
-                        class="h-auto min-h-[158px] w-full rounded bg-gray-300 lg:max-w-[317px]"
+                        class="h-auto min-h-[170px] w-full rounded bg-gray-300 lg:max-w-[317px]"
                     ></div>
                     <div
                         class="bg-gradient-cover absolute bottom-0 w-full space-y-2 rounded-b px-4 pb-4 pt-7"
@@ -101,7 +101,7 @@ defineProps({
                             loading="lazy"
                             decoding="async"
                             alt="Placeholder"
-                            class="mx-auto h-auto w-full max-w-full"
+                            class="mx-auto h-[170px] w-full max-w-full rounded"
                         />
                         <div
                             v-if="articles.at(1)?.review"
@@ -109,7 +109,9 @@ defineProps({
                         >
                             <div>{{ articles.at(1)?.review?.overall }}</div>
                         </div>
-                        <div class="bg-gradient-cover absolute bottom-0 w-full px-4 pb-4 pt-7">
+                        <div
+                            class="bg-gradient-cover absolute bottom-0 w-full rounded px-4 pb-4 pt-7"
+                        >
                             <h2
                                 class="mb-1 text-lg font-bold capitalize leading-tight text-white"
                                 v-html="articles.at(1)?.title"
@@ -128,7 +130,7 @@ defineProps({
 
             <article class="relative hidden overflow-hidden rounded sm:block">
                 <div v-if="isLoading">
-                    <div class="min-h-[158px] w-full rounded bg-gray-300 lg:max-w-[317px]"></div>
+                    <div class="min-h-[170px] w-full rounded bg-gray-300 lg:max-w-[317px]"></div>
                     <div
                         class="bg-gradient-cover absolute bottom-0 w-full space-y-2 rounded-b px-4 pb-4 pt-7"
                     >
@@ -151,7 +153,7 @@ defineProps({
                             loading="lazy"
                             decoding="async"
                             alt="Placeholder"
-                            class="mx-auto h-auto w-full max-w-full"
+                            class="mx-auto h-[170px] w-full max-w-full rounded"
                         />
                         <div
                             v-if="articles.at(3)?.review"
@@ -159,7 +161,9 @@ defineProps({
                         >
                             <div>{{ articles.at(3)?.review?.overall }}</div>
                         </div>
-                        <div class="bg-gradient-cover absolute bottom-0 w-full px-4 pb-4 pt-7">
+                        <div
+                            class="bg-gradient-cover absolute bottom-0 w-full rounded px-4 pb-4 pt-7"
+                        >
                             <h2
                                 class="mb-1 text-lg font-bold capitalize leading-tight text-white"
                                 v-html="articles.at(2)?.title"
@@ -178,7 +182,7 @@ defineProps({
 
             <article class="relative hidden overflow-hidden rounded sm:block">
                 <div v-if="isLoading">
-                    <div class="min-h-[158px] w-full rounded bg-gray-300 lg:max-w-[317px]"></div>
+                    <div class="min-h-[170px] w-full rounded bg-gray-300 lg:max-w-[317px]"></div>
                     <div
                         class="bg-gradient-cover absolute bottom-0 w-full space-y-2 rounded-b px-4 pb-4 pt-7"
                     >
@@ -201,7 +205,7 @@ defineProps({
                             loading="lazy"
                             decoding="async"
                             alt="Placeholder"
-                            class="mx-auto h-auto w-full max-w-full"
+                            class="mx-auto h-[170px] w-full max-w-full rounded"
                         />
                         <div
                             v-if="articles.at(3)?.review"
@@ -209,7 +213,9 @@ defineProps({
                         >
                             <div>{{ articles.at(3)?.review?.overall }}</div>
                         </div>
-                        <div class="bg-gradient-cover absolute bottom-0 w-full px-4 pb-4 pt-7">
+                        <div
+                            class="bg-gradient-cover absolute bottom-0 w-full rounded px-4 pb-4 pt-7"
+                        >
                             <h2
                                 class="mb-1 text-lg font-bold capitalize leading-tight text-white"
                                 v-html="articles.at(3)?.title"
@@ -228,7 +234,7 @@ defineProps({
 
             <article class="relative hidden overflow-hidden rounded sm:block">
                 <div v-if="isLoading">
-                    <div class="min-h-[158px] w-full rounded bg-gray-300 lg:max-w-[317px]"></div>
+                    <div class="min-h-[170px] w-full rounded bg-gray-300 lg:max-w-[317px]"></div>
                     <div
                         class="bg-gradient-cover absolute bottom-0 w-full space-y-2 rounded-b px-4 pb-4 pt-7"
                     >
@@ -251,7 +257,7 @@ defineProps({
                             loading="lazy"
                             decoding="async"
                             alt="Placeholder"
-                            class="mx-auto h-auto w-full max-w-full"
+                            class="mx-auto h-[170px] w-full max-w-full rounded"
                         />
                         <div
                             v-if="articles.at(4)?.review"
@@ -259,7 +265,9 @@ defineProps({
                         >
                             <div>{{ articles.at(4)?.review?.overall }}</div>
                         </div>
-                        <div class="bg-gradient-cover absolute bottom-0 w-full px-4 pb-4 pt-7">
+                        <div
+                            class="bg-gradient-cover absolute bottom-0 w-full rounded px-4 pb-4 pt-7"
+                        >
                             <h2
                                 class="mb-1 overflow-hidden text-ellipsis text-nowrap text-lg font-bold capitalize leading-tight text-white"
                                 v-html="articles.at(4)?.title"

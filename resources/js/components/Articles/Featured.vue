@@ -52,7 +52,7 @@ defineProps({
                     </div>
                 </div>
                 <div
-                    class="absolute top-1/2 z-[2] h-full w-full -translate-y-1/2 rounded bg-white blur-lg dark:bg-base-100/30 sm:w-1/2"
+                    class="absolute top-1/2 z-[2] h-full w-full -translate-y-1/2 rounded bg-white/70 blur-lg dark:bg-base-100/30 sm:w-1/2"
                 ></div>
                 <div
                     class="absolute top-[70%] z-[3] flex w-full -translate-y-1/2 flex-col gap-4 rounded p-2 dark:text-white sm:top-1/2 sm:w-1/2"
