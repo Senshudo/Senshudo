@@ -49,7 +49,7 @@ export default defineConfig({
             ],
         }),
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/error.vue'],
+            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/pages/error.vue'],
             ssr: 'resources/js/ssr.js',
             refresh: ['resources/css/**', 'resources/js/**', 'routes/**'],
         }),
