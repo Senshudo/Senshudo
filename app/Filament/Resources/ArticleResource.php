@@ -45,7 +45,7 @@ class ArticleResource extends Resource
                     type="submit"
                     size="sm"
                 >
-                    Create
+                    Update
                 </x-filament::button>
             BLADE;
         }
@@ -74,6 +74,7 @@ class ArticleResource extends Resource
                 ])
                     ->hidden(fn (Get $get): bool => $get('type') !== 'review')
                     ->columnSpanFull()
+                    ->skippable(fn () => $form->getRecord() !== null)
                     ->submitAction(new HtmlString(Blade::render($bladeAction))),
 
                 Forms\Components\Section::make('Article')

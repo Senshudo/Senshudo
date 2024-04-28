@@ -3,9 +3,7 @@
 namespace App\Filament\Resources\ArticleResource\Pages;
 
 use App\Filament\Resources\ArticleResource;
-use App\Models\Article;
 use Filament\Actions;
-use Filament\Forms\Form;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -21,24 +19,19 @@ class EditArticle extends EditRecord
         ];
     }
 
-    public function form(Form $form): Form
-    {
-        return $form->statePath('data')
-            ->model(Article::class);
-    }
-
-    protected function fillForm(): void
+    protected function mutateFormDataBeforeFill(array $data): array
     {
         if ($this->getRecord()->review === null) {
-            $extraData = ['type' => 'article'];
+            $data['type'] = 'article';
         } else {
-            $extraData = [
+            $data = [
+                ...$data,
                 'type' => 'review',
                 ...$this->getRecord()->review->toArray(),
             ];
         }
 
-        $this->fillFormWithDataAndCallHooks($this->getRecord(), $extraData);
+        return $data;
     }
 
     protected function handleRecordUpdate(Model $record, array $data): Model

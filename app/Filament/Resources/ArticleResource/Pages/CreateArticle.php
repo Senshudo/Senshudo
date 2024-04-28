@@ -3,9 +3,7 @@
 namespace App\Filament\Resources\ArticleResource\Pages;
 
 use App\Filament\Resources\ArticleResource;
-use App\Models\Article;
 use App\Models\Review;
-use Filament\Forms\Form;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -13,13 +11,6 @@ use Illuminate\Support\Arr;
 class CreateArticle extends CreateRecord
 {
     protected static string $resource = ArticleResource::class;
-
-    public function form(Form $form): Form
-    {
-        return $form
-            ->statePath('data')
-            ->model(Article::class);
-    }
 
     protected function handleRecordCreation(array $data): Model
     {

@@ -181,7 +181,7 @@ class Article extends Model implements HasMedia
                 ->columnSpanFull(),
 
             Select::make('author_id')
-                ->default(fn () => auth()->id())
+                ->default(fn () => auth()->user()->author?->id)
                 ->disabled(fn () => ! auth()->user()->is_super)
                 ->relationship('author', 'name', fn ($query) => $query->where('is_active', true))
                 ->required(),
@@ -202,11 +202,11 @@ class Article extends Model implements HasMedia
 
             SpatieMediaLibraryFileUpload::make('background')
                 ->collection('background')
-                ->hint('Recommended size: 1920x1080, must be no larger than 2MB')
+                ->hint('Recommended size: 1920x1080, must be no larger than 5MB')
                 ->image()
                 ->disk(config('media-library.disk_name'))
                 ->rules([
-                    File::image()->max('2mb'),
+                    File::image()->max('5mb'),
                 ])
                 ->required()
                 ->columnSpanFull(),
@@ -216,7 +216,7 @@ class Article extends Model implements HasMedia
                 ->columnSpanFull(),
 
             TagsInput::make('keywords')
-                ->separator(',')
+                ->separator()
                 ->columnSpanFull(),
 
             Repeater::make('sources')

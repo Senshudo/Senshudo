@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -18,6 +19,7 @@ class Author extends Model implements HasMedia
     use HasFactory, HasSlug, InteractsWithMedia;
 
     protected $fillable = [
+        'user_id',
         'name',
         'slug',
         'is_active',
@@ -69,5 +71,10 @@ class Author extends Model implements HasMedia
     public function getAvatarAttribute(): ?string
     {
         return $this->getFirstMediaUrl('avatar');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
