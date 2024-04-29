@@ -10,7 +10,7 @@ return [
 
     // The cache location to use.
     'storage' => [
-        'disk' => 'public',
+        'disk' => 'local',
         'path' => 'social/open-graph',
     ],
 
