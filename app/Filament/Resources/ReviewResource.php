@@ -19,7 +19,7 @@ class ReviewResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return number_format(Review::query()->when(!auth()->user()->is_super, fn ($query) => $query->whereHas('article', fn($query) => $query->where('author_id', auth()->user()->author->id)))->count());
+        return number_format(Review::query()->when(! auth()->user()->is_super, fn ($query) => $query->whereHas('article', fn ($query) => $query->where('author_id', auth()->user()->author->id)))->count());
     }
 
     public static function canCreate(): bool

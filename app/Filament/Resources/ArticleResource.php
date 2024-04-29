@@ -25,7 +25,7 @@ class ArticleResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return number_format(Article::query()->when(!auth()->user()->is_super, fn ($query) => $query->where('author_id', auth()->user()->author->id))->count());
+        return number_format(Article::query()->when(! auth()->user()->is_super, fn ($query) => $query->where('author_id', auth()->user()->author->id))->count());
     }
 
     public static function form(Form $form): Form
@@ -89,7 +89,7 @@ class ArticleResource extends Resource
         return $table
             ->modifyQueryUsing(function (Builder $query) {
                 $query
-                    ->when(!auth()->user()->is_super, fn ($query) => $query->where('author_id', auth()->user()->author->id))
+                    ->when(! auth()->user()->is_super, fn ($query) => $query->where('author_id', auth()->user()->author->id))
                     ->orderByDesc('id');
             })
             ->defaultPaginationPageOption(25)

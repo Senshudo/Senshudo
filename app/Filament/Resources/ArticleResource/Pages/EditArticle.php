@@ -72,6 +72,11 @@ class EditArticle extends EditRecord
         return $record;
     }
 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
     protected function getFormActions(): array
     {
         if (Arr::get($this->data, 'type') === 'article') {
