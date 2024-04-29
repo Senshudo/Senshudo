@@ -29,7 +29,7 @@
         "spatie/laravel-webhook-client": "^3.3.2",
         "swisnl/filament-backgrounds": "^1.1.4",
         "tightenco/ziggy": "^2.1",
-        "typesense/typesense-php": "^4.9.2",
+        "typesense/typesense-php": "^4.9.3",
         "vormkracht10/laravel-open-graph-image": "^0.7.2"
     },
     "require-dev": {
@@ -41,7 +41,7 @@
         "nunomaduro/collision": "^8.1.1",
         "pestphp/pest": ">=2.34.7",
         "pestphp/pest-plugin-laravel": "^2.4",
-        "spatie/laravel-ignition": "^2.5.2",
+        "spatie/laravel-ignition": "^2.6.0",
         "spatie/laravel-ray": "^1.36.1"
     },
     "minimum-stability": "stable",
@@ -78,6 +78,7 @@
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan vendor:publish --tag=livewire:assets --ansi --force",
             "@php artisan ide-helper:generate",
             "@php artisan ide-helper:meta",
             "@php artisan ide-helper:models -N -M"
