@@ -183,7 +183,7 @@ class Article extends Model implements HasMedia
             Select::make('author_id')
                 ->default(fn () => auth()->user()->author?->id)
                 ->disabled(fn () => ! auth()->user()->is_super)
-                ->relationship('author', 'name', fn ($query) => $query->where('is_active', true))
+                ->relationship('author', 'name')
                 ->required(),
 
             Select::make('event_id')
