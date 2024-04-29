@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7eaaf78f17a4052b94509a0f45673057",
+    "content-hash": "53592708ba43aeead4e3e65c8bdd3759",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -11181,16 +11181,16 @@
         },
         {
             "name": "vormkracht10/laravel-open-graph-image",
-            "version": "v0.7.2",
+            "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "https://github.com/vormkracht10/laravel-open-graph-image.git",
-                "reference": "ac0a246fb0514c39490b76340d803e787df0fedb"
+                "url": "https://github.com/sweptsquash/laravel-open-graph-image.git",
+                "reference": "0e7d99d90cf29dcaeedd745892bcd26c969e8533"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vormkracht10/laravel-open-graph-image/zipball/ac0a246fb0514c39490b76340d803e787df0fedb",
-                "reference": "ac0a246fb0514c39490b76340d803e787df0fedb",
+                "url": "https://api.github.com/repos/sweptsquash/laravel-open-graph-image/zipball/0e7d99d90cf29dcaeedd745892bcd26c969e8533",
+                "reference": "0e7d99d90cf29dcaeedd745892bcd26c969e8533",
                 "shasum": ""
             },
             "require": {
@@ -11212,6 +11212,7 @@
                 "phpstan/phpstan-phpunit": "^1.0",
                 "phpunit/phpunit": "^10.0"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -11224,15 +11225,33 @@
                 }
             },
             "autoload": {
-                "files": [
-                    "src/helpers.php"
-                ],
                 "psr-4": {
                     "Vormkracht10\\LaravelOpenGraphImage\\": "src",
                     "Vormkracht10\\LaravelOpenGraphImage\\Database\\Factories\\": "database/factories"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Vormkracht10\\LaravelOpenGraphImage\\Tests\\": "tests"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "analyse": [
+                    "vendor/bin/phpstan analyse"
+                ],
+                "test": [
+                    "vendor/bin/pest"
+                ],
+                "test-coverage": [
+                    "vendor/bin/pest --coverage"
+                ],
+                "format": [
+                    "vendor/bin/pint"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -11251,16 +11270,15 @@
                 "vormkracht10"
             ],
             "support": {
-                "issues": "https://github.com/vormkracht10/laravel-open-graph-image/issues",
-                "source": "https://github.com/vormkracht10/laravel-open-graph-image/tree/v0.7.2"
+                "source": "https://github.com/sweptsquash/laravel-open-graph-image/tree/main"
             },
             "funding": [
                 {
-                    "url": "https://github.com/vormkracht10",
-                    "type": "github"
+                    "type": "github",
+                    "url": "https://github.com/vormkracht10"
                 }
             ],
-            "time": "2024-04-02T14:19:02+00:00"
+            "time": "2024-04-29T19:44:20+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -15612,7 +15630,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "laravel/reverb": 10
+        "laravel/reverb": 10,
+        "vormkracht10/laravel-open-graph-image": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

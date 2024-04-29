@@ -98,7 +98,7 @@ class OldDatabaseMigrationSeeder extends Seeder
                 'excerpt' => html_entity_decode($article->excerpt),
                 'content' => $article->content,
                 'keywords' => $article->keywords,
-                'sources' => $article->sources,
+                'sources' => $article->sources === 'NULL' ? null : $article->sources,
                 'is_featured' => (bool) $article->is_featured,
                 'status' => ArticleStatus::PUBLISHED,
                 'published_at' => Carbon::parse($article->published_at),

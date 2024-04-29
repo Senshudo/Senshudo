@@ -16,6 +16,7 @@ function getPercentage(value) {
             :author-twitter="article.author.twitter ?? undefined"
             og-type="article"
             :description="article.excerpt"
+            :thumbnail="article.socialThumbnail"
             :published-at="useDayJs(article.published_at).toISOString()"
             :updated-at="useDayJs(article.updated_at).toISOString()"
         />

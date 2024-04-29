@@ -36,8 +36,10 @@ class EditArticle extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        if (Arr::get($data, 'type') === 'article') {
-            return $record->update($data);
+        if (Arr::get($data, 'type') === 'article' || $record->review === null) {
+            $record->update($data);
+
+            return $record;
         }
 
         $record->update(
@@ -55,7 +57,7 @@ class EditArticle extends EditRecord
             ),
         );
 
-        $record->review->update(
+        $record->review?->update(
             Arr::only(
                 $data,
                 [

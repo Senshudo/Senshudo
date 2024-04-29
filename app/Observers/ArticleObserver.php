@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Enums\ArticleStatus;
-use App\Jobs\GenerateSocialThumbnail;
 use App\Jobs\ScheduledArticleJob;
 use App\Models\Article;
 
@@ -22,11 +21,6 @@ class ArticleObserver
         }
     }
 
-    public function created(Article $article)
-    {
-        GenerateSocialThumbnail::dispatch($article)->delay(now()->addSeconds(30));
-    }
-
     public function updating(Article $article)
     {
         $article->excerpt = substr(strip_tags($article->content), 0, 255);
@@ -34,10 +28,6 @@ class ArticleObserver
 
     public function updated(Article $article)
     {
-        if ($article->isDirty('title')) {
-            GenerateSocialThumbnail::dispatch($article)->delay(now()->addSeconds(30));
-        }
-
         if ($article->isDirty('status') && $article->status === ArticleStatus::PUBLISHED && $article->published_at === null) {
             $article->update([
                 'published_at' => now(),

@@ -30,11 +30,17 @@ class GenerateSocialThumbnail implements ShouldQueue
     {
         ini_set('memory_limit', '-1');
 
+        $imageContents = $this->getBase64String();
+
+        if (! $imageContents) {
+            $this->fail('No image found for article '.$this->article->id);
+        }
+
         $url = base64_encode(OpenGraphImage::createImageFromParams([
             'title' => $this->article->title,
             'score' => $this->article->review?->overall,
             'author' => $this->article->author?->name,
-            'image' => $this->getBase64String(),
+            'image' => $imageContents,
         ]));
 
         $this->article->addMediaFromBase64('data:image/jpg;base64,'.$url)
@@ -46,8 +52,12 @@ class GenerateSocialThumbnail implements ShouldQueue
     {
         $path = $this->article->getFirstMedia('background')?->getPathRelativeToRoot();
 
+        if (! $path) {
+            $this->fail('No background image found for article '.$this->article->id);
+        }
+
         if (! Storage::disk($this->article->getFirstMedia('background')?->disk)->exists($path)) {
-            return null;
+            $this->fail('Background image not found for article '.$this->article->id);
         }
 
         return Storage::disk($this->article->getFirstMedia('background')?->disk)->get($path);
