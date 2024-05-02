@@ -1,4 +1,5 @@
 import Layout from '@/layouts/default.vue'
+import { Ziggy } from '@/routes/routes.js'
 import { createInertiaApp } from '@inertiajs/vue3'
 import createServer from '@inertiajs/vue3/server'
 import { renderToString } from '@vue/server-renderer'
@@ -26,7 +27,7 @@ createServer((page) =>
             })
                 .use(plugin)
                 .use(ZiggyVue, {
-                    ...page.props.ziggy,
+                    ...Ziggy,
                     location: new URL(page.props.location),
                 })
         },
