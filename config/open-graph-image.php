@@ -27,7 +27,7 @@ return [
     ],
 
     'paths' => [
-        'node' => '/home/linuxbrew/.linuxbrew/bin/node',
-        'npm' => '/home/linuxbrew/.linuxbrew/bin/npm',
+        'node' => env('BROWSERSHOT_NODE'),
+        'npm' => env('BROWSERSHOT_NPM'),
     ],
 ];
