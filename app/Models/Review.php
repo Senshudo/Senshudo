@@ -57,25 +57,25 @@ class Review extends Model
                 ->columnSpanFull(),
 
             TextInput::make('overall')
-                ->integer()
+                ->numeric()
                 ->step('.1')
                 ->hint('Minimum: 0, Maximum: 10')
                 ->rules(['min:0', 'max:10']),
 
             TextInput::make('graphics')
-                ->integer()
+                ->numeric()
                 ->step('.1')
                 ->hint('Minimum: 0, Maximum: 10')
                 ->rules(['min:0', 'max:10']),
 
             TextInput::make('story')
-                ->integer()
+                ->numeric()
                 ->step('.1')
                 ->hint('Minimum: 0, Maximum: 10')
                 ->rules(['min:0', 'max:10']),
 
             TextInput::make('gameplay')
-                ->integer()
+                ->numeric()
                 ->step('.1')
                 ->hint('Minimum: 0, Maximum: 10')
                 ->rules(['min:0', 'max:10']),
