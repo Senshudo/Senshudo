@@ -47,7 +47,7 @@ body {
 }
 
 .hero-banner {
-    height: 35vh;
+    min-height: 35vh;
     width: 100%;
     position: relative;
 
