@@ -234,8 +234,9 @@ class Article extends Model implements HasMedia
             Select::make('status')
                 ->options(ArticleStatus::toSelectOptions())
                 ->default(ArticleStatus::DRAFT->value)
+                ->disableOptionWhen(fn (string $value): bool => ($value === 'scheduled' || $value === 'published') && ! auth()->user()->is_super)
                 ->required()
-                ->hidden(fn (?Model $record) => $record?->status === ArticleStatus::PUBLISHED->value),
+                ->hidden(fn (?Model $record) => $record?->status === ArticleStatus::PUBLISHED),
         ];
     }
 }

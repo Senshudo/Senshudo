@@ -15,7 +15,7 @@ class CreateArticle extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        if (($data['status'] === ArticleStatus::PUBLISHED->value || $data['status'] === ArticleStatus::SCHEDULED->value) && request()->user()->is_super === false) {
+        if (($data['status'] === ArticleStatus::PUBLISHED->value || $data['status'] === ArticleStatus::SCHEDULED->value) && auth()->user()->is_super === false) {
             $data['status'] = ArticleStatus::REVIEW->value;
         }
 
