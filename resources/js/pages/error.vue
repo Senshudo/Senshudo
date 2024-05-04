@@ -53,7 +53,7 @@ const errorDescription = computed(() => {
             <p class="mt-6 text-base leading-7 text-gray-600 dark:text-base-content">
                 {{ errorDescription }}
             </p>
-            <div class="mt-10 flex items-center justify-center gap-x-6">
+            <div v-if="status !== 503" class="mt-10 flex items-center justify-center gap-x-6">
                 <InertiaLink href="/" class="btn-primary">Go back home</InertiaLink>
             </div>
         </div>
