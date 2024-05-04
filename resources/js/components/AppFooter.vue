@@ -52,6 +52,8 @@ const navigation = [
                     v-for="item in navigation"
                     :key="item.name"
                     :href="item.href"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     class="fill-gray-400 hover:fill-gray-500 dark:fill-gray-300 dark:hover:fill-white"
                 >
                     <span class="sr-only">{{ item.name }}</span>

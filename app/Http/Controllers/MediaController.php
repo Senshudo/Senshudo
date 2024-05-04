@@ -11,9 +11,7 @@ class MediaController extends Controller
 {
     public function __invoke(Request $request, Media $media)
     {
-        if (! App::isProduction() && ! Storage::disk('media')->exists($media->getPathRelativeToRoot())) {
-            return response()->noContent();
-        }
+        abort_if(! App::isProduction() && ! Storage::disk($media->disk)->exists($media->getPathRelativeToRoot()), 404, 'Media not found');
 
         return $media->toInlineResponse($request);
     }
