@@ -235,7 +235,7 @@ class Article extends Model implements HasMedia
                 ->options(ArticleStatus::toSelectOptions())
                 ->default(ArticleStatus::DRAFT->value)
                 ->required()
-                ->hidden(fn () => ! auth()->user()->is_super),
+                ->hidden(fn () => $this->status === ArticleStatus::PUBLISHED->value),
         ];
     }
 }

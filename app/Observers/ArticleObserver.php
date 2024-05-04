@@ -4,7 +4,9 @@ namespace App\Observers;
 
 use App\Enums\ArticleStatus;
 use App\Jobs\ScheduledArticleJob;
+use App\Mail\NewArticle;
 use App\Models\Article;
+use App\Models\User;
 
 class ArticleObserver
 {
@@ -18,6 +20,15 @@ class ArticleObserver
 
         if ($article->status === ArticleStatus::SCHEDULED) {
             ScheduledArticleJob::dispatch($article)->delay(now()->diffInSeconds($article->scheduled_for));
+        }
+    }
+
+    public function created(Article $article)
+    {
+        if ($article->status === ArticleStatus::REVIEW && app()->isProduction()) {
+            User::where('is_super', true)
+                ->get()
+                ->each(fn (User $user) => $user->notify(new NewArticle($article, $user)));
         }
     }
 

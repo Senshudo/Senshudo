@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ArticleResource\Pages;
 
+use App\Enums\ArticleStatus;
 use App\Filament\Resources\ArticleResource;
 use App\Models\Review;
 use Filament\Resources\Pages\CreateRecord;
@@ -14,6 +15,10 @@ class CreateArticle extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
+        if (($data['status'] === ArticleStatus::PUBLISHED->value || $data['status'] === ArticleStatus::SCHEDULED->value) && request()->user()->is_super === false) {
+            $data['status'] = ArticleStatus::REVIEW->value;
+        }
+
         if (Arr::get($data, 'type') === 'article') {
             return static::getModel()::create($data);
         }
