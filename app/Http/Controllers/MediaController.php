@@ -15,6 +15,6 @@ class MediaController extends Controller
             return response()->noContent();
         }
 
-        return $media->toResponse($request);
+        return $media->toInlineResponse($request);
     }
 }
