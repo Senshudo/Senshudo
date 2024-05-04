@@ -36,7 +36,8 @@ class TestEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            html: '<p>This is a test email.</p>',
+            view: 'mail.test',
+            with: ['name' => 'Stewart']
         );
     }
 
