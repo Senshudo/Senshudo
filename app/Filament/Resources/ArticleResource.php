@@ -106,6 +106,7 @@ class ArticleResource extends Resource
                     ->color(fn ($state): string => match ($state->value) {
                         'draft' => 'gray',
                         'scheduled' => 'warning',
+                        'review' => 'info',
                         'published' => 'success',
                     }),
                 Tables\Columns\TextColumn::make('created_at')

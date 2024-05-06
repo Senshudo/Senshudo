@@ -101,6 +101,10 @@ body {
     }
 }
 
+.twitter-tweet.twitter-tweet-rendered {
+    @apply mx-auto;
+}
+
 @keyframes scrollIndicator {
     0% {
         top: 0px;
