@@ -95,6 +95,12 @@ body {
     @apply flex items-center justify-center bg-indigo-500 p-2 font-semibold text-white;
 }
 
+.embed-responsive.embed-responsive-16by9 {
+    & > .embed-responsive-item {
+        @apply aspect-video;
+    }
+}
+
 @keyframes scrollIndicator {
     0% {
         top: 0px;

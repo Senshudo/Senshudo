@@ -7,6 +7,7 @@ use App\Jobs\ScheduledArticleJob;
 use App\Mail\NewArticle;
 use App\Models\Article;
 use App\Models\User;
+use Illuminate\Support\Facades\App;
 
 class ArticleObserver
 {
@@ -25,7 +26,7 @@ class ArticleObserver
 
     public function created(Article $article)
     {
-        if ($article->status === ArticleStatus::REVIEW && app()->isProduction()) {
+        if ($article->status === ArticleStatus::REVIEW && App::isProduction()) {
             User::where('is_super', true)
                 ->get()
                 ->each(fn (User $user) => $user->notify(new NewArticle($article, $user)));
@@ -47,6 +48,12 @@ class ArticleObserver
 
         if ($article->isDirty('status') && $article->status === ArticleStatus::SCHEDULED) {
             ScheduledArticleJob::dispatch($article)->delay(now()->diffInSeconds($article->scheduled_for));
+        }
+
+        if ($article->isDirty('status') && $article->status === ArticleStatus::REVIEW && App::isProduction()) {
+            User::where('is_super', true)
+                ->get()
+                ->each(fn (User $user) => $user->notify(new NewArticle($article, $user)));
         }
     }
 }
