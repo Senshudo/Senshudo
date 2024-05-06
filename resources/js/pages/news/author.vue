@@ -1,6 +1,4 @@
 <script setup>
-import { route } from 'ziggy-js'
-
 const props = defineProps({
     author: {
         type: Object,
@@ -23,7 +21,7 @@ const pageTitle = computed(() => {
 })
 
 function goToPage(page) {
-    navigateTo(`/auhtor/${author.slug}?page=${page}`)
+    navigateTo(`/author/${author.slug}?page=${page}`)
 }
 </script>
 
@@ -31,7 +29,7 @@ function goToPage(page) {
     <div class="mx-auto max-w-7xl p-4">
         <AppHead :title="pageTitle" />
 
-        <!-- AUTHOR Card -->
+        <!-- TODO: AUTHOR Card -->
 
         <div class="mb-4 mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
             <articles-card v-for="article in articles.data" :key="article.id" :article="article" />

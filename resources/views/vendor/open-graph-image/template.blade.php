@@ -56,8 +56,8 @@
                     </div>
                 @endif
 
-                <div class="absolute bottom-10 {{ isset($score) ? 'left-[180px]' : 'left-10' }} max-w-full">
-                    <h1 class="truncate text-5xl font-semibold text-white">
+                <div class="absolute bottom-10 {{ isset($score) ? 'left-[180px]' : 'left-10' }} right-10 max-w-full">
+                    <h1 class="text-pretty break-words text-5xl font-semibold text-white">
                         {{ $title }}
                     </h1>
                     <p class="text-xl text-gray-100">{{ $author }}</p>
