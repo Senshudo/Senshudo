@@ -28,7 +28,7 @@ createServer((page) =>
                 .use(plugin)
                 .use(ZiggyVue, {
                     ...Ziggy,
-                    location: new URL(page.props.location),
+                    location: page.props?.location ? new URL(page.props.location) : null,
                 })
         },
     }),
