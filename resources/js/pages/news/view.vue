@@ -1,6 +1,23 @@
 <script setup>
+import { onMounted } from 'vue'
+
 defineProps({
     article: { type: Object, required: true },
+})
+
+onMounted(() => {
+    if (typeof window !== 'undefined') {
+        if (document.querySelector('#twitterSDK')) {
+            document.querySelector('#twitterSDK').remove()
+        } else {
+            const script = document.createElement('script')
+            script.id = 'twitterSDK'
+            script.src = 'https://platform.twitter.com/widgets.js'
+            script.charset = 'utf-8'
+            script.async = true
+            document.body.appendChild(script)
+        }
+    }
 })
 
 function getPercentage(value) {
