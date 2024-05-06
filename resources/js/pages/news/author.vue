@@ -21,7 +21,7 @@ const pageTitle = computed(() => {
 })
 
 function goToPage(page) {
-    navigateTo(`/author/${author.slug}?page=${page}`)
+    navigateTo(`/author/${props.author.slug}?page=${page}`)
 }
 </script>
 
