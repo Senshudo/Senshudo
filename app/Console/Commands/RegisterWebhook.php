@@ -58,7 +58,7 @@ class RegisterWebhook extends Command
                         ],
                         'transport' => [
                             'method' => 'webhook',
-                            'callback' => 'https://senshudo.tv/webhooks/',
+                            'callback' => 'https://senshudo.tv/webhooks/twitch',
                             'secret' => config('services.twitch.webhook_secret'),
                         ],
                     ]);
@@ -84,7 +84,7 @@ class RegisterWebhook extends Command
                         ],
                         'transport' => [
                             'method' => 'webhook',
-                            'callback' => 'https://senshudo.tv/webhooks/',
+                            'callback' => 'https://senshudo.tv/webhooks/twitch',
                             'secret' => config('services.twitch.webhook_secret'),
                         ],
                     ]);
