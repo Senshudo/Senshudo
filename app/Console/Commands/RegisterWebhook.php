@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class RegisterWebhook extends Command
 {
@@ -62,6 +63,8 @@ class RegisterWebhook extends Command
                         ],
                     ]);
 
+                Log::info("Online: {$onlineRequest->status()}", $onlineRequest->json());
+
                 if (($status = Arr::get($onlineRequest->json(), 'data.0.status')) !== 'webhook_callback_verification_pending') {
                     throw new \Exception("Online: Failed to register webhook for {$channelName} - {$status}");
                 }
@@ -85,6 +88,8 @@ class RegisterWebhook extends Command
                             'secret' => config('services.twitch.webhook_secret'),
                         ],
                     ]);
+
+                Log::info("Offline: {$offlineRequest->status()}", $offlineRequest->json());
 
                 if (($status = Arr::get($offlineRequest->json(), 'data.0.status')) !== 'webhook_callback_verification_pending') {
                     throw new \Exception("Offline: Failed to register webhook for {$channelName} - {$status}");
