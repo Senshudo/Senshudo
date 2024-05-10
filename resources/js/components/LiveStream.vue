@@ -1,7 +1,10 @@
 <script setup>
 import { usePage } from '@inertiajs/vue3'
+import { useDark } from '@vueuse/core'
 
 const echo = useEcho()
+
+const isDark = useDark()
 
 const activeChannel = ref('senshudo')
 
@@ -45,7 +48,7 @@ onBeforeUnmount(() => {
         </div>
         <iframe
             id="twitch-chat-embed"
-            :src="`https://www.twitch.tv/embed/${activeChannel}/chat?parent=senshudo.tv&parent=staging.senshudo.tv`"
+            :src="`https://www.twitch.tv/embed/${activeChannel}/chat?parent=senshudo.tv&parent=staging.senshudo.tv${isDark ? '&darkpopout' : ''}`"
             class="hidden rounded sm:flex md:min-w-[350px]"
         ></iframe>
     </div>
