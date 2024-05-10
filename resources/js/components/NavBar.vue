@@ -1,7 +1,8 @@
 <script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { route } from 'ziggy-js'
+
+const route = useRoute()
 
 const navigationItems = ref([
     { name: 'News', href: '/news', route: 'news.*', current: false },

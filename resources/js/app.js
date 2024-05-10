@@ -23,6 +23,8 @@ createInertiaApp({
             },
         ),
     setup({ el, App, props, plugin }) {
+        globalThis.Ziggy = Ziggy
+
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue, {

@@ -12,8 +12,6 @@ const props = defineProps({
     },
 })
 
-const emit = defineEmits(['page-change'])
-
 const data = reactive({
     page: {
         first: 1,
@@ -72,32 +70,30 @@ function calcPageRange() {
 <template>
     <div class="mt-6 flex w-full items-center justify-between border-t border-gray-300 pt-4">
         <div class="flex flex-1 justify-between sm:hidden">
-            <button
-                type="button"
+            <InertiaLink
+                :href="
+                    data.page.current <= 1 && data.page.previous === 0
+                        ? '#'
+                        : `${meta.path}?page=${data.page.previous}`
+                "
                 class="btn btn-default relative inline-flex"
                 :class="{ disabled: data.page.current <= 1 && data.page.previous === 0 }"
-                @click.prevent="
-                    data.page.current <= 1 && data.page.previous === 0
-                        ? undefined
-                        : emit('page-change', data.page.previous)
-                "
             >
                 Previous
-            </button>
-            <button
-                type="button"
+            </InertiaLink>
+            <InertiaLink
+                :href="
+                    data.page.current >= data.page.last
+                        ? '#'
+                        : `${meta.path}?page=${data.page.next}`
+                "
                 class="btn btn-default relative inline-flex"
                 :class="{
                     disabled: data.page.current >= data.page.last,
                 }"
-                @click.prevent="
-                    data.page.current >= data.page.last
-                        ? undefined
-                        : emit('page-change', data.page.next)
-                "
             >
                 Next
-            </button>
+            </InertiaLink>
         </div>
         <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
             <div>
@@ -122,48 +118,45 @@ function calcPageRange() {
                     class="relative z-0 inline-flex space-x-1.5 rounded-md shadow-sm"
                     aria-label="Pagination"
                 >
-                    <button
-                        type="button"
+                    <InertiaLink
+                        :href="
+                            data.page.current <= 1 && data.page.previous === 0
+                                ? '#'
+                                : `${meta.path}?page=${data.page.previous}`
+                        "
                         class="btn btn-sm btn-default relative inline-flex items-center"
                         :class="{ disabled: data.page.current <= 1 && data.page.previous === 0 }"
-                        @click.prevent="
-                            data.page.current <= 1 && data.page.previous === 0
-                                ? undefined
-                                : emit('page-change', data.page.previous)
-                        "
                     >
                         <span class="sr-only">Previous</span>
                         <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
-                    </button>
-                    <button
+                    </InertiaLink>
+                    <InertiaLink
                         v-for="p in data.page.range"
                         :key="`page${p}`"
-                        type="button"
+                        :href="`${meta.path}?page=${p}`"
                         :aria-current="data.page.current === p ? 'page' : undefined"
                         class="btn btn-sm relative inline-flex items-center"
                         :class="{
                             'btn-primary z-10': data.page.current === p,
                             'btn-default z-10': data.page.current !== p,
                         }"
-                        @click.prevent="emit('page-change', p)"
                     >
                         {{ useFormatNumber(p) }}
-                    </button>
-                    <button
-                        type="button"
+                    </InertiaLink>
+                    <InertiaLink
+                        :href="
+                            data.page.current >= data.page.last
+                                ? '#'
+                                : `${meta.path}?page=${data.page.next}`
+                        "
                         class="btn btn-sm btn-default relative inline-flex items-center"
                         :class="{
                             disabled: data.page.current >= data.page.last,
                         }"
-                        @click.prevent="
-                            data.page.current >= data.page.last
-                                ? undefined
-                                : emit('page-change', data.page.next)
-                        "
                     >
                         <span class="sr-only">Next</span>
                         <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
-                    </button>
+                    </InertiaLink>
                 </nav>
             </div>
         </div>

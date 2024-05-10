@@ -19,10 +19,6 @@ const pageTitle = computed(() => {
 
     return pageName
 })
-
-function goToPage(page) {
-    navigateTo(`/author/${props.author.slug}?page=${page}`)
-}
 </script>
 
 <template>
@@ -35,6 +31,6 @@ function goToPage(page) {
             <articles-card v-for="article in articles.data" :key="article.id" :article="article" />
         </div>
 
-        <pagination :meta="articles.meta" @page-change="goToPage" />
+        <pagination :meta="articles.meta" />
     </div>
 </template>

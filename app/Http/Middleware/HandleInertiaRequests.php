@@ -50,6 +50,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'env' => config('app.env'),
             'location' => $request->url(),
+            'route' => $request->route()->getName(),
         ];
     }
 }

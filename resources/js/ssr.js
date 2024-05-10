@@ -22,6 +22,8 @@ createServer((page) =>
                 },
             ),
         setup({ App, props, plugin }) {
+            globalThis.Ziggy = Ziggy
+
             return createSSRApp({
                 render: () => h(App, props),
             })
