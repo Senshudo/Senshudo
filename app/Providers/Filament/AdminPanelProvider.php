@@ -17,6 +17,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Saade\FilamentLaravelLog\FilamentLaravelLogPlugin;
 use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -59,6 +60,12 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentBackgroundsPlugin::make(),
+                FilamentLaravelLogPlugin::make()
+                    ->navigationGroup('System Tools')
+                    ->navigationLabel('Logs')
+                    ->navigationIcon('heroicon-o-bug-ant')
+                    ->navigationSort(1)
+                    ->slug('logs'),
             ]);
     }
 }

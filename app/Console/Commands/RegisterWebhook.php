@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Channel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
@@ -67,6 +68,12 @@ class RegisterWebhook extends Command
 
                 if (($status = Arr::get($onlineRequest->json(), 'data.0.status')) !== 'webhook_callback_verification_pending') {
                     throw new \Exception("Online: Failed to register webhook for {$channelName} - {$status}");
+                } else {
+                    $channel = Channel::firstWhere('twitch_id', $twitchId);
+
+                    $channel->update([
+                        'online_webhook_id' => Arr::get($onlineRequest->json(), 'data.0.id'),
+                    ]);
                 }
 
                 $offlineRequest = Http::baseUrl('https://api.twitch.tv/helix')
@@ -93,6 +100,12 @@ class RegisterWebhook extends Command
 
                 if (($status = Arr::get($offlineRequest->json(), 'data.0.status')) !== 'webhook_callback_verification_pending') {
                     throw new \Exception("Offline: Failed to register webhook for {$channelName} - {$status}");
+                } else {
+                    $channel = Channel::firstWhere('twitch_id', $twitchId);
+
+                    $channel->update([
+                        'offline_webhook_id' => Arr::get($offlineRequest->json(), 'data.0.id'),
+                    ]);
                 }
             });
     }

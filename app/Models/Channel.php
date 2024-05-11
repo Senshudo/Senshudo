@@ -16,6 +16,8 @@ class Channel extends Model
         'twitch_id',
         'channel_name',
         'is_online',
+        'online_webhook_id',
+        'offline_webhook_id',
     ];
 
     protected $casts = [
