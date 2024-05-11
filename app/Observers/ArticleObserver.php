@@ -8,6 +8,7 @@ use App\Mail\NewArticle;
 use App\Models\Article;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Notification;
 
 class ArticleObserver
 {
@@ -29,7 +30,7 @@ class ArticleObserver
         if ($article->status === ArticleStatus::REVIEW && App::isProduction()) {
             User::where('is_super', true)
                 ->get()
-                ->each(fn (User $user) => $user->notify(new NewArticle($article, $user)));
+                ->each(fn (User $user) => Notification::route('mail', $user->email)->notify(new NewArticle($article, $user)));
         }
     }
 
@@ -53,7 +54,7 @@ class ArticleObserver
         if ($article->isDirty('status') && $article->status === ArticleStatus::REVIEW && App::isProduction()) {
             User::where('is_super', true)
                 ->get()
-                ->each(fn (User $user) => $user->notify(new NewArticle($article, $user)));
+                ->each(fn (User $user) => Notification::route('mail', $user->email)->notify($user->email, new NewArticle($article, $user)));
         }
     }
 }
