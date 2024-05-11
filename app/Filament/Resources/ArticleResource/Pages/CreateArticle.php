@@ -17,7 +17,7 @@ class CreateArticle extends CreateRecord
     {
         $status = Arr::get($data, 'status');
 
-        if (($status === ArticleStatus::PUBLISHED->value || $status === ArticleStatus::SCHEDULED->value) && !auth()->user()->is_super) {
+        if (($status === ArticleStatus::PUBLISHED->value || $status === ArticleStatus::SCHEDULED->value) && ! auth()->user()->is_super) {
             $data['status'] = ArticleStatus::REVIEW->value;
         }
 

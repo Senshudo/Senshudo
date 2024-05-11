@@ -22,6 +22,8 @@ use Laravel\Scout\Searchable;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -29,7 +31,7 @@ use Spatie\Sluggable\SlugOptions;
  * @mixin IdeHelperArticle
  */
 #[ObservedBy(ArticleObserver::class)]
-class Article extends Model implements HasMedia
+class Article extends Model implements HasMedia, Sitemapable
 {
     use HasFactory, HasSlug, InteractsWithMedia, Searchable;
 
@@ -238,5 +240,13 @@ class Article extends Model implements HasMedia
                 ->required()
                 ->hidden(fn (?Model $record) => $record?->status === ArticleStatus::PUBLISHED),
         ];
+    }
+
+    public function toSitemapTag(): Url|string|array
+    {
+        return Url::create(route('news.show', $this))
+            ->setLastModificationDate($this->updated_at)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY)
+            ->setPriority(0.8);
     }
 }
