@@ -29,7 +29,7 @@ it('response to the Twitch Webhook Challenge', function () {
     $signature = 'sha256='.hash_hmac('sha256', $message, config('services.twitch.webhook_secret'));
 
     $response = postJson('/webhooks/twitch', $challengePayload, [
-        'Twitch-Eventsub-Subscription-Type' => 'webhook_callback_verification',
+        'Twitch-Eventsub-Subscription-Type' => 'webhook_callback_verification_pending',
         'Twitch-Eventsub-Message-Id' => $id,
         'Twitch-Eventsub-Message-Timestamp' => $timestamp,
         'Twitch-Eventsub-Message-Signature' => $signature,

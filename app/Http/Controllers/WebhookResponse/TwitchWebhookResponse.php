@@ -15,7 +15,7 @@ class TwitchWebhookResponse implements RespondsToWebhook
      */
     public function respondToValidWebhook(Request $request, WebhookConfig $config): Response
     {
-        if ($request->header('Twitch-Eventsub-Subscription-Type') === 'webhook_callback_verification') {
+        if (in_array($request->header('twitch-eventsub-message-type'), ['webhook_callback_verification', 'webhook_callback_verification_pending'])) {
             return response(
                 Arr::get($request->input(), 'challenge'),
                 Response::HTTP_OK,

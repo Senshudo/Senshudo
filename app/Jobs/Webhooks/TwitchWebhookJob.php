@@ -15,7 +15,7 @@ class TwitchWebhookJob extends ProcessWebhookJob
     public function validation(): array
     {
         return [
-            'challenge' => [Rule::requiredIf(fn () => $this->webhookCall->headers()->get('Twitch-Eventsub-Subscription-Type') === 'webhook_callback_verification'), 'string'],
+            'challenge' => [Rule::requiredIf(fn () => in_array($this->webhookCall->headers()->get('twitch-eventsub-message-type'), ['webhook_callback_verification', 'webhook_callback_verification_pending'])), 'string'],
             'subscription' => ['required', 'array'],
             'subscription.id' => ['required', 'string'],
             'subscription.status' => ['required', 'string'],
@@ -31,7 +31,7 @@ class TwitchWebhookJob extends ProcessWebhookJob
      */
     public function handle()
     {
-        if ($this->webhookCall->headers()->get('Twitch-Eventsub-Subscription-Type') === 'notification ') {
+        if ($this->webhookCall->headers()->get('twitch-eventsub-message-type') === 'notification' && in_array($this->webhookCall->headers()->get('twitch-eventsub-subscription-type'), ['stream.online', 'stream.offline'])) {
             $channel = Channel::find('twitch_id', Arr::get($this->payload, 'subscription.condition.broadcaster_user_id'));
 
             $channel->update([
