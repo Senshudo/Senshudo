@@ -53,6 +53,7 @@ return [
                 'Twitch-Eventsub-Message-Signature',
                 'Twitch-Eventsub-Message-Timestamp',
                 'Twitch-Eventsub-Message-Id',
+                'Twitch-Eventsub-Message-Type',
             ],
 
             /*

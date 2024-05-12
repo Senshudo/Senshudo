@@ -31,8 +31,8 @@ class TwitchWebhookJob extends ProcessWebhookJob
      */
     public function handle()
     {
-        if ($this->webhookCall->headers()->get('twitch-eventsub-message-type') === 'notification' && in_array($this->webhookCall->headers()->get('twitch-eventsub-subscription-type'), ['stream.online', 'stream.offline'])) {
-            $channel = Channel::find('twitch_id', Arr::get($this->payload, 'subscription.condition.broadcaster_user_id'));
+        if ($this->webhookCall->headers()->get('twitch-eventsub-message-type') === 'notification' && in_array(Arr::get($this->payload, 'subscription.type'), ['stream.online', 'stream.offline'])) {
+            $channel = Channel::firstWhere('twitch_id', Arr::get($this->payload, 'event.broadcaster_user_id'));
 
             $channel->update([
                 'is_online' => Arr::get($this->payload, 'subscription.type') === 'stream.online',
