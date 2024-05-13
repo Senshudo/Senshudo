@@ -5,6 +5,7 @@ namespace App\Jobs\Webhooks;
 use App\Abstracts\Webhook\ProcessWebhookJob;
 use App\Models\Channel;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class TwitchWebhookJob extends ProcessWebhookJob
@@ -31,12 +32,16 @@ class TwitchWebhookJob extends ProcessWebhookJob
      */
     public function handle()
     {
-        if ($this->webhookCall->headers()->get('twitch-eventsub-message-type') === 'notification' && in_array(Arr::get($this->payload, 'subscription.type'), ['stream.online', 'stream.offline'])) {
-            $channel = Channel::firstWhere('twitch_id', Arr::get($this->payload, 'event.broadcaster_user_id'));
+        if ($this->webhookCall->headers()->get('twitch-eventsub-message-type') === 'notification' && in_array(Arr::get($this->webhookCall->payload, 'subscription.type'), ['stream.online', 'stream.offline'])) {
+            $channel = Channel::firstWhere('twitch_id', Arr::get($this->webhookCall->payload, 'event.broadcaster_user_id'));
 
-            $channel->update([
-                'is_online' => Arr::get($this->payload, 'subscription.type') === 'stream.online',
-            ]);
+            if ($channel) {
+                $channel->update([
+                    'is_online' => Arr::get($this->webhookCall->payload, 'subscription.type') === 'stream.online',
+                ]);
+            } else {
+                Log::error('Channel not found', ['twitch_id' => Arr::get($this->webhookCall->payload, 'event.broadcaster_user_id')], $this->webhookCall->payload);
+            }
         }
     }
 }
