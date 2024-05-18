@@ -214,6 +214,7 @@ class Article extends Model implements HasMedia, Sitemapable
                 ->columnSpanFull(),
 
             TinyEditor::make('content')
+                ->setConvertUrls(false)
                 ->required()
                 ->columnSpanFull(),
 
