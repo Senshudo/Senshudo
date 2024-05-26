@@ -105,6 +105,10 @@ body {
     @apply mx-auto;
 }
 
+.prose iframe[allowfullscreen] {
+    @apply w-full h-auto aspect-video;
+}
+
 @keyframes scrollIndicator {
     0% {
         top: 0px;
