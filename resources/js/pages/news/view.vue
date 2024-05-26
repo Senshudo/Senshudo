@@ -61,7 +61,7 @@ function getPercentage(value) {
             </div>
         </div>
 
-        <div class="prose mx-auto max-w-7xl p-4 pt-8 dark:text-white" v-html="article.content" />
+        <div class="prose mx-auto max-w-7xl p-4 pt-8 dark:prose-invert" v-html="article.content" />
 
         <div
             v-if="article.review"
