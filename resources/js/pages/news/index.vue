@@ -34,9 +34,13 @@ const normalArticles = computed(() => props.articles?.data?.slice(5))
         <articles-featured-section :articles="featuredArticles" />
 
         <div class="mb-4 mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-            <articles-card v-for="article in normalArticles" :key="article.id" :article="article" />
+            <articles-card
+                v-for="article in normalArticles"
+                :key="article?.id"
+                :article="article"
+            />
         </div>
 
-        <pagination :meta="articles.meta" />
+        <pagination :meta="articles?.meta" />
     </div>
 </template>

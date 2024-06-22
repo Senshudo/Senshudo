@@ -1,7 +1,7 @@
 <script setup>
 defineProps({
     article: {
-        type: Object,
+        type: [Object, undefined],
         required: true,
     },
     isLoading: {
@@ -33,21 +33,21 @@ defineProps({
             </div>
         </div>
         <template v-else>
-            <InertiaLink class="flex flex-col" :href="`/news/${article.slug}`">
+            <InertiaLink class="flex flex-col" :href="`/news/${article?.slug}`">
                 <div
                     class="relative flex h-full w-auto transform-none flex-col items-end justify-center"
                 >
                     <div class="relative h-[500px] w-full rounded bg-gray-300 sm:w-[900px]">
                         <img
-                            v-if="article.thumbnail"
-                            :src="article.thumbnail"
+                            v-if="article?.thumbnail"
+                            :src="article?.thumbnail"
                             loading="lazy"
                             decoding="async"
                             alt="Placeholder"
                             class="h-full w-full rounded object-cover"
                         />
-                        <div v-if="article.review" class="hexagon absolute right-2 top-2 w-[50px]">
-                            <div>{{ article.review.overall }}</div>
+                        <div v-if="article?.review" class="hexagon absolute right-2 top-2 w-[50px]">
+                            <div>{{ article?.review.overall }}</div>
                         </div>
                     </div>
                 </div>
@@ -59,15 +59,17 @@ defineProps({
                 >
                     <h2
                         class="text-nowrapk mb-2 overflow-hidden text-ellipsis text-5xl font-black"
-                        v-html="article.title"
+                        v-html="article?.title"
                     />
                     <div class="flex flex-row gap-4">
-                        <div class="border-l-4 border-red-600 pl-2">{{ article.author?.name }}</div>
                         <div class="border-l-4 border-red-600 pl-2">
-                            {{ useDayJs(article.published_at).format('DD/MM/YYYY HH:mm z') }}
+                            {{ article?.author?.name }}
+                        </div>
+                        <div class="border-l-4 border-red-600 pl-2">
+                            {{ useDayJs(article?.published_at).format('DD/MM/YYYY HH:mm z') }}
                         </div>
                     </div>
-                    <p v-html="article.excerpt" />
+                    <p v-html="article?.excerpt" />
                 </div>
             </InertiaLink>
         </template>

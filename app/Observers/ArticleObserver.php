@@ -30,7 +30,7 @@ class ArticleObserver
         if ($article->status === ArticleStatus::REVIEW && App::isProduction()) {
             User::where('is_super', true)
                 ->get()
-                ->each(fn (User $user) => Mail::to($user->email)->send(new NewArticle($article, $user)));
+                ->each(fn (User $user) => Mail::to($user)->send(new NewArticle($article, $user)));
         }
     }
 
@@ -54,7 +54,7 @@ class ArticleObserver
         if ($article->isDirty('status') && $article->status === ArticleStatus::REVIEW && App::isProduction()) {
             User::where('is_super', true)
                 ->get()
-                ->each(fn (User $user) => Mail::to($user->email)->send(new NewArticle($article, $user)));
+                ->each(fn (User $user) => Mail::to($user)->send(new NewArticle($article, $user)));
         }
     }
 }

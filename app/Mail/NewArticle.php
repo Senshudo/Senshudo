@@ -38,7 +38,7 @@ class NewArticle extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.article',
+            markdown: 'mail.article',
             with: [
                 'user' => $this->user,
                 'article' => $this->article,

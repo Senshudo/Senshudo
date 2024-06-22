@@ -40,12 +40,12 @@ defineProps({
             </div>
         </div>
         <template v-else>
-            <InertiaLink :href="`/news/${article.slug}`" class="flex w-full flex-col">
+            <InertiaLink :href="`/news/${article?.slug}`" class="flex w-full flex-col">
                 <div class="relative">
                     <img
                         :src="
-                            article.thumbnail
-                                ? article.thumbnail
+                            article?.thumbnail
+                                ? article?.thumbnail
                                 : 'https://via.placeholder.com/800x400'
                         "
                         loading="lazy"
@@ -53,22 +53,24 @@ defineProps({
                         alt="Placeholder"
                         class="h-[168.75px] w-full object-cover"
                     />
-                    <div v-if="article.review" class="hexagon absolute right-2 top-2 w-[50px]">
-                        <div>{{ article.review.overall }}</div>
+                    <div v-if="article?.review" class="hexagon absolute right-2 top-2 w-[50px]">
+                        <div>{{ article?.review.overall }}</div>
                     </div>
                 </div>
                 <div class="flex flex-col gap-2 p-2">
                     <h2
                         class="overflow-hidden text-ellipsis text-nowrap font-semibold"
-                        v-html="article.title"
+                        v-html="article?.title"
                     />
                     <div class="flex flex-row justify-between gap-x-4 text-sm">
-                        <div class="border-l-2 border-red-600 pl-1">{{ article.author?.name }}</div>
                         <div class="border-l-2 border-red-600 pl-1">
-                            {{ useDayJs(article.published_at).format('DD/MM/YYYY') }}
+                            {{ article?.author?.name }}
+                        </div>
+                        <div class="border-l-2 border-red-600 pl-1">
+                            {{ useDayJs(article?.published_at).format('DD/MM/YYYY') }}
                         </div>
                     </div>
-                    <p class="text-sm" v-html="article.excerpt" />
+                    <p class="text-sm" v-html="article?.excerpt" />
                 </div>
             </InertiaLink>
         </template>

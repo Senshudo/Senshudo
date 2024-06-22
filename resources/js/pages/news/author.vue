@@ -28,9 +28,9 @@ const pageTitle = computed(() => {
         <!-- TODO: AUTHOR Card -->
 
         <div class="mb-4 mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-            <articles-card v-for="article in articles.data" :key="article.id" :article="article" />
+            <articles-card v-for="article in articles.data" :key="article?.id" :article="article" />
         </div>
 
-        <pagination :meta="articles.meta" />
+        <pagination :meta="articles?.meta" />
     </div>
 </template>
