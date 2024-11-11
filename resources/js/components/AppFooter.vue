@@ -1,9 +1,9 @@
 <script setup>
 import Facebook from '@/components/Icons/Facebook.vue'
 import Instagram from '@/components/Icons/Instagram.vue'
-import X from '@/components/Icons/X.vue'
 import Tiktok from '@/components/Icons/Tiktok.vue'
 import Twitch from '@/components/Icons/Twitch.vue'
+import X from '@/components/Icons/X.vue'
 import Youtube from '@/components/Icons/Youtube.vue'
 
 const copyrightYear = ref(new Date().getFullYear())

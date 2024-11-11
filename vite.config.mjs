@@ -49,8 +49,12 @@ export default defineConfig({
             ],
         }),
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/pages/error.vue'],
-            ssr: 'resources/js/ssr.js',
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.mjs',
+                'resources/js/pages/error.vue',
+            ],
+            ssr: 'resources/js/ssr.mjs',
             refresh: ['resources/css/**', 'resources/js/**', 'routes/**'],
         }),
         inertiaLayout(),

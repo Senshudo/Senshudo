@@ -1,7 +1,7 @@
 <script setup>
+import { ComputerDesktopIcon, MoonIcon, SunIcon } from '@heroicons/vue/24/solid'
 import { useColorMode, useCycleList } from '@vueuse/core'
 import { watchEffect } from 'vue-demi'
-import { SunIcon, MoonIcon, ComputerDesktopIcon } from '@heroicons/vue/24/solid'
 
 const mode = useColorMode({ emitAuto: true })
 

@@ -1,4 +1,6 @@
 <script setup>
+import defineLayout from 'momentum-layout'
+
 import EmbedLayout from '@/layouts/embed.vue'
 
 const props = defineProps({
@@ -20,10 +22,6 @@ const months = computed(() => {
 const years = computed(() => {
     const currentYear = new Date().getFullYear()
     return Array.from({ length: 100 }, (_, i) => currentYear - i)
-})
-
-const isSSR = computed(() => {
-    return typeof window === 'undefined'
 })
 
 const formData = useForm(() => ({

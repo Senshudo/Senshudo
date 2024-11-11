@@ -23,7 +23,8 @@ export default () => {
     )
 
     axiosService.interceptors.response.use(
-        (response) => (response.data?.meta ? response.data : response?.data?.data ?? response.data),
+        (response) =>
+            response.data?.meta ? response.data : (response?.data?.data ?? response.data),
         (error) => Promise.reject(error),
     )
 

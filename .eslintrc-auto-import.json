@@ -297,6 +297,14 @@
     "useRemember": true,
     "useRoute": true,
     "useEcho": true,
-    "useQueryParams": true
+    "useQueryParams": true,
+    "DirectiveBinding": true,
+    "MaybeRef": true,
+    "MaybeRefOrGetter": true,
+    "onWatcherCleanup": true,
+    "useId": true,
+    "useModel": true,
+    "useTemplateRef": true,
+    "defineLayout": true
   }
 }

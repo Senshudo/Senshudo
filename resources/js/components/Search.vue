@@ -1,6 +1,6 @@
 <script setup>
+import { ArrowPathIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import { onClickOutside, onKeyUp, watchDebounced } from '@vueuse/core'
-import { MagnifyingGlassIcon, ArrowPathIcon } from '@heroicons/vue/20/solid'
 import { ref, watch } from 'vue'
 
 const showModal = ref(false)
