@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import Facebook from '@/components/Icons/Facebook.vue'
 import Instagram from '@/components/Icons/Instagram.vue'
 import Tiktok from '@/components/Icons/Tiktok.vue'

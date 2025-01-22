@@ -1,16 +1,9 @@
-<script setup>
+<script lang="ts" setup>
 import EmbedLayout from '@/layouts/embed.vue'
-import defineLayout from 'momentum-layout'
 
-defineProps({
-    video: {
-        type: String,
-        required: false,
-        default: null,
-    },
-})
+defineProps<{ video: string }>()
 
-defineLayout(EmbedLayout)
+defineLayout([EmbedLayout])
 </script>
 
 <template>

@@ -1,7 +1,6 @@
-<script setup>
+<script lang="ts" setup>
 import { ArrowPathIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import { onClickOutside, onKeyUp, watchDebounced } from '@vueuse/core'
-import { ref, watch } from 'vue'
 
 const showModal = ref(false)
 
@@ -9,11 +8,11 @@ const isLoading = ref(false)
 
 const search = ref('')
 
-const searchInput = ref(null)
+const searchInput = ref<HTMLInputElement | null>(null)
 
 const hasResults = ref(false)
 
-const results = ref(null)
+const results = ref<App.Article[]>([])
 
 const searchBox = ref(null)
 
@@ -48,9 +47,9 @@ async function handleSearch() {
     }
 
     await useAxios()
-        .get('/search', { params: { q: search.value.trim() } })
+        .get<App.Article[]>('/search', { params: { q: search.value.trim() } })
         .then((response) => {
-            results.value = response
+            results.value = response.data
             hasResults.value = true
         })
         .catch(() => {
@@ -58,7 +57,7 @@ async function handleSearch() {
         })
 }
 
-function handleRedirect(item) {
+function handleRedirect(item: App.Article) {
     navigateTo(`/news/${item.slug}`)
 
     handleClose()
@@ -66,7 +65,7 @@ function handleRedirect(item) {
 
 function handleClose() {
     search.value = ''
-    results.value = null
+    results.value = []
     hasResults.value = false
     showModal.value = false
 }
@@ -154,14 +153,14 @@ function handleClose() {
 
                     <template v-if="!isLoading">
                         <p
-                            v-if="hasResults && results?.length === 0"
+                            v-if="hasResults && results.length === 0"
                             class="p-4 text-sm text-gray-500"
                         >
                             No results found.
                         </p>
 
                         <ul
-                            v-else-if="hasResults && results?.length > 0"
+                            v-else-if="hasResults && results.length > 0"
                             id="options"
                             class="max-h-72 scroll-py-2 overflow-y-auto py-2 text-sm text-gray-800"
                         >

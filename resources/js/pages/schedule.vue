@@ -1,4 +1,8 @@
-<script setup>
+<script lang="ts" setup>
+defineProps<{
+    liveStream: App.Channel | null
+}>()
+
 const times = [
     {
         day: 'Sunday',
@@ -20,14 +24,7 @@ const times = [
     { day: 'Thursday', events: null },
     {
         day: 'Friday',
-        events: [
-            {
-                start: '18:00',
-                end: '22:00',
-                timezone: 'UTC',
-                title: 'RBMArtworks',
-            },
-        ],
+        events: null,
     },
     {
         day: 'Saturday',
@@ -42,7 +39,7 @@ const times = [
     },
 ]
 
-function setTime(day, time) {
+function setTime(day: number, time: string) {
     const [hour, minute] = time.split(':')
 
     return useDayJs()
@@ -58,7 +55,7 @@ function setTime(day, time) {
     <div class="mx-auto max-w-7xl p-4 pt-8 dark:text-white">
         <AppHead title="Schedule" />
 
-        <LiveStream />
+        <LiveStream :live-stream="liveStream" />
 
         <template v-for="(weekDay, index) in times" :key="index">
             <div>

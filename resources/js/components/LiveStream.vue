@@ -1,6 +1,7 @@
-<script setup>
-import { usePage } from '@inertiajs/vue3'
+<script lang="ts" setup>
 import { useDark } from '@vueuse/core'
+
+const props = defineProps<{ liveStream: App.Channel | null }>()
 
 const echo = useEcho()
 
@@ -11,21 +12,23 @@ const activeChannel = ref('senshudo')
 const isLive = ref(false)
 
 onMounted(() => {
-    const liveStream = usePage().props.liveStream
+    const liveStream = props.liveStream
 
-    if (liveStream?.data?.is_online) {
-        isLive.value = liveStream?.data?.is_online
-        activeChannel.value = liveStream?.data?.channel_name
+    if (liveStream && liveStream.is_online) {
+        isLive.value = liveStream.is_online
+        activeChannel.value = liveStream.channel_name
     }
 
-    echo?.channel('App.Stream')?.listen('LiveStreamUpdated', (event) => {
-        if (event.isLive) {
-            isLive.value = true
-            activeChannel.value = event.channelName
-        } else {
-            isLive.value = false
-        }
-    })
+    echo
+        ?.channel('App.Stream')
+        ?.listen('LiveStreamUpdated', (event: { channelName: string; isLive: boolean }) => {
+            if (event.isLive) {
+                isLive.value = true
+                activeChannel.value = event.channelName
+            } else {
+                isLive.value = false
+            }
+        })
 })
 
 onBeforeUnmount(() => {

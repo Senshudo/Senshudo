@@ -1,17 +1,9 @@
-<script setup>
-import defineLayout from 'momentum-layout'
-
+<script lang="ts" setup>
 import EmbedLayout from '@/layouts/embed.vue'
 
-const props = defineProps({
-    video: {
-        type: String,
-        required: false,
-        default: null,
-    },
-})
+const props = defineProps<{ video: string }>()
 
-defineLayout(EmbedLayout)
+defineLayout([EmbedLayout])
 
 const days = computed(() => useDayJs().daysInMonth())
 
@@ -28,6 +20,7 @@ const formData = useForm(() => ({
     day: '',
     month: '',
     year: '',
+    date_of_birth: '',
     video: props.video,
 }))
 

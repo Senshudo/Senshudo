@@ -21,15 +21,17 @@ export default defineConfig({
             },
             vueTemplate: true,
             dirs: ['resources/js/composables', 'resources/js/constants'],
+            dts: 'resources/js/types/auto-imports.d.ts',
             imports: [
                 'vue',
                 '@vueuse/core',
-                { 'ziggy-js': ['useRoute', 'route'] },
+                { 'momentum-trail': ['route', 'current'] },
                 { '@inertiajs/vue3': ['router', 'useForm', 'usePage', 'useRemember'] },
             ],
         }),
         Components({
             dirs: ['resources/js/components'],
+            dts: 'resources/js/types/auto-components.d.ts',
             deep: true,
             directoryAsNamespace: true,
             resolvers: [
@@ -49,12 +51,8 @@ export default defineConfig({
             ],
         }),
         laravel({
-            input: [
-                'resources/css/app.css',
-                'resources/js/app.mjs',
-                'resources/js/pages/error.vue',
-            ],
-            ssr: 'resources/js/ssr.mjs',
+            input: ['resources/css/app.css', 'resources/js/app.ts', 'resources/js/pages/error.vue'],
+            ssr: 'resources/js/ssr.ts',
             refresh: ['resources/css/**', 'resources/js/**', 'routes/**'],
         }),
         inertiaLayout(),
@@ -68,7 +66,7 @@ export default defineConfig({
         }),
         watch({
             pattern: 'routes/**/*.php',
-            command: 'php artisan ziggy:generate',
+            command: 'php artisan trail:generate',
         }),
         manifestSRI(),
     ],

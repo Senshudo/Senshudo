@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 onMounted(() => {
     const timezone = useDayJs.tz.guess() ?? 'Europe/London'
     useDayJs.tz.setDefault(timezone)

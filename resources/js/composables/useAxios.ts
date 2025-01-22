@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios, { Axios } from 'axios'
 import merge from 'lodash/merge'
 
-export default () => {
+export default (): Axios => {
     const axiosService = axios.create({
         baseURL:
             usePage().props.env === 'local'

@@ -1,12 +1,40 @@
+// @ts-check
+
 import eslint from '@eslint/js'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import pluginVue from 'eslint-plugin-vue'
-import autoImports from './.eslintrc-auto-import.json' with { type: 'json' }
+import tseslint from 'typescript-eslint'
+//import autoImports from './.eslintrc-auto-import.json' with { type: 'json' }
 
-export default [
+export default tseslint.config(
+    // JS
     eslint.configs.recommended,
+    {
+        rules: {
+            'no-unused-vars': 'off',
+            'no-undef': 'off',
+        },
+    },
+
+    // TS
+    ...tseslint.configs.recommended,
+    {
+        rules: {
+            '@typescript-eslint/no-unused-vars': 'warn',
+            '@typescript-eslint/no-explicit-any': 'warn',
+        },
+    },
+
+    // Vue
     ...pluginVue.configs['flat/recommended'],
-    eslintPluginPrettierRecommended,
+    {
+        files: ['*.vue', '**/*.vue'],
+        languageOptions: {
+            parserOptions: {
+                parser: tseslint.parser,
+            },
+        },
+    },
     {
         ignores: [
             'app/**/*',
@@ -19,22 +47,27 @@ export default [
             'storage/**/*',
             'tests/**/*',
             'vendor/**/*',
+            'package-lock.json',
+            '*.md',
+            'eslint.config.mjs',
+            'tailwind.config.mjs',
+            'resources/js/types/routes.d.ts',
+            'resources/js/types/vite-env.d.ts',
         ],
     },
-    {
+    /*{
         languageOptions: autoImports,
         rules: {
             'vue/multi-word-component-names': 'off',
         },
-    },
+    },*/
     {
-        files: ['*.js', '*.mjs', '*.vue'],
-        ignores: ['*.md', 'package-lock.json', '*.d.ts'],
         rules: {
             'comma-dangle': ['error', 'always-multiline'],
             'prettier/prettier': 'warn',
             'vue/component-name-in-template-casing': ['error', 'PascalCase'],
             'vue/component-tags-order': ['error', { order: ['script', 'template', 'style'] }],
+            'vue/block-order': ['error', { order: ['script[setup]', 'template', 'style[scoped]'] }],
             'vue/define-macros-order': ['warn', { order: ['defineProps', 'defineEmits'] }],
             'vue/multi-word-component-names': 'off',
             'vue/no-template-target-blank': [
@@ -50,4 +83,12 @@ export default [
             'no-console': ['warn'],
         },
     },
-]
+
+    // Prettier
+    eslintPluginPrettierRecommended,
+    {
+        rules: {
+            'prettier/prettier': 'warn',
+        },
+    },
+)

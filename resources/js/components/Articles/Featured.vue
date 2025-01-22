@@ -1,13 +1,7 @@
-<script setup>
-defineProps({
-    article: {
-        type: [Object, undefined],
-        required: true,
-    },
-    isLoading: {
-        type: Boolean,
-        default: false,
-    },
+<script lang="ts" setup>
+withDefaults(defineProps<{ article?: App.Article; isLoading?: boolean }>(), {
+    article: undefined,
+    isLoading: false,
 })
 </script>
 

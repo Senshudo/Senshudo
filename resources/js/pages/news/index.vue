@@ -1,15 +1,8 @@
-<script setup>
-const props = defineProps({
-    articles: {
-        type: Object,
-        required: true,
-    },
-})
-
-const route = useRoute()
+<script lang="ts" setup>
+const props = defineProps<{ articles: App.PageResource<App.Article> }>()
 
 const pageTitle = computed(() => {
-    const pageName = route().current('news.index') ? 'News' : 'Reviews'
+    const pageName = current('news.index') ? 'News' : 'Reviews'
 
     if (props.articles?.meta?.current_page > 1) {
         return `${pageName} - Page ${props.articles?.meta?.current_page}`
@@ -31,16 +24,12 @@ const normalArticles = computed(() => props.articles?.data?.slice(5))
     <div class="mx-auto max-w-7xl p-4">
         <AppHead :title="pageTitle" />
 
-        <articles-featured-section :articles="featuredArticles" />
+        <ArticlesFeaturedSection v-if="featuredArticles.length > 0" :articles="featuredArticles" />
 
         <div class="mb-4 mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-            <articles-card
-                v-for="article in normalArticles"
-                :key="article?.id"
-                :article="article"
-            />
+            <ArticlesCard v-for="article in normalArticles" :key="article?.id" :article="article" />
         </div>
 
-        <pagination :meta="articles?.meta" />
+        <Pagination v-if="articles.meta.total > 0" :meta="articles?.meta" />
     </div>
 </template>

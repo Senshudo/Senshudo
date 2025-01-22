@@ -1,14 +1,5 @@
-<script setup>
-const props = defineProps({
-    author: {
-        type: Object,
-        required: true,
-    },
-    articles: {
-        type: Object,
-        required: true,
-    },
-})
+<script lang="ts" setup>
+const props = defineProps<{ author: App.Author; articles: App.PageResource<App.Article> }>()
 
 const pageTitle = computed(() => {
     const pageName = `Articles by ${props.author.name}`
@@ -27,10 +18,13 @@ const pageTitle = computed(() => {
 
         <!-- TODO: AUTHOR Card -->
 
-        <div class="mb-4 mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-            <articles-card v-for="article in articles.data" :key="article?.id" :article="article" />
+        <div
+            v-if="articles.data.length > 0"
+            class="mb-4 mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4"
+        >
+            <ArticlesCard v-for="article in articles.data" :key="article.id" :article="article" />
         </div>
 
-        <pagination :meta="articles?.meta" />
+        <Pagination v-if="articles.meta.total > 0" :meta="articles.meta" />
     </div>
 </template>

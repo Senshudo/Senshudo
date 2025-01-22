@@ -1,14 +1,10 @@
-<script setup>
-import { onMounted } from 'vue'
-
-defineProps({
-    article: { type: [Object, undefined], required: true },
-})
+<script lang="ts" setup>
+defineProps<{ article: App.Article }>()
 
 onMounted(() => {
     if (typeof window !== 'undefined') {
         if (document.querySelector('#twitterSDK')) {
-            document.querySelector('#twitterSDK').remove()
+            document.querySelector('#twitterSDK')?.remove()
         } else {
             const script = document.createElement('script')
             script.id = 'twitterSDK'
@@ -20,7 +16,7 @@ onMounted(() => {
     }
 })
 
-function getPercentage(value) {
+function getPercentage(value: number) {
     return (100 * value) / 10
 }
 </script>
@@ -33,13 +29,14 @@ function getPercentage(value) {
             :author-twitter="article?.author?.twitter ?? undefined"
             og-type="article"
             :description="article?.excerpt"
-            :thumbnail="article?.socialThumbnail"
+            :thumbnail="article?.socialThumbnail ?? undefined"
             :published-at="useDayJs(article?.published_at).toISOString()"
             :updated-at="useDayJs(article?.updated_at).toISOString()"
         />
 
         <div class="hero-banner">
             <img
+                v-if="article?.background"
                 :src="article?.background"
                 loading="lazy"
                 decoding="async"

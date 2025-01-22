@@ -1,13 +1,7 @@
-<script setup>
-defineProps({
-    articles: {
-        type: Object,
-        required: true,
-    },
-    isLoading: {
-        type: Boolean,
-        default: false,
-    },
+<script lang="ts" setup>
+withDefaults(defineProps<{ articles?: App.Article[]; isLoading?: boolean }>(), {
+    articles: () => [],
+    isLoading: false,
 })
 </script>
 
@@ -33,7 +27,8 @@ defineProps({
                     <img
                         :src="
                             articles?.at(0)?.thumbnail
-                                ? articles?.at(0)?.thumbnail
+                                ? (articles?.at(0)?.thumbnail ??
+                                  'https://via.placeholder.com/800x400')
                                 : 'https://via.placeholder.com/800x400'
                         "
                         loading="lazy"
@@ -95,7 +90,8 @@ defineProps({
                         <img
                             :src="
                                 articles?.at(1)?.thumbnail
-                                    ? articles?.at(1)?.thumbnail
+                                    ? (articles?.at(1)?.thumbnail ??
+                                      'https://via.placeholder.com/800x400')
                                     : 'https://via.placeholder.com/800x400'
                             "
                             loading="lazy"
@@ -147,7 +143,8 @@ defineProps({
                         <img
                             :src="
                                 articles?.at(2)?.thumbnail
-                                    ? articles?.at(2)?.thumbnail
+                                    ? (articles?.at(2)?.thumbnail ??
+                                      'https://via.placeholder.com/800x400')
                                     : 'https://via.placeholder.com/800x400'
                             "
                             loading="lazy"
@@ -199,7 +196,8 @@ defineProps({
                         <img
                             :src="
                                 articles?.at(3)?.thumbnail
-                                    ? articles?.at(3)?.thumbnail
+                                    ? (articles?.at(3)?.thumbnail ??
+                                      'https://via.placeholder.com/800x400')
                                     : 'https://via.placeholder.com/800x400'
                             "
                             loading="lazy"
@@ -251,7 +249,8 @@ defineProps({
                         <img
                             :src="
                                 articles?.at(4)?.thumbnail
-                                    ? articles?.at(4)?.thumbnail
+                                    ? (articles?.at(4)?.thumbnail ??
+                                      'https://via.placeholder.com/800x400')
                                     : 'https://via.placeholder.com/800x400'
                             "
                             loading="lazy"

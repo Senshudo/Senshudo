@@ -3,20 +3,20 @@ export default () => {
         getUrl() {
             return typeof window !== 'undefined' ? new URL(window.location.href) : null
         },
-        get(name) {
+        get(name: string) {
             return this.getUrl()?.searchParams.get(name)
         },
-        set(name, value) {
+        set(name: string, value: string) {
             const url = this.getUrl()
             url?.searchParams.set(name, value)
-            this.replace(url)
+            this.replace(url?.toString())
         },
-        delete(name) {
+        delete(name: string) {
             const url = this.getUrl()
             url?.searchParams.delete(name)
-            this.replace(url)
+            this.replace(url?.toString())
         },
-        replace(url) {
+        replace(url?: string | null) {
             if (!url || typeof window === 'undefined') {
                 return
             }

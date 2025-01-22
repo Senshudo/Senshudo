@@ -1,11 +1,5 @@
-<script setup>
-defineProps({
-    status: {
-        type: Number,
-        required: false,
-        default: 200,
-    },
-})
+<script lang="ts" setup>
+withDefaults(defineProps<{ status?: number }>(), { status: 200 })
 
 onMounted(() => {
     const timezone = useDayJs.tz.guess() ?? 'Europe/London'

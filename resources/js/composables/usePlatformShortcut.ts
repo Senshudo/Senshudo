@@ -1,6 +1,6 @@
 import { useMagicKeys, whenever } from '@vueuse/core'
 
-export function usePlatformShortcut(shortcut, callback) {
+export function usePlatformShortcut(shortcut: string, callback: () => void) {
     const isMac = typeof navigator !== 'undefined' ? navigator.userAgent.includes('Mac OS') : false
 
     const { current } = useMagicKeys({

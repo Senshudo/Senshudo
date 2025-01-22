@@ -1,18 +1,28 @@
-<script setup>
+<script lang="ts" setup>
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid'
 
-const props = defineProps({
-    meta: {
-        type: Object,
-        required: true,
+const props = withDefaults(
+    defineProps<{
+        meta: App.PageMeta
+        range?: number
+    }>(),
+    {
+        range: 10,
     },
-    range: {
-        type: Number,
-        default: 10,
-    },
-})
+)
 
-const data = reactive({
+const data = reactive<{
+    page: {
+        first: number
+        current: number
+        previous: number
+        next: number
+        last: number
+        min: number
+        max: number
+        range: { [key: number]: number }
+    }
+}>({
     page: {
         first: 1,
         current: 1,

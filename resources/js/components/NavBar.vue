@@ -1,10 +1,16 @@
-<script setup>
+<script lang="ts" setup>
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
+import type { RouterGlobal } from 'momentum-trail/dist/types/router'
 
-const route = useRoute()
-
-const navigationItems = ref([
+const navigationItems = ref<
+    {
+        name: string
+        route: keyof RouterGlobal['routes'] | keyof RouterGlobal['wildcards']
+        href: string
+        current: boolean
+    }[]
+>([
     { name: 'News', href: '/news', route: 'news.*', current: false },
     { name: 'Reviews', href: '/reviews', route: 'reviews', current: false },
     //{ name: 'Guides', href: '/guides', route: 'guides', current: false },
@@ -20,7 +26,7 @@ onBeforeMount(() => {
                 return false
             }
 
-            return route().current(item.route)
+            return current(item.route)
         })
 
         if (newActive === -1 && currentActive !== -1) {

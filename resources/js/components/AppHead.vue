@@ -1,65 +1,38 @@
-<script setup>
+<script lang="ts" setup>
 import socialBanner from '@/../images/social-banner.png'
-import { computed } from 'vue'
 
-const props = defineProps({
-    title: {
-        type: String,
-        default: undefined,
+const props = withDefaults(
+    defineProps<{
+        title?: string
+        index?: boolean
+        author?: string
+        authorTwitter?: string | null
+        ogType?: string
+        description?: string
+        thumbnail?: string
+        imageWidth?: number
+        imageHeight?: number
+        imageAlt?: string
+        category?: string | null
+        publishedAt?: string
+        updatedAt?: string
+    }>(),
+    {
+        title: undefined,
+        index: true,
+        author: 'Senshudo',
+        authorTwitter: undefined,
+        ogType: 'website',
+        description: 'Senshudo, The Way Of The Player. Video game news and reviews.',
+        thumbnail: socialBanner,
+        imageWidth: 1200,
+        imageHeight: 630,
+        imageAlt: undefined,
+        category: undefined,
+        publishedAt: undefined,
+        updatedAt: undefined,
     },
-    index: {
-        type: Boolean,
-        default: true,
-    },
-    author: {
-        type: String,
-        default: 'Senshudo',
-    },
-    authorTwitter: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    ogType: {
-        type: String,
-        default: 'website',
-    },
-    description: {
-        type: String,
-        default: 'Senshudo, The Way Of The Player. Video game news and reviews.',
-    },
-    thumbnail: {
-        type: String,
-        default: socialBanner,
-    },
-    imageWidth: {
-        type: String,
-        default: '1200',
-    },
-    imageHeight: {
-        type: String,
-        default: '630',
-    },
-    imageAlt: {
-        type: String,
-        default: undefined,
-    },
-    category: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    publishedAt: {
-        type: String,
-        required: false,
-        default: null,
-    },
-    updatedAt: {
-        type: String,
-        required: false,
-        default: null,
-    },
-})
+)
 
 const url = computed(() => usePage().props.location)
 
@@ -80,8 +53,8 @@ const pageTitle = computed(() =>
         <meta property="og:title" :content="pageTitle" />
         <meta property="og:description" :content="description" />
         <meta property="og:image" :content="thumbnail" />
-        <meta property="og:image:width" :content="imageWidth" />
-        <meta property="og:image:height" :content="imageHeight" />
+        <meta property="og:image:width" :content="imageWidth?.toString()" />
+        <meta property="og:image:height" :content="imageHeight?.toString()" />
         <meta property="og:image:alt" :content="imageAlt ?? pageTitle" />
         <meta property="og:locale" content="en_GB" />
         <meta property="og:site_name" content="Senshudo" />
