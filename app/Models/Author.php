@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +28,8 @@ class Author extends Model implements HasMedia
         'twitter',
     ];
 
+    protected $with = ['user'];
+
     protected function casts(): array
     {
         return [
@@ -51,11 +54,16 @@ class Author extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $hash = md5(str($this->user->email)->trim()->lower());
+        $hash = md5(str($this->user->email ?? 'admin@senshudo.tv')->trim()->lower());
 
         $this->addMediaCollection('avatar')
             ->useFallbackUrl("https://www.gravatar.com/avatar/$hash?s=256&d=mp")
             ->singleFile();
+    }
+
+    protected function avatar(): Attribute
+    {
+        return Attribute::make(fn () => $this->getFirstMediaUrl('avatar'));
     }
 
     /** @return HasMany<Article, $this> */
@@ -68,10 +76,5 @@ class Author extends Model implements HasMedia
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function getAvatarAttribute(): ?string
-    {
-        return $this->getFirstMediaUrl('avatar');
     }
 }

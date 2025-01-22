@@ -39,13 +39,14 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         ];
     }
 
-    public function author(): BelongsTo
-    {
-        return $this->belongsTo(Author::class, 'id', 'user_id');
-    }
-
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->hasVerifiedEmail();
+    }
+
+    /** @return BelongsTo<Author, $this> */
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(Author::class, 'id', 'user_id');
     }
 }

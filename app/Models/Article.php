@@ -12,6 +12,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,10 +28,10 @@ use Spatie\Sitemap\Tags\Url;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-#[ObservedBy(ArticleObserver::class)]
 /**
  * @mixin IdeHelperArticle
  */
+#[ObservedBy(ArticleObserver::class)]
 class Article extends Model implements HasMedia, Sitemapable
 {
     use HasFactory, HasSlug, InteractsWithMedia, Searchable;
@@ -117,9 +118,9 @@ class Article extends Model implements HasMedia, Sitemapable
         return $this->belongsTo(Review::class, 'id', 'article_id');
     }
 
-    public function isPublished(): bool
+    protected function isPublished(): Attribute
     {
-        return $this->published_at !== null;
+        return Attribute::make(fn () => $this->published_at !== null);
     }
 
     /**
@@ -127,7 +128,7 @@ class Article extends Model implements HasMedia, Sitemapable
      */
     public function shouldBeSearchable(): bool
     {
-        return $this->isPublished();
+        return $this->is_published;
     }
 
     /**
