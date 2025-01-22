@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ArticleResource\Pages;
 
 use App\Enums\ArticleStatus;
 use App\Filament\Resources\ArticleResource;
+use App\Models\Article;
 use App\Models\Review;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +18,7 @@ class CreateArticle extends CreateRecord
     {
         $status = Arr::get($data, 'status');
 
-        if (($status === ArticleStatus::PUBLISHED->value || $status === ArticleStatus::SCHEDULED->value) && ! auth()->user()->is_super) {
+        if (($status === ArticleStatus::PUBLISHED->value || $status === ArticleStatus::SCHEDULED->value) && ! user()->is_super) {
             $data['status'] = ArticleStatus::REVIEW->value;
         }
 
@@ -25,6 +26,7 @@ class CreateArticle extends CreateRecord
             return static::getModel()::create($data);
         }
 
+        /** @var Article $article */
         $article = static::getModel()::create(
             Arr::except(
                 $data,

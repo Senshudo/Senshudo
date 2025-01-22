@@ -21,7 +21,7 @@ class ReviewController extends Controller
             ->whereHas('review')
             ->where('status', ArticleStatus::PUBLISHED)
             ->orderByDesc('id')
-            ->paginate($request->query('perPage', 17));
+            ->paginate((int) $request->query('perPage', '17'));
 
         return inertia('news/index', [
             'articles' => ArticleResource::collection($articles),

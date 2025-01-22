@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ArticleResource\Pages;
 
 use App\Filament\Resources\ArticleResource;
+use App\Models\Article;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
@@ -21,13 +22,16 @@ class EditArticle extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        if ($this->getRecord()->review === null) {
+        /** @var Article $article */
+        $article = $this->getRecord();
+
+        if ($article->review === null) {
             $data['type'] = 'article';
         } else {
             $data = [
                 ...$data,
                 'type' => 'review',
-                ...$this->getRecord()->review->toArray(),
+                ...$article->review->toArray(),
             ];
         }
 
@@ -36,13 +40,16 @@ class EditArticle extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        if (Arr::get($data, 'type') === 'article' || $record->review === null) {
-            $record->update($data);
+        /** @var Article $article */
+        $article = $record;
 
-            return $record;
+        if (Arr::get($data, 'type') === 'article' || $article->review === null) {
+            $article->update($data);
+
+            return $article;
         }
 
-        $record->update(
+        $article->update(
             Arr::except(
                 $data,
                 [
@@ -57,7 +64,7 @@ class EditArticle extends EditRecord
             ),
         );
 
-        $record->review?->update(
+        $article->review->update(
             Arr::only(
                 $data,
                 [
@@ -71,7 +78,7 @@ class EditArticle extends EditRecord
             ),
         );
 
-        return $record;
+        return $article;
     }
 
     protected function getRedirectUrl(): string

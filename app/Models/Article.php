@@ -27,10 +27,10 @@ use Spatie\Sitemap\Tags\Url;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
+#[ObservedBy(ArticleObserver::class)]
 /**
  * @mixin IdeHelperArticle
  */
-#[ObservedBy(ArticleObserver::class)]
 class Article extends Model implements HasMedia, Sitemapable
 {
     use HasFactory, HasSlug, InteractsWithMedia, Searchable;
@@ -50,11 +50,7 @@ class Article extends Model implements HasMedia, Sitemapable
         'scheduled_for',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    /** @return array{status: 'App\Enums\ArticleStatus', sources: 'array', is_featured: 'boolean', published_at: 'datetime', scheduled_at: 'datetime'} */
     protected function casts(): array
     {
         return [
@@ -97,21 +93,25 @@ class Article extends Model implements HasMedia, Sitemapable
         $this->addMediaCollection('images');
     }
 
+    /** @return BelongsToMany<Category, $this> */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
 
+    /** @return BelongsTo<Author, $this> */
     public function author(): BelongsTo
     {
         return $this->belongsTo(Author::class);
     }
 
+    /** @return BelongsTo<Event, $this> */
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
     }
 
+    /** @return BelongsTo<Review, $this> */
     public function review(): BelongsTo
     {
         return $this->belongsTo(Review::class, 'id', 'article_id');
@@ -183,8 +183,8 @@ class Article extends Model implements HasMedia, Sitemapable
                 ->columnSpanFull(),
 
             Select::make('author_id')
-                ->default(fn () => auth()->user()->author?->id)
-                ->disabled(fn () => ! auth()->user()->is_super)
+                ->default(fn () => user()->author?->id)
+                ->disabled(fn () => ! user()->is_super)
                 ->relationship('author', 'name')
                 ->required(),
 
@@ -237,9 +237,9 @@ class Article extends Model implements HasMedia, Sitemapable
             Select::make('status')
                 ->options(ArticleStatus::toSelectOptions())
                 ->default(ArticleStatus::DRAFT->value)
-                ->disableOptionWhen(fn (string $value): bool => ($value === 'scheduled' || $value === 'published') && ! auth()->user()->is_super)
+                ->disableOptionWhen(fn (string $value): bool => ($value === 'scheduled' || $value === 'published') && ! user()->is_super)
                 ->required()
-                ->hidden(fn (?Model $record) => $record?->status === ArticleStatus::PUBLISHED),
+                ->hidden(fn (?Article $record) => $record?->status === ArticleStatus::PUBLISHED),
         ];
     }
 

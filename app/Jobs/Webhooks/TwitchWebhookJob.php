@@ -40,7 +40,7 @@ class TwitchWebhookJob extends ProcessWebhookJob
                     'is_online' => Arr::get($this->webhookCall->payload, 'subscription.type') === 'stream.online',
                 ]);
             } else {
-                Log::error('Channel not found', ['twitch_id' => Arr::get($this->webhookCall->payload, 'event.broadcaster_user_id')], $this->webhookCall->payload);
+                Log::error('Channel not found', ['twitch_id' => Arr::get($this->webhookCall->payload, 'event.broadcaster_user_id'), $this->webhookCall->payload]);
             }
         }
     }

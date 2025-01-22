@@ -13,6 +13,7 @@ enum ArticleStatus: string
     {
         return match ($this) {
             self::DRAFT => 'info',
+            self::REVIEW => 'warning',
             self::SCHEDULED => 'warning',
             self::PUBLISHED => 'success'
         };
@@ -28,7 +29,7 @@ enum ArticleStatus: string
         };
     }
 
-    public function getIcon(): ?string
+    public function getIcon(): string
     {
         return match ($this) {
             self::DRAFT => 'heroicon-o-clock',

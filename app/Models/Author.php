@@ -27,11 +27,6 @@ class Author extends Model implements HasMedia
         'twitter',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -56,25 +51,27 @@ class Author extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $hash = md5(str($this->email)->trim()->lower());
+        $hash = md5(str($this->user->email)->trim()->lower());
 
         $this->addMediaCollection('avatar')
             ->useFallbackUrl("https://www.gravatar.com/avatar/$hash?s=256&d=mp")
             ->singleFile();
     }
 
+    /** @return HasMany<Article, $this> */
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class);
     }
 
-    public function getAvatarAttribute(): ?string
-    {
-        return $this->getFirstMediaUrl('avatar');
-    }
-
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getAvatarAttribute(): ?string
+    {
+        return $this->getFirstMediaUrl('avatar');
     }
 }

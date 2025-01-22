@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ArticleStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,7 +23,7 @@ return new class extends Migration
             $table->mediumText('keywords')->nullable();
             $table->json('sources')->nullable();
             $table->boolean('is_featured')->default(false);
-            $table->string('status')->default('draft');
+            $table->string('status')->default(ArticleStatus::DRAFT->value);
             $table->timestamp('published_at')->nullable();
             $table->timestamp('scheduled_for')->nullable();
             $table->timestamps();

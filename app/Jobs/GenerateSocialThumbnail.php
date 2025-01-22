@@ -39,7 +39,7 @@ class GenerateSocialThumbnail implements ShouldQueue
         $url = base64_encode(OpenGraphImage::createImageFromParams([
             'title' => $this->article->title,
             'score' => $this->article->review?->overall,
-            'author' => $this->article->author?->name,
+            'author' => $this->article->author->name,
             'image' => $imageContents,
         ]));
 

@@ -25,12 +25,15 @@ class ArticleResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return number_format(Article::query()->when(! auth()->user()->is_super, fn ($query) => $query->where('author_id', auth()->user()->author->id))->count());
+        return number_format(Article::query()->when(! user()->is_super, fn ($query) => $query->where('author_id', user()->author->id))->count());
     }
 
     public static function form(Form $form): Form
     {
-        if ($form->getRecord() === null) {
+        /** @var ?Article $article */
+        $article = $form->getRecord();
+
+        if ($article === null) {
             $bladeAction = <<<'BLADE'
                 <x-filament::button
                     type="submit"
@@ -60,8 +63,8 @@ class ArticleResource extends Resource
                     ])
                     ->required()
                     ->live()
-                    ->default($form->getRecord()?->review !== null ? 'review' : 'article')
-                    ->disabled($form->getRecord() !== null)
+                    ->default($article?->review !== null ? 'review' : 'article')
+                    ->disabled($article !== null)
                     ->columnSpanFull(),
 
                 Forms\Components\Wizard::make([
@@ -70,11 +73,11 @@ class ArticleResource extends Resource
                         ->schema(Article::getForm()),
                     Forms\Components\Wizard\Step::make('Review')
                         ->icon('heroicon-o-star')
-                        ->schema(Review::getForm($form->getRecord())),
+                        ->schema(Review::getForm($article->review)),
                 ])
                     ->hidden(fn (Get $get): bool => $get('type') !== 'review')
                     ->columnSpanFull()
-                    ->skippable(fn () => $form->getRecord() !== null)
+                    ->skippable(fn () => $article !== null)
                     ->submitAction(new HtmlString(Blade::render($bladeAction))),
 
                 Forms\Components\Section::make('Article')
@@ -89,7 +92,7 @@ class ArticleResource extends Resource
         return $table
             ->modifyQueryUsing(function (Builder $query) {
                 $query
-                    ->when(! auth()->user()->is_super, fn ($query) => $query->where('author_id', auth()->user()->author->id))
+                    ->when(! user()->is_super, fn ($query) => $query->where('author_id', user()->author->id))
                     ->orderByDesc('id');
             })
             ->defaultPaginationPageOption(25)
@@ -103,7 +106,7 @@ class ArticleResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn ($state): string => match ($state->value) {
+                    ->color(fn (ArticleStatus $state): string => match ($state->value) {
                         'draft' => 'gray',
                         'scheduled' => 'warning',
                         'review' => 'info',

@@ -24,7 +24,7 @@ class VideoVerificationController extends Controller
 
         return redirect()
             ->route('video_verification.show', ['video' => $request->input('video')])
-            ->withCookie(cookie('ageVerified', true, 10080));
+            ->withCookie(cookie('ageVerified', 'true', 10080));
     }
 
     public function show(Request $request, string $video)

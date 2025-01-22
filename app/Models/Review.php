@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,11 +25,6 @@ class Review extends Model
         'gameplay',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -41,12 +35,13 @@ class Review extends Model
         ];
     }
 
+    /** @return BelongsTo<Article, $this> */
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);
     }
 
-    public static function getForm(?Model $model)
+    public static function getForm(?Review $model)
     {
         return [
             TextInput::make('oneliner')

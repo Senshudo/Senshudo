@@ -21,7 +21,7 @@ class ArticleObserver
         $article->excerpt = substr(strip_tags($article->content), 0, 255);
 
         if ($article->status === ArticleStatus::SCHEDULED) {
-            ScheduledArticleJob::dispatch($article)->delay(now()->diffInSeconds($article->scheduled_for));
+            ScheduledArticleJob::dispatch($article)->delay((int) now()->diffInSeconds($article->scheduled_for));
         }
     }
 
@@ -48,7 +48,7 @@ class ArticleObserver
         }
 
         if ($article->isDirty('status') && $article->status === ArticleStatus::SCHEDULED) {
-            ScheduledArticleJob::dispatch($article)->delay(now()->diffInSeconds($article->scheduled_for));
+            ScheduledArticleJob::dispatch($article)->delay((int) now()->diffInSeconds($article->scheduled_for));
         }
 
         if ($article->isDirty('status') && $article->status === ArticleStatus::REVIEW && App::isProduction()) {
