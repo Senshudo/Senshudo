@@ -26,7 +26,7 @@ it('response to the Twitch Webhook Challenge', function () {
     $timestamp = '2024-04-18T22:00:00.634234626Z';
     $message = $id.$timestamp.json_encode($challengePayload);
 
-    $signature = 'sha256='.hash_hmac('sha256', $message, config('services.twitch.webhook_secret'));
+    $signature = 'sha256='.hash_hmac('sha256', $message, config('services.twitch.webhook_secret') ?? 'secret');
 
     $response = postJson('/webhooks/twitch', $challengePayload, [
         'Twitch-Eventsub-Subscription-Type' => 'webhook_callback_verification_pending',

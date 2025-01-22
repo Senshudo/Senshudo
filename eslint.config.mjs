@@ -4,7 +4,7 @@ import eslint from '@eslint/js'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import pluginVue from 'eslint-plugin-vue'
 import tseslint from 'typescript-eslint'
-//import autoImports from './.eslintrc-auto-import.json' with { type: 'json' }
+import autoImports from './.eslintrc-auto-import.json' with { type: 'json' }
 
 export default tseslint.config(
     // JS
@@ -55,12 +55,12 @@ export default tseslint.config(
             'resources/js/types/vite-env.d.ts',
         ],
     },
-    /*{
+    {
         languageOptions: autoImports,
         rules: {
             'vue/multi-word-component-names': 'off',
         },
-    },*/
+    },
     {
         rules: {
             'comma-dangle': ['error', 'always-multiline'],
