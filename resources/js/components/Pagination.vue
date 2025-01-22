@@ -11,6 +11,8 @@ const props = withDefaults(
     },
 )
 
+const emits = defineEmits(['page-change'])
+
 const data = reactive<{
     page: {
         first: number
@@ -78,95 +80,99 @@ function calcPageRange() {
 </script>
 
 <template>
-    <div class="mt-6 flex w-full items-center justify-between border-t border-gray-300 pt-4">
+    <div class="flex w-full items-center justify-between">
         <div class="flex flex-1 justify-between sm:hidden">
-            <InertiaLink
-                :href="
-                    data.page.current <= 1 && data.page.previous === 0
-                        ? '#'
-                        : `${meta.path}?page=${data.page.previous}`
-                "
+            <button
+                type="button"
                 class="btn btn-default relative inline-flex"
                 :class="{ disabled: data.page.current <= 1 && data.page.previous === 0 }"
+                @click.prevent="
+                    data.page.current <= 1 && data.page.previous === 0
+                        ? undefined
+                        : emits('page-change', data.page.previous)
+                "
             >
                 Previous
-            </InertiaLink>
-            <InertiaLink
-                :href="
-                    data.page.current >= data.page.last
-                        ? '#'
-                        : `${meta.path}?page=${data.page.next}`
-                "
+            </button>
+            <button
+                type="button"
                 class="btn btn-default relative inline-flex"
                 :class="{
                     disabled: data.page.current >= data.page.last,
                 }"
+                @click.prevent="
+                    data.page.current >= data.page.last
+                        ? undefined
+                        : emits('page-change', data.page.next)
+                "
             >
                 Next
-            </InertiaLink>
+            </button>
         </div>
         <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
             <div>
-                <p class="text-sm text-gray-700 dark:text-base-content">
+                <p class="text-sm text-gray-700 dark:text-gray-300">
                     Showing
                     {{ ' ' }}
-                    <span class="font-medium">{{ useFormatNumber(meta?.from) }}</span>
+                    <span class="font-medium">{{ meta?.from }}</span>
                     {{ ' ' }}
                     to
                     {{ ' ' }}
-                    <span class="font-medium">{{ useFormatNumber(meta?.to) }}</span>
+                    <span class="font-medium">{{ meta?.to }}</span>
                     {{ ' ' }}
                     of
                     {{ ' ' }}
-                    <span class="font-medium">{{ useFormatNumber(meta?.total) }}</span>
+                    <span class="font-medium">{{ meta?.total }}</span>
                     {{ ' ' }}
                     results
                 </p>
             </div>
             <div>
                 <nav
-                    class="relative z-0 inline-flex space-x-1.5 rounded-md shadow-sm"
+                    class="relative z-0 inline-flex -space-x-px rounded-md shadow-sm"
                     aria-label="Pagination"
                 >
-                    <InertiaLink
-                        :href="
-                            data.page.current <= 1 && data.page.previous === 0
-                                ? '#'
-                                : `${meta.path}?page=${data.page.previous}`
-                        "
-                        class="btn btn-sm btn-default relative inline-flex items-center"
+                    <button
+                        type="button"
+                        class="btn btn-default relative inline-flex rounded-r-none"
                         :class="{ disabled: data.page.current <= 1 && data.page.previous === 0 }"
+                        @click.prevent="
+                            data.page.current <= 1 && data.page.previous === 0
+                                ? undefined
+                                : emits('page-change', data.page.previous)
+                        "
                     >
                         <span class="sr-only">Previous</span>
                         <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
-                    </InertiaLink>
-                    <InertiaLink
+                    </button>
+                    <button
                         v-for="p in data.page.range"
                         :key="`page${p}`"
-                        :href="`${meta.path}?page=${p}`"
+                        type="button"
                         :aria-current="data.page.current === p ? 'page' : undefined"
-                        class="btn btn-sm relative inline-flex items-center"
+                        class="btn btn-default relative inline-flex items-center rounded-none"
                         :class="{
                             'btn-primary z-10': data.page.current === p,
-                            'btn-default z-10': data.page.current !== p,
                         }"
+                        @click.prevent="emits('page-change', p)"
                     >
-                        {{ useFormatNumber(p) }}
-                    </InertiaLink>
-                    <InertiaLink
-                        :href="
-                            data.page.current >= data.page.last
-                                ? '#'
-                                : `${meta.path}?page=${data.page.next}`
-                        "
-                        class="btn btn-sm btn-default relative inline-flex items-center"
+                        {{ p }}
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-default relative inline-flex rounded-l-none"
                         :class="{
                             disabled: data.page.current >= data.page.last,
                         }"
+                        @click.prevent="
+                            data.page.current >= data.page.last
+                                ? undefined
+                                : emits('page-change', data.page.next)
+                        "
                     >
                         <span class="sr-only">Next</span>
                         <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
-                    </InertiaLink>
+                    </button>
                 </nav>
             </div>
         </div>

@@ -23,7 +23,10 @@ withDefaults(defineProps<{ articles?: App.Article[]; isLoading?: boolean }>(), {
                 </div>
             </div>
             <template v-else>
-                <InertiaLink class="relative block" :href="`/news/${articles?.at(0)?.slug}`">
+                <InertiaLink
+                    :href="route('news.show', articles?.at(0)?.slug)"
+                    class="relative block"
+                >
                     <img
                         :src="
                             articles?.at(0)?.thumbnail
@@ -86,7 +89,10 @@ withDefaults(defineProps<{ articles?: App.Article[]; isLoading?: boolean }>(), {
                     </div>
                 </div>
                 <template v-else>
-                    <InertiaLink class="relative block" :href="`/news/${articles?.at(1)?.slug}`">
+                    <InertiaLink
+                        :href="route('news.show', articles?.at(1)?.slug)"
+                        class="relative block"
+                    >
                         <img
                             :src="
                                 articles?.at(1)?.thumbnail
@@ -139,7 +145,10 @@ withDefaults(defineProps<{ articles?: App.Article[]; isLoading?: boolean }>(), {
                     </div>
                 </div>
                 <template v-else>
-                    <InertiaLink class="relative block" :href="`/news/${articles?.at(2)?.slug}`">
+                    <InertiaLink
+                        :href="route('news.show', articles?.at(2)?.slug)"
+                        class="relative block"
+                    >
                         <img
                             :src="
                                 articles?.at(2)?.thumbnail
@@ -192,7 +201,10 @@ withDefaults(defineProps<{ articles?: App.Article[]; isLoading?: boolean }>(), {
                     </div>
                 </div>
                 <template v-else>
-                    <InertiaLink class="relative block" :href="`/news/${articles?.at(3)?.slug}`">
+                    <InertiaLink
+                        :href="route('news.show', articles?.at(3)?.slug)"
+                        class="relative block"
+                    >
                         <img
                             :src="
                                 articles?.at(3)?.thumbnail
@@ -245,7 +257,10 @@ withDefaults(defineProps<{ articles?: App.Article[]; isLoading?: boolean }>(), {
                     </div>
                 </div>
                 <template v-else>
-                    <InertiaLink class="relative block" :href="`/news/${articles?.at(4)?.slug}`">
+                    <InertiaLink
+                        :href="route('news.show', articles?.at(4)?.slug)"
+                        class="relative block"
+                    >
                         <img
                             :src="
                                 articles?.at(4)?.thumbnail

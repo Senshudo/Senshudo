@@ -47,7 +47,7 @@ function getPercentage(value: number) {
                 <h1>{{ article?.title }}</h1>
                 <p>
                     By
-                    <InertiaLink :href="`/author/${article?.author?.slug}`">
+                    <InertiaLink :href="route('author', article?.author?.slug)">
                         {{ article?.author?.name }}
                     </InertiaLink>
                     on {{ useDayJs(article?.published_at).format('DD/MM/YYYY HH:mm z') }}

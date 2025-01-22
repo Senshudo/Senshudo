@@ -34,7 +34,7 @@ withDefaults(defineProps<{ article?: App.Article; isLoading?: boolean }>(), {
             </div>
         </div>
         <template v-else>
-            <InertiaLink :href="`/news/${article?.slug}`" class="flex w-full flex-col">
+            <InertiaLink :href="route('news.show', article?.slug)" class="flex w-full flex-col">
                 <div class="relative">
                     <img
                         :src="
