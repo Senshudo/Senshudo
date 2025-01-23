@@ -13,11 +13,18 @@ class AuthorController extends Controller
     {
         $author->with([
             'articles' => function ($query) {
-                $query->where('articles.status', ArticleStatus::PUBLISHED);
+                $query->where('articles.status', ArticleStatus::PUBLISHED)
+                    ->with([
+                        'categories',
+                        'author',
+                        'review',
+                        'media',
+                    ])
+                    ->orderByDesc('id');
             },
         ]);
 
-        $articles = $author->articles()->orderByDesc('id')->paginate(16);
+        $articles = $author->articles()->paginate(16);
 
         return inertia('news/author', [
             'author' => AuthorResource::make($author),
