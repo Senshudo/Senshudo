@@ -41,7 +41,9 @@ function pageChange(page: number) {
             class="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center"
         >
             <div class="absolute inset-0 flex items-center justify-center">
-                <IconLoading class="text-primary-500 mr-4 size-8 animate-spin dark:text-white" />
+                <IconsIconLoading
+                    class="text-primary-500 mr-4 size-8 animate-spin dark:text-white"
+                />
                 <span class="font-medium dark:text-white">Loading Articles...</span>
             </div>
         </div>

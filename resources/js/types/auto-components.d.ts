@@ -13,6 +13,7 @@ declare module 'vue' {
     ArticlesFeatured: typeof import('./../components/Articles/Featured.vue')['default']
     ArticlesFeaturedSection: typeof import('./../components/Articles/FeaturedSection.vue')['default']
     IconsFacebook: typeof import('./../components/Icons/Facebook.vue')['default']
+    IconsIconLoading: typeof import('./../components/Icons/IconLoading.vue')['default']
     IconsInstagram: typeof import('./../components/Icons/Instagram.vue')['default']
     IconsTiktok: typeof import('./../components/Icons/Tiktok.vue')['default']
     IconsTwitch: typeof import('./../components/Icons/Twitch.vue')['default']

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-withDefaults(defineProps<{ article?: App.Article; isLoading?: boolean }>(), {
+withDefaults(defineProps<{ article?: App.Article; author?: App.Author; isLoading?: boolean }>(), {
     article: undefined,
+    author: undefined,
     isLoading: false,
 })
 </script>
@@ -58,7 +59,7 @@ withDefaults(defineProps<{ article?: App.Article; isLoading?: boolean }>(), {
                     />
                     <div class="flex flex-row justify-between gap-x-4 text-sm">
                         <div class="border-l-2 border-red-600 pl-1">
-                            {{ article?.author?.name }}
+                            {{ article?.author?.name ?? author?.name }}
                         </div>
                         <div class="border-l-2 border-red-600 pl-1">
                             {{ useDayJs(article?.published_at).format('DD/MM/YYYY') }}
