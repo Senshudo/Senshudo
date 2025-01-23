@@ -230,7 +230,6 @@ declare global {
   const useRefHistory: typeof import('@vueuse/core')['useRefHistory']
   const useRemember: typeof import('@inertiajs/vue3')['useRemember']
   const useResizeObserver: typeof import('@vueuse/core')['useResizeObserver']
-  const useRoute: typeof import('ziggy-js')['useRoute']
   const useScreenOrientation: typeof import('@vueuse/core')['useScreenOrientation']
   const useScreenSafeArea: typeof import('@vueuse/core')['useScreenSafeArea']
   const useScriptTag: typeof import('@vueuse/core')['useScriptTag']
