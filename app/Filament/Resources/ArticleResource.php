@@ -73,7 +73,7 @@ class ArticleResource extends Resource
                         ->schema(Article::getForm()),
                     Forms\Components\Wizard\Step::make('Review')
                         ->icon('heroicon-o-star')
-                        ->schema(Review::getForm($article->review)),
+                        ->schema(Review::getForm($article?->review)),
                 ])
                     ->hidden(fn (Get $get): bool => $get('type') !== 'review')
                     ->columnSpanFull()

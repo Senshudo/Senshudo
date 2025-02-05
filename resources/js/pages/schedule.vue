@@ -64,7 +64,7 @@ function setTime(day: number, time: string) {
                     <div
                         v-for="(event, eventIndex) in weekDay.events"
                         :key="eventIndex"
-                        class="bg-base-100/20 p-4 shadow dark:bg-neutral"
+                        class="bg-base-100/20 dark:bg-neutral p-4 shadow"
                     >
                         <div class="flex justify-between">
                             <h3 class="text-lg font-bold">{{ event.title }}</h3>
@@ -74,7 +74,7 @@ function setTime(day: number, time: string) {
                         </div>
                     </div>
                 </div>
-                <div v-else class="bg-base-100/20 p-4 text-center shadow dark:bg-neutral">
+                <div v-else class="bg-base-100/20 dark:bg-neutral p-4 text-center shadow">
                     No Scheduled Streams
                 </div>
             </div>

@@ -14,16 +14,16 @@ withDefaults(defineProps<{ article?: App.Article; isLoading?: boolean }>(), {
                 <div class="h-[500px] w-[900px] rounded bg-gray-300"></div>
             </div>
             <div
-                class="absolute top-1/2 z-[2] h-full w-full -translate-y-1/2 bg-white blur-lg dark:bg-base-100/30 sm:w-1/2"
+                class="dark:bg-base-100/30 absolute top-1/2 z-[2] h-full w-full -translate-y-1/2 bg-white blur-lg sm:w-1/2"
             ></div>
             <div
-                class="absolute top-[80%] z-[3] flex w-full -translate-y-1/2 animate-pulse flex-col gap-4 p-2 dark:text-white sm:top-1/2 sm:w-1/2"
+                class="absolute top-[80%] z-[3] flex w-full -translate-y-1/2 animate-pulse flex-col gap-4 p-2 sm:top-1/2 sm:w-1/2 dark:text-white"
             >
-                <div class="h-6 rounded bg-base-100/30 dark:bg-slate-700"></div>
-                <div class="h-4 w-1/2 rounded bg-base-100/30 dark:bg-slate-700"></div>
-                <div class="h-4 rounded bg-base-100/30 dark:bg-slate-700"></div>
-                <div class="h-4 rounded bg-base-100/30 dark:bg-slate-700"></div>
-                <div class="h-4 rounded bg-base-100/30 dark:bg-slate-700"></div>
+                <div class="bg-base-100/30 h-6 rounded dark:bg-slate-700"></div>
+                <div class="bg-base-100/30 h-4 w-1/2 rounded dark:bg-slate-700"></div>
+                <div class="bg-base-100/30 h-4 rounded dark:bg-slate-700"></div>
+                <div class="bg-base-100/30 h-4 rounded dark:bg-slate-700"></div>
+                <div class="bg-base-100/30 h-4 rounded dark:bg-slate-700"></div>
             </div>
         </div>
         <template v-else>
@@ -40,19 +40,19 @@ withDefaults(defineProps<{ article?: App.Article; isLoading?: boolean }>(), {
                             alt="Placeholder"
                             class="h-full w-full rounded object-cover"
                         />
-                        <div v-if="article?.review" class="hexagon absolute right-2 top-2 w-[50px]">
+                        <div v-if="article?.review" class="hexagon absolute top-2 right-2 w-[50px]">
                             <div>{{ article?.review.overall }}</div>
                         </div>
                     </div>
                 </div>
                 <div
-                    class="absolute top-1/2 z-[2] h-full w-full -translate-y-1/2 rounded bg-white/70 blur-lg dark:bg-base-100/30 sm:w-1/2"
+                    class="dark:bg-base-100/30 absolute top-1/2 z-[2] h-full w-full -translate-y-1/2 rounded bg-white/70 blur-lg sm:w-1/2"
                 ></div>
                 <div
-                    class="absolute top-[70%] z-[3] flex w-full -translate-y-1/2 flex-col gap-4 rounded p-2 dark:text-white sm:top-1/2 sm:w-1/2"
+                    class="absolute top-[70%] z-[3] flex w-full -translate-y-1/2 flex-col gap-4 rounded p-2 sm:top-1/2 sm:w-1/2 dark:text-white"
                 >
                     <h2
-                        class="text-nowrapk mb-2 overflow-hidden text-ellipsis text-5xl font-black"
+                        class="text-nowrapk mb-2 overflow-hidden text-5xl font-black text-ellipsis"
                         v-html="article?.title"
                     />
                     <div class="flex flex-row gap-4">

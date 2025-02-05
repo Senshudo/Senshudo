@@ -45,7 +45,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <Disclosure v-slot="{ open }" as="nav" class="bg-white shadow dark:bg-neutral">
+    <Disclosure v-slot="{ open }" as="nav" class="dark:bg-neutral bg-white shadow">
         <div class="mx-auto max-w-7xl px-2 sm:px-4">
             <div class="flex h-16 justify-between">
                 <div class="flex px-2 lg:px-0">
@@ -71,9 +71,9 @@ onBeforeMount(() => {
                             :key="index"
                             :href="item.href"
                             :class="[
-                                'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium hover:border-gray-300 hover:text-gray-700 dark:hover:border-base-content dark:hover:text-base-content',
+                                'dark:hover:border-base-content dark:hover:text-base-content inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium hover:border-gray-300 hover:text-gray-700',
                                 {
-                                    'border-transparent text-gray-500 dark:text-base-content/80':
+                                    'dark:text-base-content/80 border-transparent text-gray-500':
                                         !item.current,
                                     'border-indigo-500 text-gray-900 dark:border-white dark:text-white':
                                         item.current,
@@ -93,7 +93,7 @@ onBeforeMount(() => {
                 <div class="flex items-center lg:hidden">
                     <!-- Mobile menu button -->
                     <DisclosureButton
-                        class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:hover:bg-base-100"
+                        class="dark:hover:bg-base-100 relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none focus:ring-inset"
                     >
                         <span class="absolute -inset-0.5" />
                         <span class="sr-only">Open main menu</span>
@@ -105,17 +105,17 @@ onBeforeMount(() => {
         </div>
 
         <DisclosurePanel class="lg:hidden">
-            <div class="space-y-1 pb-3 pt-2">
+            <div class="space-y-1 pt-2 pb-3">
                 <InertiaLink
                     v-for="(item, index) in navigationItems"
                     :key="index"
                     :href="item.href"
                     :class="[
-                        'block border-l-4 py-2 pl-3 pr-4 text-base font-medium hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800',
+                        'block border-l-4 py-2 pr-4 pl-3 text-base font-medium hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800',
                         {
-                            'border-transparent text-gray-600 dark:text-base-content/80':
+                            'dark:text-base-content/80 border-transparent text-gray-600':
                                 !item.current,
-                            'border-indigo-500 bg-indigo-50 text-indigo-700 dark:border-white dark:bg-base-100 dark:text-white':
+                            'dark:bg-base-100 border-indigo-500 bg-indigo-50 text-indigo-700 dark:border-white dark:text-white':
                                 item.current,
                         },
                     ]"

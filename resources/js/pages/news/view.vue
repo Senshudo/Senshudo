@@ -58,11 +58,11 @@ function getPercentage(value: number) {
             </div>
         </div>
 
-        <div class="prose mx-auto max-w-7xl p-4 pt-8 dark:prose-invert" v-html="article?.content" />
+        <div class="prose dark:prose-invert mx-auto max-w-7xl p-4 pt-8" v-html="article?.content" />
 
         <div
             v-if="article?.review"
-            class="mx-auto flex max-w-6xl flex-col items-center gap-6 rounded-md bg-base-100/20 p-4 shadow dark:bg-neutral sm:flex-row"
+            class="bg-base-100/20 dark:bg-neutral mx-auto flex max-w-6xl flex-col items-center gap-6 rounded-md p-4 shadow sm:flex-row"
         >
             <div class="hexagon h-[180px] w-[200px] text-6xl">{{ article?.review?.overall }}</div>
             <div class="flex flex-1 flex-col gap-y-4">
@@ -71,7 +71,7 @@ function getPercentage(value: number) {
                 </p>
                 <div
                     v-if="article?.review?.quote"
-                    class="prose w-full max-w-full dark:text-base-content"
+                    class="prose dark:text-base-content w-full max-w-full"
                     v-html="article?.review?.quote"
                 />
 

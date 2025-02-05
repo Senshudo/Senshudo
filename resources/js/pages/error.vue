@@ -35,11 +35,11 @@ const description = computed(() => {
         <div class="text-center">
             <p class="text-base font-semibold text-indigo-600 dark:text-white">{{ status }}</p>
             <h1
-                class="mt-4 text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl"
+                class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white"
             >
                 {{ title }}
             </h1>
-            <p class="mt-6 text-base leading-7 text-gray-600 dark:text-base-content">
+            <p class="dark:text-base-content mt-6 text-base leading-7 text-gray-600">
                 {{ description }}
             </p>
             <div v-if="status !== 503" class="mt-10 flex items-center justify-center gap-x-6">

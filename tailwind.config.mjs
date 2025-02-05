@@ -7,10 +7,7 @@ export default {
         './resources/js/**/*.vue',
     ],
     darkMode: 'class',
-    plugins: [
-        require('@tailwindcss/forms'),
-        require('@tailwindcss/typography'),
-    ],
+    important: true,
     theme: {
         extend: {
             colors: {

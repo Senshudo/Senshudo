@@ -85,7 +85,7 @@ function handleClose() {
             <input
                 id="search"
                 name="search"
-                class="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:border-base-content/20 dark:bg-base-100 dark:ring-base-content/10 dark:focus:border-base-content dark:focus:ring-base-content sm:text-sm sm:leading-6"
+                class="dark:border-base-content/20 dark:bg-base-100 dark:ring-base-content/10 dark:focus:border-base-content dark:focus:ring-base-content block w-full rounded-md border-0 bg-white py-1.5 pr-3 pl-10 text-gray-900 ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 focus:ring-inset sm:text-sm sm:leading-6"
                 placeholder="Search"
                 type="search"
                 @click="showModal = true"
@@ -126,11 +126,11 @@ function handleClose() {
             >
                 <div
                     ref="searchBox"
-                    class="mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all dark:divide-base-content dark:bg-neutral"
+                    class="ring-opacity-5 dark:divide-base-content dark:bg-neutral mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white ring-1 shadow-2xl ring-black transition-all"
                 >
                     <div class="relative flex items-center gap-3 px-4">
                         <MagnifyingGlassIcon
-                            class="h-6 w-6 align-middle text-gray-500 dark:text-base-content"
+                            class="dark:text-base-content h-6 w-6 align-middle text-gray-500"
                             aria-hidden="true"
                         />
 
@@ -138,7 +138,7 @@ function handleClose() {
                             ref="searchInput"
                             v-model="search"
                             type="text"
-                            class="h-12 flex-1 border-0 bg-transparent text-gray-900 placeholder:text-gray-400 focus:border-0 focus:outline-none focus:ring-0 dark:text-base-content dark:placeholder-base-content/40 dark:focus:border-0 dark:focus:ring-0"
+                            class="dark:text-base-content dark:placeholder-base-content/40 h-12 flex-1 border-0 bg-transparent text-gray-900 placeholder:text-gray-400 focus:border-0 focus:ring-0 focus:outline-none dark:focus:border-0 dark:focus:ring-0"
                             placeholder="Search..."
                             role="combobox"
                             aria-expanded="false"
@@ -147,7 +147,7 @@ function handleClose() {
 
                         <ArrowPathIcon
                             v-if="isLoading"
-                            class="h-6 w-6 animate-spin align-middle text-gray-500 dark:text-base-content"
+                            class="dark:text-base-content h-6 w-6 animate-spin align-middle text-gray-500"
                         />
                     </div>
 
@@ -168,11 +168,11 @@ function handleClose() {
                                 v-for="(item, index) in results"
                                 :key="`searchResult${index}`"
                                 role="option"
-                                class="flex cursor-pointer select-none items-center gap-3 px-4 py-2 transition-all hover:bg-gray-500 hover:text-white dark:text-base-content/80 dark:hover:bg-base-100 dark:hover:text-base-content"
+                                class="dark:text-base-content/80 dark:hover:bg-base-100 dark:hover:text-base-content flex cursor-pointer items-center gap-3 px-4 py-2 transition-all select-none hover:bg-gray-500 hover:text-white"
                                 tabindex="-1"
                                 @click="handleRedirect(item)"
                             >
-                                <span class="flex-1 overflow-hidden truncate font-semibold">
+                                <span class="flex-1 truncate overflow-hidden font-semibold">
                                     {{ item.title }}
                                 </span>
                                 <span class="italic">{{ item.author?.name }}</span>

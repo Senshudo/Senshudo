@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import laravel from 'laravel-vite-plugin'
 import inertiaLayout from 'momentum-layout'
@@ -69,6 +70,7 @@ export default defineConfig({
             command: 'php artisan trail:generate',
         }),
         manifestSRI(),
+        tailwindcss(),
     ],
     ssr: {
         noExternal: ['@inertiajs/vue3/server', 'lodash', 'laravel-echo', 'pusher-js'],

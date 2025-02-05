@@ -42,7 +42,7 @@ function pageChange(page: number) {
             </div>
         </div>
 
-        <div v-else class="mb-4 mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+        <div v-else class="mt-4 mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
             <ArticlesCard
                 v-for="article in articles.data"
                 :key="article.id"
