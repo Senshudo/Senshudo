@@ -42,6 +42,7 @@ class NewArticle extends Mailable
             with: [
                 'user' => $this->user,
                 'article' => $this->article,
+                'url' => route('filament.admin.resources.articles.edit', $this->article),
             ]
         );
     }
