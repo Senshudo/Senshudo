@@ -36,7 +36,7 @@ class HomepageController extends Controller
             ->orderByDesc('id')
             ->paginate(15);
 
-        $liveStream = Channel::where('is_online', true)->inRandomOrder()->first();
+        $liveStream = Channel::query()->where('is_online', true)->inRandomOrder()->first();
 
         return inertia('index', [
             'featured' => ArticleResource::collection($featuredArticles),

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('channels', function (Blueprint $table) {
+        Schema::table('channels', function (Blueprint $table): void {
             $table->string('online_webhook_id')->nullable()->after('is_online');
             $table->string('offline_webhook_id')->nullable()->after('online_webhook_id');
         });
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('channels', function (Blueprint $table) {
+        Schema::table('channels', function (Blueprint $table): void {
             $table->dropColumn(['online_webhook_id', 'offline_webhook_id']);
         });
     }

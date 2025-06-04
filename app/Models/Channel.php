@@ -2,12 +2,37 @@
 
 namespace App\Models;
 
+use Database\Factories\ChannelFactory;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @mixin IdeHelperChannel
+ * @property int $id
+ * @property int $twitch_id
+ * @property string $channel_name
+ * @property bool $is_online
+ * @property string|null $online_webhook_id
+ * @property string|null $offline_webhook_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static \Database\Factories\ChannelFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Channel newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Channel newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Channel query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Channel whereChannelName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Channel whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Channel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Channel whereIsOnline($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Channel whereOfflineWebhookId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Channel whereOnlineWebhookId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Channel whereTwitchId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Channel whereUpdatedAt($value)
+ *
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[UseFactory(ChannelFactory::class)]
 class Channel extends Model
 {
     use HasFactory;

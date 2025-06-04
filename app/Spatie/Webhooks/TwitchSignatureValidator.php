@@ -21,9 +21,7 @@ class TwitchSignatureValidator implements SignatureValidator
 
         $signingSecret = $config->signingSecret;
 
-        if (empty($signingSecret)) {
-            throw InvalidConfig::signingSecretNotSet();
-        }
+        throw_if($signingSecret === '' || $signingSecret === '0', InvalidConfig::signingSecretNotSet());
 
         $body = $request->getContent();
 

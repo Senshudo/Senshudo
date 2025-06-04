@@ -1,9 +1,10 @@
 <?php
 
+use Olssonm\VeryBasicAuth\Handlers\DefaultResponseHandler;
+
 /**
  * Configuration for the "HTTP Very Basic Auth"-middleware
  */
-
 return [
     // Username
     'user' => env('BASIC_AUTH_USERNAME', ''),
@@ -17,7 +18,7 @@ return [
     ],
 
     // Response handler for the error responses
-    'response_handler' => \Olssonm\VeryBasicAuth\Handlers\DefaultResponseHandler::class,
+    'response_handler' => DefaultResponseHandler::class,
 
     // Message to display if the user "opts out"/clicks "cancel"
     'error_message' => 'You have to supply your credentials to access this resource.',

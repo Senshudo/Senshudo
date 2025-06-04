@@ -10,7 +10,7 @@ class ScheduleController extends Controller
 {
     public function __invoke(): Response
     {
-        $liveStream = Channel::where('is_online', true)->inRandomOrder()->first();
+        $liveStream = Channel::query()->where('is_online', true)->inRandomOrder()->first();
 
         return inertia('schedule', ['liveStream' => $liveStream ? ChannelResource::make($liveStream) : null]);
     }

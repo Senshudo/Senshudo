@@ -6,20 +6,21 @@ use App\Enums\ArticleStatus;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return CategoryResource::collection(
-            Category::where('parent', true)
+            Category::query()->where('parent', true)
                 ->with('children')
                 ->withCount('articles')
                 ->get()
         );
     }
 
-    public function show(Category $category)
+    public function show(Category $category): AnonymousResourceCollection
     {
         return ArticleResource::collection(
             $category->articles()

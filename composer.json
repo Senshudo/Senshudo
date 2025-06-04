@@ -9,42 +9,48 @@
     ],
     "require": {
         "php": "^8.2",
-        "based/momentum-trail": "^0.3.0",
-        "filament/filament": "^3.3.15",
-        "filament/spatie-laravel-media-library-plugin": "^3.3.15",
+        "backstage/laravel-og-image": "^0.9.0",
+        "based/momentum-trail": "^0.4.0",
+        "filament/filament": "^3.3.20",
+        "filament/spatie-laravel-media-library-plugin": "^3.3.20",
         "inertiajs/inertia-laravel": "^2.0.2",
-        "laravel/framework": "^11.45.0",
-        "laravel/horizon": "^5.32.0",
-        "laravel/reverb": "@beta",
+        "laravel/framework": "^v12.17.0",
+        "laravel/horizon": "^5.32.1",
+        "laravel/reverb": "^v1.5.0",
         "laravel/sanctum": "^4.1.1",
         "laravel/scout": "^10.15.0",
         "laravel/tinker": "^2.10.1",
-        "mansoor/filament-versionable": "^0.0.7",
+        "mansoor/filament-versionable": "^0.0.13",
         "mohamedsabil83/filament-forms-tinyeditor": "^2.4.0",
         "olssonm/l5-very-basic-auth": "^7.2",
         "php-http/curl-client": "^2.3.3",
         "predis/predis": "^2.4.0",
         "saade/filament-laravel-log": "^3.2.3",
         "saloonphp/saloon": "^3.13.0",
-        "spatie/laravel-medialibrary": "^11.12.9",
+        "spatie/laravel-medialibrary": "^11.13.0",
         "spatie/laravel-sitemap": "^7.3.6",
         "spatie/laravel-sluggable": "^3.7.5",
         "spatie/laravel-webhook-client": "^3.4.3",
         "swisnl/filament-backgrounds": "^1.1.5",
-        "typesense/typesense-php": "^4.9.3",
-        "vormkracht10/laravel-open-graph-image": "^0.8.1"
+        "symfony/http-client": ">=7.3",
+        "typesense/typesense-php": "^4.9.3"
     },
     "require-dev": {
+        "ext-pcov": "*",
         "barryvdh/laravel-ide-helper": "^3.5.5",
         "brianium/paratest": "^7.8.3",
+        "driftingly/rector-laravel": "^2.0.5",
         "fakerphp/faker": "^1.24.1",
         "larastan/larastan": "^3.4.0",
         "laravel/pint": "^1.22.1",
-        "laravel/sail": "^1.43.0",
+        "laravel/sail": "^1.43.1",
         "mockery/mockery": "^1.6.12",
         "nunomaduro/collision": "^8.8.0",
+        "nunomaduro/phpinsights": "^2.13.1",
+        "rector/rector": "^2.0.17",
         "pestphp/pest": "^3.8.2",
         "pestphp/pest-plugin-laravel": "^3.2",
+        "pestphp/pest-plugin-type-coverage": "^3.5.1",
         "spatie/laravel-ignition": "^2.9.1",
         "spatie/laravel-ray": "^1.40.2"
     },
@@ -67,6 +73,7 @@
     },
     "config": {
         "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
         },
@@ -88,7 +95,9 @@
             "@php artisan vendor:publish --tag=livewire:assets --ansi --force",
             "@php artisan ide-helper:generate",
             "@php artisan ide-helper:meta",
-            "@php artisan ide-helper:models --dir=\"app/Models/\" -N --write-mixin"
+            "@php artisan ide-helper:models --dir=\"app/Models/\" -RW",
+            "rector",
+            "./vendor/bin/pint"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
@@ -103,10 +112,21 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
-        "analyse": "./vendor/bin/phpstan analyse --memory-limit=512M",
-        "doc:models": "php artisan ide-helper:models --dir=\"app/Models/\" -N --write-mixin",
+        "doc:models": "php artisan ide-helper:models --dir=\"app/Models/\" -RW && rector && ./vendor/bin/pint",
         "lint": "./vendor/bin/pint",
-        "test": "php artisan test --parallel --no-coverage --recreate-databases",
-        "test:lint": "./vendor/bin/pint --test"
+        "refactor": "rector",
+        "test": [
+            "@test:lint",
+            "@test:refactor",
+            "@test:types",
+            "@test:type-coverage",
+            "@test:unit"
+        ],
+        "test:arch": "pest --filter=arch",
+        "test:lint": "./vendor/bin/pint --test",
+        "test:refactor": "rector --dry-run",
+        "test:type-coverage": "pest --recreate-databases --type-coverage --min=98",
+        "test:types": "./vendor/bin/phpstan analyse --memory-limit=512M",
+        "test:unit": "pest --parallel --recreate-databases --coverage --min=80"
     }
 }

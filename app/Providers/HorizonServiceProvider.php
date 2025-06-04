@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Request;
 use Laravel\Horizon\Horizon;
 use Laravel\Horizon\HorizonApplicationServiceProvider;
 
@@ -17,15 +18,11 @@ class HorizonServiceProvider extends HorizonApplicationServiceProvider
 
     /**
      * Configure the Horizon authorization services.
-     *
-     * @return void
      */
-    protected function authorization()
+    protected function authorization(): void
     {
         $this->gate();
 
-        Horizon::auth(function ($request) {
-            return true;
-        });
+        Horizon::auth(fn (Request $request): true => true);
     }
 }

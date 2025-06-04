@@ -126,7 +126,7 @@ function handleClose() {
             >
                 <div
                     ref="searchBox"
-                    class="ring-opacity-5 dark:divide-base-content dark:bg-neutral mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white ring-1 shadow-2xl ring-black transition-all"
+                    class="ring-opacity-5 dark:divide-base-content dark:bg-neutral mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black transition-all"
                 >
                     <div class="relative flex items-center gap-3 px-4">
                         <MagnifyingGlassIcon

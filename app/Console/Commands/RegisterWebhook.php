@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Channel;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
@@ -27,7 +28,7 @@ class RegisterWebhook extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $channels = [
             'senshudo' => '43242267',
@@ -43,7 +44,7 @@ class RegisterWebhook extends Command
         ]);*/
 
         collect($channels)
-            ->each(function ($twitchId, $channelName) {
+            ->each(function (string $twitchId, string $channelName): void {
                 $onlineRequest = Http::baseUrl('https://api.twitch.tv/helix')
                     ->withHeaders([
                         'Client-Id' => config('services.twitch.client_id'),
@@ -64,17 +65,17 @@ class RegisterWebhook extends Command
                         ],
                     ]);
 
-                Log::info("Online: {$onlineRequest->status()}", $onlineRequest->json());
+                Log::info('Online: '.$onlineRequest->status(), $onlineRequest->json());
 
                 if (($status = Arr::get($onlineRequest->json(), 'data.0.status')) !== 'webhook_callback_verification_pending') {
-                    throw new \Exception("Online: Failed to register webhook for {$channelName} - {$status}");
-                } else {
-                    $channel = Channel::firstWhere('twitch_id', $twitchId);
-
-                    $channel->update([
-                        'online_webhook_id' => Arr::get($onlineRequest->json(), 'data.0.id'),
-                    ]);
+                    throw new Exception(sprintf('Online: Failed to register webhook for %s - %s', $channelName, $status));
                 }
+
+                $channel = Channel::query()->firstWhere('twitch_id', $twitchId);
+
+                $channel->update([
+                    'online_webhook_id' => Arr::get($onlineRequest->json(), 'data.0.id'),
+                ]);
 
                 $offlineRequest = Http::baseUrl('https://api.twitch.tv/helix')
                     ->withHeaders([
@@ -96,17 +97,17 @@ class RegisterWebhook extends Command
                         ],
                     ]);
 
-                Log::info("Offline: {$offlineRequest->status()}", $offlineRequest->json());
+                Log::info('Offline: '.$offlineRequest->status(), $offlineRequest->json());
 
                 if (($status = Arr::get($offlineRequest->json(), 'data.0.status')) !== 'webhook_callback_verification_pending') {
-                    throw new \Exception("Offline: Failed to register webhook for {$channelName} - {$status}");
-                } else {
-                    $channel = Channel::firstWhere('twitch_id', $twitchId);
-
-                    $channel->update([
-                        'offline_webhook_id' => Arr::get($offlineRequest->json(), 'data.0.id'),
-                    ]);
+                    throw new Exception(sprintf('Offline: Failed to register webhook for %s - %s', $channelName, $status));
                 }
+
+                $channel = Channel::query()->firstWhere('twitch_id', $twitchId);
+
+                $channel->update([
+                    'offline_webhook_id' => Arr::get($offlineRequest->json(), 'data.0.id'),
+                ]);
             });
     }
 }

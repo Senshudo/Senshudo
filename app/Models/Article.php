@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ArticleStatus;
 use App\Observers\ArticleObserver;
+use Database\Factories\ArticleFactory;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -11,6 +12,7 @@ use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
@@ -29,12 +31,60 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
 /**
- * @mixin IdeHelperArticle
+ * @property int $id
+ * @property int $author_id
+ * @property int|null $event_id
+ * @property string $title
+ * @property string $slug
+ * @property string $excerpt
+ * @property string $content
+ * @property string|null $keywords
+ * @property array<array-key, mixed>|null $sources
+ * @property bool $is_featured
+ * @property ArticleStatus $status
+ * @property \Illuminate\Support\Carbon|null $published_at
+ * @property string|null $scheduled_for
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Author $author
+ * @property-read Collection<int, \App\Models\Category> $categories
+ * @property-read int|null $categories_count
+ * @property-read \App\Models\Event|null $event
+ * @property-read bool $is_published
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read int|null $media_count
+ * @property-read \App\Models\Review|null $review
+ *
+ * @method static \Database\Factories\ArticleFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Article newModelQuery()
+ * @method static Builder<static>|Article newQuery()
+ * @method static Builder<static>|Article query()
+ * @method static Builder<static>|Article whereAuthorId($value)
+ * @method static Builder<static>|Article whereContent($value)
+ * @method static Builder<static>|Article whereCreatedAt($value)
+ * @method static Builder<static>|Article whereEventId($value)
+ * @method static Builder<static>|Article whereExcerpt($value)
+ * @method static Builder<static>|Article whereId($value)
+ * @method static Builder<static>|Article whereIsFeatured($value)
+ * @method static Builder<static>|Article whereKeywords($value)
+ * @method static Builder<static>|Article wherePublishedAt($value)
+ * @method static Builder<static>|Article whereScheduledFor($value)
+ * @method static Builder<static>|Article whereSlug($value)
+ * @method static Builder<static>|Article whereSources($value)
+ * @method static Builder<static>|Article whereStatus($value)
+ * @method static Builder<static>|Article whereTitle($value)
+ * @method static Builder<static>|Article whereUpdatedAt($value)
+ *
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(ArticleObserver::class)]
+#[UseFactory(ArticleFactory::class)]
 class Article extends Model implements HasMedia, Sitemapable
 {
-    use HasFactory, HasSlug, InteractsWithMedia, Searchable;
+    use HasFactory;
+    use HasSlug;
+    use InteractsWithMedia;
+    use Searchable;
 
     protected $fillable = [
         'author_id',
@@ -63,7 +113,7 @@ class Article extends Model implements HasMedia, Sitemapable
         ];
     }
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
@@ -106,7 +156,7 @@ class Article extends Model implements HasMedia, Sitemapable
         return $this->belongsTo(Author::class);
     }
 
-    /** @return BelongsTo<Event, $this> */
+    /** @return BelongsTo<\App\Models\Event, $this> */
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
@@ -120,7 +170,7 @@ class Article extends Model implements HasMedia, Sitemapable
 
     protected function isPublished(): Attribute
     {
-        return Attribute::make(fn () => $this->published_at !== null);
+        return Attribute::make(fn (): bool => $this->published_at !== null);
     }
 
     /**
@@ -185,7 +235,7 @@ class Article extends Model implements HasMedia, Sitemapable
 
             Select::make('author_id')
                 ->default(fn () => user()->author?->id)
-                ->disabled(fn () => ! user()->is_super)
+                ->disabled(fn (): bool => ! user()->is_super)
                 ->relationship('author', 'name')
                 ->required(),
 
@@ -240,7 +290,7 @@ class Article extends Model implements HasMedia, Sitemapable
                 ->default(ArticleStatus::DRAFT->value)
                 ->disableOptionWhen(fn (string $value): bool => ($value === 'scheduled' || $value === 'published') && ! user()->is_super)
                 ->required()
-                ->hidden(fn (?Article $record) => $record?->status === ArticleStatus::PUBLISHED),
+                ->hidden(fn (?Article $record): bool => $record?->status === ArticleStatus::PUBLISHED),
         ];
     }
 

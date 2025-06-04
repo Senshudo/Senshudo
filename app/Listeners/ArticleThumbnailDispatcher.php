@@ -9,7 +9,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ArticleThumbnailDispatcher
 {
-    public function handle(MediaHasBeenAddedEvent $event)
+    public function handle(MediaHasBeenAddedEvent $event): void
     {
         /** @var Media $media */
         $media = $event->media;

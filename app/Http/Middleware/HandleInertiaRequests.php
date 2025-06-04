@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Vite;
 use Inertia\Middleware;
+use Symfony\Component\HttpFoundation\Response;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -18,13 +19,11 @@ class HandleInertiaRequests extends Middleware
      */
     protected $rootView = 'app';
 
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         Vite::useIntegrityKey('integrity');
 
-        $response = parent::handle($request, $next);
-
-        return $response;
+        return parent::handle($request, $next);
     }
 
     /**

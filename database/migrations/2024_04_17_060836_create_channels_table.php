@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('channels', function (Blueprint $table) {
+        Schema::create('channels', function (Blueprint $table): void {
             $table->id();
             $table->unsignedBigInteger('twitch_id');
             $table->string('channel_name');

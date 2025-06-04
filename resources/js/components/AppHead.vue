@@ -23,7 +23,8 @@ const props = withDefaults(
         author: 'Senshudo',
         authorTwitter: undefined,
         ogType: 'website',
-        description: 'Senshudo, The Way Of The Player. Video game news and reviews.',
+        description:
+            'Senshudo, Video Game News, Gaming News, Game Rankings, Game Reviews, Video Game Reviews',
         thumbnail: socialBanner,
         imageWidth: 1200,
         imageHeight: 630,
@@ -37,7 +38,9 @@ const props = withDefaults(
 const url = computed(() => usePage().props.location)
 
 const pageTitle = computed(() =>
-    props.title ? `${props.title} - Senshudo` : 'Senshudo - The Way Of The Player',
+    props.title
+        ? `${props.title} - Senshudo`
+        : 'Senshudo - Video Game News, Game Reviews, Game Rankings',
 )
 </script>
 

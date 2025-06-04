@@ -22,7 +22,7 @@ class OldDatabaseMigrationSeeder extends Seeder
         $authors = DB::connection('mysql_old')->table('team')->get();
 
         foreach ($authors as $author) {
-            Author::create([
+            Author::query()->create([
                 'name' => $author->name,
                 'slug' => $author->url,
                 'is_active' => $author->active,
@@ -34,7 +34,7 @@ class OldDatabaseMigrationSeeder extends Seeder
         $events = DB::connection('mysql_old')->table('events')->get();
 
         foreach ($events as $event) {
-            Event::create([
+            Event::query()->create([
                 'name' => $event->title,
                 'slug' => $event->url,
                 'hashtag' => $event->hashtag,
@@ -49,7 +49,7 @@ class OldDatabaseMigrationSeeder extends Seeder
         $categories = DB::connection('mysql_old')->table('categories')->get();
 
         foreach ($categories as $category) {
-            Category::create([
+            Category::query()->create([
                 'name' => $category->title,
                 'slug' => $category->url,
                 'is_parent' => (bool) $category->parent,
@@ -90,12 +90,12 @@ class OldDatabaseMigrationSeeder extends Seeder
             ->get();
 
         foreach ($articles as $article) {
-            $newArticle = Article::create([
-                'author_id' => Author::firstWhere('slug', $article->author_slug)?->id,
-                'event_id' => Event::firstWhere('slug', $article->event_slug)?->id,
-                'title' => html_entity_decode($article->title),
+            $newArticle = Article::query()->create([
+                'author_id' => Author::query()->firstWhere('slug', $article->author_slug)?->id,
+                'event_id' => Event::query()->firstWhere('slug', $article->event_slug)?->id,
+                'title' => html_entity_decode((string) $article->title),
                 'slug' => $article->slug,
-                'excerpt' => html_entity_decode($article->excerpt),
+                'excerpt' => html_entity_decode((string) $article->excerpt),
                 'content' => $article->content,
                 'keywords' => $article->keywords,
                 'sources' => $article->sources === 'NULL' ? null : $article->sources,
@@ -107,15 +107,15 @@ class OldDatabaseMigrationSeeder extends Seeder
             ]);
 
             if ($article->categories) {
-                collect(explode(',', trim($article->categories)))
+                collect(explode(',', trim((string) $article->categories)))
                     ->filter()
-                    ->each(function ($category) use ($newArticle) {
-                        $newArticle->categories()->attach(Category::find($category)?->id);
+                    ->each(function ($category) use ($newArticle): void {
+                        $newArticle->categories()->attach(Category::query()->find($category)?->id);
                     });
             }
 
             if ($article->oneliner) {
-                Review::create([
+                Review::query()->create([
                     'article_id' => $newArticle->id,
                     'oneliner' => $article->oneliner,
                     'quote' => $article->quote,

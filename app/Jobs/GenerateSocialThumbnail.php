@@ -13,7 +13,10 @@ use Vormkracht10\LaravelOpenGraphImage\Facades\OpenGraphImage;
 
 class GenerateSocialThumbnail implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new job instance.
@@ -32,7 +35,7 @@ class GenerateSocialThumbnail implements ShouldQueue
 
         $imageContents = $this->getBase64String();
 
-        if (! $imageContents) {
+        if ($imageContents === null || $imageContents === '' || $imageContents === '0') {
             $this->fail('No image found for article '.$this->article->id);
         }
 
@@ -52,7 +55,7 @@ class GenerateSocialThumbnail implements ShouldQueue
     {
         $path = $this->article->getFirstMedia('background')?->getPathRelativeToRoot();
 
-        if (! $path) {
+        if ($path === null || $path === '' || $path === '0') {
             $this->fail('No background image found for article '.$this->article->id);
         }
 
@@ -70,7 +73,7 @@ class GenerateSocialThumbnail implements ShouldQueue
         }
 
         $type = pathinfo(
-            $this->article->getFirstMedia('background')?->getPathRelativeToRoot(),
+            (string) $this->article->getFirstMedia('background')?->getPathRelativeToRoot(),
             PATHINFO_EXTENSION
         );
 

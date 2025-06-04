@@ -42,22 +42,20 @@ class CreateArticle extends CreateRecord
             ),
         );
 
-        Review::create(
-            [
-                'article_id' => $article->id,
-                ...Arr::only(
-                    $data,
-                    [
-                        'oneliner',
-                        'quote',
-                        'overall',
-                        'graphics',
-                        'story',
-                        'gameplay',
-                    ],
-                ),
-            ],
-        );
+        Review::query()->create([
+            'article_id' => $article->id,
+            ...Arr::only(
+                $data,
+                [
+                    'oneliner',
+                    'quote',
+                    'overall',
+                    'graphics',
+                    'story',
+                    'gameplay',
+                ],
+            ),
+        ]);
 
         return $article;
     }

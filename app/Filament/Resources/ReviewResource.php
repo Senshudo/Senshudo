@@ -2,12 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ReviewResource\Pages;
+use App\Filament\Resources\ReviewResource\Pages\ListReviews;
 use App\Models\Review;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
@@ -31,16 +35,16 @@ class ReviewResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('article_id')
+                Select::make('article_id')
                     ->relationship('article', 'title')
                     ->required(),
-                Forms\Components\TextInput::make('oneliner')
+                TextInput::make('oneliner')
                     ->maxLength(255),
 
                 TinyEditor::make('quote')
                     ->columnSpanFull(),
 
-                Forms\Components\Select::make('overall')
+                Select::make('overall')
                     ->options([
                         '1' => '1',
                         '2' => '2',
@@ -54,7 +58,7 @@ class ReviewResource extends Resource
                         '10' => '10',
                     ]),
 
-                Forms\Components\Select::make('graphics')
+                Select::make('graphics')
                     ->options([
                         '1' => '1',
                         '2' => '2',
@@ -68,7 +72,7 @@ class ReviewResource extends Resource
                         '10' => '10',
                     ]),
 
-                Forms\Components\Select::make('story')
+                Select::make('story')
                     ->options([
                         '1' => '1',
                         '2' => '2',
@@ -82,7 +86,7 @@ class ReviewResource extends Resource
                         '10' => '10',
                     ]),
 
-                Forms\Components\Select::make('gameplay')
+                Select::make('gameplay')
                     ->options([
                         '1' => '1',
                         '2' => '2',
@@ -102,19 +106,19 @@ class ReviewResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('article.title')
+                TextColumn::make('article.title')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('oneliner')
+                TextColumn::make('oneliner')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('overall')
+                TextColumn::make('overall')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -123,11 +127,11 @@ class ReviewResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -142,7 +146,7 @@ class ReviewResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListReviews::route('/'),
+            'index' => ListReviews::route('/'),
         ];
     }
 }

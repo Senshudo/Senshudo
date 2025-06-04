@@ -3,14 +3,23 @@
 namespace App\Filament\Resources;
 
 use App\Enums\ArticleStatus;
-use App\Filament\Resources\ArticleResource\Pages;
+use App\Filament\Resources\ArticleResource\Pages\CreateArticle;
+use App\Filament\Resources\ArticleResource\Pages\EditArticle;
+use App\Filament\Resources\ArticleResource\Pages\ListArticles;
 use App\Models\Article;
 use App\Models\Review;
-use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Wizard;
+use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -55,7 +64,7 @@ class ArticleResource extends Resource
 
         return $form
             ->schema([
-                Forms\Components\Select::make('type')
+                Select::make('type')
                     ->label('Article Type')
                     ->options([
                         'article' => 'Article',
@@ -67,20 +76,20 @@ class ArticleResource extends Resource
                     ->disabled($article !== null)
                     ->columnSpanFull(),
 
-                Forms\Components\Wizard::make([
-                    Forms\Components\Wizard\Step::make('Article')
+                Wizard::make([
+                    Step::make('Article')
                         ->icon('heroicon-o-newspaper')
                         ->schema(Article::getForm()),
-                    Forms\Components\Wizard\Step::make('Review')
+                    Step::make('Review')
                         ->icon('heroicon-o-star')
                         ->schema(Review::getForm($article?->review)),
                 ])
                     ->hidden(fn (Get $get): bool => $get('type') !== 'review')
                     ->columnSpanFull()
-                    ->skippable(fn () => $article !== null)
+                    ->skippable(fn (): bool => $article !== null)
                     ->submitAction(new HtmlString(Blade::render($bladeAction))),
 
-                Forms\Components\Section::make('Article')
+                Section::make('Article')
                     ->schema(Article::getForm())
                     ->hidden(fn (Get $get): bool => $get('type') !== 'article')
                     ->columnSpanFull(),
@@ -90,21 +99,21 @@ class ArticleResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(function (Builder $query) {
+            ->modifyQueryUsing(function (Builder $query): void {
                 $query
-                    ->when(! user()->is_super, fn ($query) => $query->where('author_id', user()->author->id))
+                    ->unless(user()->is_super, fn ($query) => $query->where('author_id', user()->author->id))
                     ->orderByDesc('id');
             })
             ->defaultPaginationPageOption(25)
             ->columns([
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_featured')
+                IconColumn::make('is_featured')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('author.name')
+                TextColumn::make('author.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->badge()
                     ->color(fn (ArticleStatus $state): string => match ($state->value) {
                         'draft' => 'gray',
@@ -112,11 +121,11 @@ class ArticleResource extends Resource
                         'review' => 'info',
                         'published' => 'success',
                     }),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -126,11 +135,11 @@ class ArticleResource extends Resource
                     ->options(ArticleStatus::toSelectOptions()),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -138,9 +147,9 @@ class ArticleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListArticles::route('/'),
-            'create' => Pages\CreateArticle::route('/create'),
-            'edit' => Pages\EditArticle::route('/{record}/edit'),
+            'index' => ListArticles::route('/'),
+            'create' => CreateArticle::route('/create'),
+            'edit' => EditArticle::route('/{record}/edit'),
         ];
     }
 }
