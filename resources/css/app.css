@@ -1,15 +1,20 @@
 @import "tailwindcss";
+@import "./font.css";
 @plugin "@tailwindcss/forms";
 @plugin "@tailwindcss/typography";
 
 @config "../../tailwind.config.mjs";
 
-html {
-    @apply h-full w-full;
-}
+@layer app {
+    html {
+        @apply h-full w-full;
+    }
 
-body {
-    @apply h-full w-full font-sans antialiased dark:bg-base-100 dark:text-base-content;
+    body {
+        font-family: "Montserrat", sans-serif;
+        font-optical-sizing: auto;
+        @apply h-full w-full antialiased dark:bg-base-100 dark:text-base-content;
+    }
 }
 
 .bg-gradient-cover {

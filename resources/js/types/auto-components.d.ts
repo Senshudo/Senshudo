@@ -25,6 +25,7 @@ declare module 'vue' {
     NavBar: typeof import('./../components/NavBar.vue')['default']
     Pagination: typeof import('./../components/Pagination.vue')['default']
     Search: typeof import('./../components/Search.vue')['default']
+    Socials: typeof import('./../components/Socials.vue')['default']
     ThemeToggle: typeof import('./../components/ThemeToggle.vue')['default']
   }
 }

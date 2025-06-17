@@ -1,0 +1,67 @@
+{
+	skip_install_trust
+
+	pki {
+		ca local {
+			intermediate_lifetime 730d
+		}
+	}
+}
+
+(security) {
+	header referrer-policy strict-origin-when-cross-origin
+	header x-content-type-options nosniff
+	header x-xss-protection "1; mode=block"
+	header x-frame-options SAMEORIGIN
+}
+
+(cache) {
+	@nocache {
+		path /*
+	}
+
+	handle @nocache {
+		header Cache-Control "no-cache, no-store, must-revalidate"
+	}
+
+	@static {
+		file
+		path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.woff
+	}
+
+	header @static Cache-Control max-age=5184000
+}
+
+senshudo.local {
+	root * /var/www/html/public
+
+	tls {
+		issuer internal {
+			lifetime 365d
+		}
+	}
+
+	encode zstd gzip
+
+	import security
+	import cache 
+
+	{$CADDY_SERVER_EXTRA_DIRECTIVES}
+
+	php_fastcgi unix//run/php/php8.4-fpm.sock {
+		trusted_proxies private_ranges
+		resolve_root_symlink
+	}
+
+	file_server
+}
+
+ws.senshudo.local {
+	tls {
+		issuer internal {
+			lifetime 365d
+		}
+	}
+
+	reverse_proxy :8080
+}

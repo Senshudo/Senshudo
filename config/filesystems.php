@@ -46,7 +46,8 @@ return [
 
         'media' => [
             'driver' => env('FILES_DRIVER', 'local'),
-            'root' => env('FILES_ROOT', storage_path('app')).'/media',
+            'root' => env('FILES_ROOT', storage_path('app/media')),
+            'throw' => true,
 
             'key' => env('DO_ACCESS_KEY_ID'),
             'secret' => env('DO_SECRET_ACCESS_KEY'),

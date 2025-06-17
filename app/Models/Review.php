@@ -19,8 +19,8 @@ use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
  * @property float|null $graphics
  * @property float|null $story
  * @property float|null $gameplay
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \App\Models\Article $article
  *
  * @method static \Database\Factories\ReviewFactory factory($count = null, $state = [])

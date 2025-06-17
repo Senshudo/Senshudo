@@ -42,10 +42,10 @@ use Spatie\Sluggable\SlugOptions;
  * @property array<array-key, mixed>|null $sources
  * @property bool $is_featured
  * @property ArticleStatus $status
- * @property \Illuminate\Support\Carbon|null $published_at
+ * @property \Carbon\CarbonImmutable|null $published_at
  * @property string|null $scheduled_for
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \App\Models\Author $author
  * @property-read Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
@@ -168,9 +168,21 @@ class Article extends Model implements HasMedia, Sitemapable
         return $this->belongsTo(Review::class, 'id', 'article_id');
     }
 
+    /** @return Attribute<bool, never> */
     protected function isPublished(): Attribute
     {
-        return Attribute::make(fn (): bool => $this->published_at !== null);
+        return Attribute::make(
+            get: fn (): bool => $this->published_at !== null,
+        );
+    }
+
+    /** @return Attribute<string, string> */
+    protected function excerpt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value): string => trim(strip_tags(html_entity_decode($value))).'...',
+            set: fn (string $value): string => $value,
+        );
     }
 
     /**

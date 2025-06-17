@@ -8,9 +8,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <NavBar v-if="status !== 503" />
     <main class="">
         <slot />
     </main>
-    <AppFooter />
 </template>

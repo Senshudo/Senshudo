@@ -22,7 +22,7 @@ class HomepageController extends Controller
             ->where('is_featured', true)
             ->where('status', ArticleStatus::PUBLISHED)
             ->orderByDesc('id')
-            ->limit(6)
+            ->limit(5)
             ->get();
 
         $articles = Article::with([
@@ -34,7 +34,7 @@ class HomepageController extends Controller
             ->whereNotIn('id', $featuredArticles->pluck('id')->toArray())
             ->where('status', ArticleStatus::PUBLISHED)
             ->orderByDesc('id')
-            ->paginate(15);
+            ->paginate(6);
 
         $liveStream = Channel::query()->where('is_online', true)->inRandomOrder()->first();
 

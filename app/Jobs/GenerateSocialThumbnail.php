@@ -3,13 +3,13 @@
 namespace App\Jobs;
 
 use App\Models\Article;
+use Backstage\OgImage\Laravel\Facades\OgImage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
-use Vormkracht10\LaravelOpenGraphImage\Facades\OpenGraphImage;
 
 class GenerateSocialThumbnail implements ShouldQueue
 {
@@ -39,12 +39,12 @@ class GenerateSocialThumbnail implements ShouldQueue
             $this->fail('No image found for article '.$this->article->id);
         }
 
-        $url = base64_encode(OpenGraphImage::createImageFromParams([
+        $url = base64_encode(OgImage::createImageFromParams([
             'title' => $this->article->title,
             'score' => $this->article->review?->overall,
             'author' => $this->article->author->name,
             'image' => $imageContents,
-        ]));
+        ], 'vendor.open-graph-image.template', true));
 
         $this->article->addMediaFromBase64('data:image/jpg;base64,'.$url)
             ->usingFileName($this->article->slug.'.jpg')

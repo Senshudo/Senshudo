@@ -39,6 +39,7 @@ export default tseslint.config(
         ignores: [
             'app/**/*',
             'bootstrap/**/*',
+            'caddy/**/*',
             'config/**/*',
             'database/**/*',
             'node_modules/**/*',

@@ -14,8 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $is_online
  * @property string|null $online_webhook_id
  * @property string|null $offline_webhook_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
  *
  * @method static \Database\Factories\ChannelFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Channel newModelQuery()

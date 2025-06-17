@@ -21,8 +21,6 @@ class HandleInertiaRequests extends Middleware
 
     public function handle(Request $request, Closure $next): Response
     {
-        Vite::useIntegrityKey('integrity');
-
         return parent::handle($request, $next);
     }
 
