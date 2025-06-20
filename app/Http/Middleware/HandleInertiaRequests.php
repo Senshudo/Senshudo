@@ -46,6 +46,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'env' => config('app.env'),
+            'isWebpSupported' => $request->accepts(['image/webp']),
             'location' => $request->url(),
             'route' => $request->route()->getName(),
         ];

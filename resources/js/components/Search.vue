@@ -100,7 +100,7 @@ function handleClose() {
         />
     </button>
 
-    <div class="relative z-50" role="dialog" aria-modal="true">
+    <div class="relative z-50" role="dialog" aria-modal="true" title="Search">
         <transition
             enter-from-class="opacity-0"
             enter-active-class="ease-in-out transition-all duration-300"
@@ -122,7 +122,7 @@ function handleClose() {
         >
             <div
                 v-if="showModal"
-                class="fixed inset-0 z-10 w-screen overflow-y-auto p-4 sm:p-6 md:p-20"
+                class="fixed inset-0 z-10 w-screen overflow-y-auto p-4 pt-20 sm:p-6 md:p-20"
             >
                 <div
                     ref="searchBox"

@@ -305,6 +305,8 @@
     "useId": true,
     "useModel": true,
     "useTemplateRef": true,
-    "defineLayout": true
+    "defineLayout": true,
+    "useIsWebpSupported": true,
+    "useGetImage": true
   }
 }

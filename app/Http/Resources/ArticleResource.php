@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,9 +24,9 @@ class ArticleResource extends JsonResource
             'review' => ReviewResource::make($this->whenLoaded('review')),
             'title' => $this->title,
             'slug' => $this->slug,
-            'thumbnail' => $this->whenLoaded('media', fn (): ?string => $this->hasMedia('thumbnail') ? $this->getFirstMedia('thumbnail')?->getUrl() : $this->getFirstMedia('background')?->getUrl('thumb')),
-            'socialThumbnail' => $this->whenLoaded('media', fn (): ?string => $this->getFirstMedia('socialThumbnail')?->getUrl()),
-            'background' => $this->whenLoaded('media', fn (): ?string => $this->getFirstMedia('background')?->getUrl()),
+            'thumbnail' => $this->whenLoaded('media', fn (): ?MediaResource => MediaResource::make($this->getFirstMedia('thumbnail'))),
+            'socialThumbnail' => $this->whenLoaded('media', fn (): ?MediaResource => MediaResource::make($this->getFirstMedia('socialThumbnail'))),
+            'background' => $this->whenLoaded('media', fn (): ?MediaResource => MediaResource::make($this->getFirstMedia('background'))),
             'excerpt' => $this->excerpt,
             'content' => $this->content,
             'keywords' => $this->keywords,

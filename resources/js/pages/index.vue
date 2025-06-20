@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
+import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import type { RouterGlobal } from 'momentum-trail/dist/types/router'
+import { useGetImage } from '@/composables/useGetImage'
 
 const props = defineProps<{
     featured: App.Article[]
@@ -73,59 +76,91 @@ const otherFeatured = computed(() => {
 <template>
     <div>
         <AppHead />
-        <header>
-            <div class="flex items-center justify-center py-6">
-                <img
-                    loading="lazy"
-                    decoding="async"
-                    class="block h-12 w-auto dark:hidden"
-                    src="@/../images/logo-black.svg"
-                    width="141"
-                    height="48"
-                    alt="Senshudo"
-                />
-                <img
-                    loading="lazy"
-                    decoding="async"
-                    class="hidden h-12 w-auto dark:block"
-                    src="@/../images/logo-white.svg"
-                    width="141"
-                    height="48"
-                    alt="Senshudo"
-                />
-            </div>
-            <div class="mx-auto max-w-7xl">
-                <div
-                    class="flex items-center justify-center gap-2 border-b border-b-gray-200 px-4 sm:justify-between"
-                >
-                    <div class="hidden sm:block lg:w-[216px]">
-                        <ThemeToggle class="mb-2" />
-                    </div>
-                    <nav class="flex flex-grow-0 gap-4">
-                        <InertiaLink
-                            v-for="(item, index) in navigationItems"
-                            :key="index"
-                            :href="item.href"
-                            :class="[
-                                'dark:hover:border-base-content dark:hover:text-base-content inline-flex items-center border-b-2 px-1 pt-1 pb-2 text-sm font-medium hover:border-gray-300 hover:text-gray-700',
-                                {
-                                    'dark:text-base-content/80 border-transparent text-gray-500':
-                                        !item.current,
-                                    'border-indigo-500 text-gray-900 dark:border-white dark:text-white':
-                                        item.current,
-                                },
-                            ]"
-                        >
-                            {{ item.name }}
+
+        <Disclosure v-slot="{ open }" as="header" class="dark:bg-neutral bg-white shadow">
+            <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-gray-700 lg:px-8">
+                <div class="relative flex h-16 justify-between">
+                    <div class="relative z-10 flex px-2 lg:px-0">
+                        <InertiaLink href="/" class="flex flex-shrink-0 items-center">
+                            <img
+                                loading="lazy"
+                                decoding="async"
+                                class="block h-8 w-auto dark:hidden"
+                                src="@/../images/logo-black.svg"
+                                alt="Senshudo"
+                            />
+                            <img
+                                loading="lazy"
+                                decoding="async"
+                                class="hidden h-8 w-auto dark:block"
+                                src="@/../images/logo-white.svg"
+                                alt="Senshudo"
+                            />
                         </InertiaLink>
-                    </nav>
-                    <div class="hidden justify-center space-x-4 md:order-2 lg:flex">
-                        <Socials />
                     </div>
-                    <div class="hidden sm:block lg:hidden"></div>
+                    <div
+                        class="relative flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0"
+                    >
+                        <div class="grid w-full grid-cols-1 sm:max-w-xs">
+                            <Search />
+                        </div>
+                    </div>
+                    <div class="relative z-10 flex items-center lg:hidden">
+                        <!-- Mobile menu button -->
+                        <DisclosureButton
+                            class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset"
+                        >
+                            <span class="absolute -inset-0.5" />
+                            <span class="sr-only">Open menu</span>
+                            <Bars3Icon v-if="!open" class="block size-6" aria-hidden="true" />
+                            <XMarkIcon v-else class="block size-6" aria-hidden="true" />
+                        </DisclosureButton>
+                    </div>
+                    <div class="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
+                        <ThemeToggle />
+                    </div>
                 </div>
+                <nav
+                    class="hidden lg:flex lg:justify-center lg:space-x-8 lg:py-2"
+                    aria-label="Global"
+                >
+                    <a
+                        v-for="item in navigationItems"
+                        :key="item.name"
+                        :href="item.href"
+                        :class="[
+                            item.current
+                                ? 'bg-gray-900 text-white'
+                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                            'inline-flex items-center rounded-md px-3 py-2 text-sm font-medium',
+                        ]"
+                        :aria-current="item.current ? 'page' : undefined"
+                    >
+                        {{ item.name }}
+                    </a>
+                </nav>
             </div>
-        </header>
+
+            <DisclosurePanel as="nav" class="lg:hidden" aria-label="Global">
+                <div class="space-y-1 px-2 pt-2 pb-3">
+                    <DisclosureButton
+                        v-for="item in navigationItems"
+                        :key="item.name"
+                        as="a"
+                        :href="item.href"
+                        :class="[
+                            item.current
+                                ? 'bg-gray-900 text-white'
+                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                            'block rounded-md px-3 py-2 text-base font-medium',
+                        ]"
+                        :aria-current="item.current ? 'page' : undefined"
+                    >
+                        {{ item.name }}
+                    </DisclosureButton>
+                </div>
+            </DisclosurePanel>
+        </Disclosure>
 
         <div class="mx-auto my-4 max-w-2xl px-4 lg:max-w-7xl">
             <div
@@ -134,7 +169,7 @@ const otherFeatured = computed(() => {
                 <InertiaLink
                     :href="route('news.show', topFeatured?.slug)"
                     class="relative col-span-2 flex items-end bg-gray-50 bg-cover p-4"
-                    :style="`background-image: url(${topFeatured?.background})`"
+                    :style="`background-image: url(${useGetImage(topFeatured, 'background')})`"
                 >
                     <div
                         class="-mx-4 -mb-4 flex max-w-[calc(100%+2rem)] flex-col bg-linear-to-t from-black to-transparent p-4 whitespace-nowrap text-white"
@@ -156,7 +191,7 @@ const otherFeatured = computed(() => {
                         :key="`featured-${index + 1}`"
                         :href="route('news.show', article?.slug)"
                         :class="`relative bg-gray-${index}00 flex items-end bg-cover p-4`"
-                        :style="`background-image: url(${article.background})`"
+                        :style="`background-image: url(${useGetImage(article, 'background')})`"
                     >
                         <div
                             class="-mx-4 -mb-4 flex max-w-[calc(100%+2rem)] flex-col bg-linear-to-t from-black to-transparent p-4 whitespace-nowrap text-white"
@@ -189,7 +224,7 @@ const otherFeatured = computed(() => {
                     :key="`featured-${index}`"
                     :href="route('news.show', article?.slug)"
                     :class="`relative bg-gray-${index}00 flex h-60 items-end overflow-hidden rounded-lg bg-cover p-4 shadow-sm ring-1 ring-black/5`"
-                    :style="`background-image: url(${article.background})`"
+                    :style="`background-image: url(${useGetImage(article, 'background')})`"
                 >
                     <div
                         class="-mx-4 -mb-4 flex max-w-[calc(100%+2rem)] flex-col bg-linear-to-t from-black to-transparent p-4 whitespace-nowrap text-white"
@@ -229,14 +264,14 @@ const otherFeatured = computed(() => {
                     >
                         <img
                             class="h-60 object-cover object-left"
-                            :src="article.background"
+                            :src="useGetImage(article, 'background')"
                             :alt="article.title"
                             width="405"
                             height="240"
                             loading="lazy"
                             decoding="async"
                         />
-                        <div class="p-10 pt-4">
+                        <div class="p-6 pt-4 md:p-10">
                             <h3
                                 class="flex justify-between text-sm/4 font-semibold text-indigo-600 dark:text-gray-300"
                             >

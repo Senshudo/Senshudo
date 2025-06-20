@@ -6,7 +6,7 @@ trap 'echo "Script interrupted. Exiting."; exit 1' INT TERM
 # Variables
 HOSTS_FILE="/etc/hosts"
 CERT_PATH="$(pwd)/data/caddy/pki/authorities/local/root.crt"
-DOMAINS=("api.senshudo.local" "ws.senshudo.local" "senshudo.local")
+DOMAINS=("amp.senshudo.local" "ws.senshudo.local" "senshudo.local")
 
 # Add domains to /etc/hosts if not present
 for DOMAIN in "${DOMAINS[@]}"; do

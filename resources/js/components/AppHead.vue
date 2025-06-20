@@ -8,6 +8,7 @@ const props = withDefaults(
         author?: string
         authorTwitter?: string | null
         ogType?: string
+        slug?: string
         description?: string
         thumbnail?: string
         imageWidth?: number
@@ -23,6 +24,7 @@ const props = withDefaults(
         author: 'Senshudo',
         authorTwitter: undefined,
         ogType: 'website',
+        slug: undefined,
         description:
             'Senshudo, Video Game News, Gaming News, Game Rankings, Game Reviews, Video Game Reviews',
         thumbnail: socialBanner,
@@ -41,6 +43,56 @@ const pageTitle = computed(() =>
     props.title
         ? `${props.title} - Senshudo`
         : 'Senshudo - Video Game News, Game Reviews, Game Rankings',
+)
+
+watch(
+    () => props.ogType,
+    () => {
+        if (typeof window !== 'undefined') {
+            if (props.ogType !== 'article' && document.querySelector('#articleData')) {
+                document.querySelector('#articleData')?.remove()
+            }
+
+            if (props.ogType === 'article') {
+                const script = document.createElement('script')
+                script.id = 'articleData'
+                script.type = 'application/ld+json'
+                script.textContent = JSON.stringify({
+                    '@context': 'http://schema.org',
+                    '@type': 'Article',
+                    mainEntityOfPage: url.value,
+                    headline: props.title,
+                    datePublished: props.publishedAt,
+                    dateModified: props.updatedAt,
+                    description: props.description,
+                    author: {
+                        '@type': 'Person',
+                        name: props.author,
+                    },
+                    publisher: {
+                        '@type': 'Organization',
+                        name: 'Senshudo',
+                        logo: {
+                            '@type': 'ImageObject',
+                            url: 'https://cdn.ampproject.org/logo.jpg',
+                            width: 600,
+                            height: 60,
+                        },
+                    },
+                    image: {
+                        '@type': 'ImageObject',
+                        url: props.thumbnail,
+                        height: props.imageHeight,
+                        width: props.imageWidth,
+                        alt: props.imageAlt ?? props.title,
+                    },
+                })
+
+                document.head.appendChild(script)
+            }
+        }
+    },
+    { immediate: true, deep: true },
 )
 </script>
 
@@ -71,6 +123,7 @@ const pageTitle = computed(() =>
             <meta property="og:updated_time" :content="updatedAt" />
             <meta v-if="category" property="article:section" :content="category" />
             <meta v-if="authorTwitter" name="twitter:creator" :content="`@${authorTwitter}`" />
+            <link rel="amphtml" :href="`https://amp.senshudo.tv/${slug}`" />
         </template>
     </InertiaHead>
 </template>
