@@ -39,3 +39,13 @@ Route::get('/ajax/video_verify.php', function (Request $request) {
 Route::get('media/{media:uuid}/{filename?}', MediaController::class)->name('media.show');
 
 Route::webhooks('webhooks/twitch', 'twitch');
+
+// Redirect old routes
+Route::redirect('/home', '/', 301)->name('home.redirect');
+Route::redirect('/main', '/', 301)->name('main.redirect');
+Route::redirect('/blog', '/news', 301)->name('blog.redirect');
+
+Route::prefix('games')->name('games.')->group(function () {
+    Route::redirect('/', '/', 301)->name('index');
+    Route::redirect('/{game}', '/', 301)->name('redirect');
+});
