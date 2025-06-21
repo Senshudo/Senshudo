@@ -32,18 +32,14 @@ class MediaResource extends JsonResource
 
     private function getConversions(): Collection
     {
-
-
         return $this->getGeneratedConversions()
             ->filter()
-            ->map(function (bool $value, string $conversion) {
-                return [
-                    [
-                        'name' => $conversion,
-                        'url' => UrlGeneratorFactory::createForMedia($this->getModel(), $conversion)->getUrl(),
-                    ],
-                ];
-            })
+            ->map(fn (bool $value, string $conversion): array => [
+                [
+                    'name' => $conversion,
+                    'url' => UrlGeneratorFactory::createForMedia($this->getModel(), $conversion)->getUrl(),
+                ],
+            ])
             ->flatten(1);
     }
 }

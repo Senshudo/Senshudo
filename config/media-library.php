@@ -1,7 +1,7 @@
 <?php
 
-use App\Spatie\UrlGenerator;
 use App\Models\Media;
+use App\Spatie\UrlGenerator;
 use Spatie\ImageOptimizer\Optimizers\Avifenc;
 use Spatie\ImageOptimizer\Optimizers\Cwebp;
 use Spatie\ImageOptimizer\Optimizers\Gifsicle;

@@ -1,4 +1,6 @@
 {
+    {$CADDY_GLOBAL_OPTIONS}
+
 	skip_install_trust
 
 	pki {
@@ -6,7 +8,15 @@
 			intermediate_lifetime 730d
 		}
 	}
+
+    admin {$CADDY_SERVER_ADMIN_HOST}:{$CADDY_SERVER_ADMIN_PORT}
+
+    frankenphp {
+        worker "{$APP_PUBLIC_PATH}/frankenphp-worker.php" {$CADDY_SERVER_WORKER_COUNT}
+    }
 }
+
+{$CADDY_EXTRA_CONFIG}
 
 (security) {
 	header referrer-policy strict-origin-when-cross-origin
@@ -33,27 +43,42 @@
 }
 
 amp.senshudo.local, senshudo.local {
-	root * /var/www/html/public
+    log {
+        level {$CADDY_SERVER_LOG_LEVEL}
 
-	tls {
-		issuer internal {
-			lifetime 365d
-		}
-	}
+        # Redact the authorization query parameter that can be set by Mercure...
+        format filter {
+            wrap {$CADDY_SERVER_LOGGER}
+            fields {
+                uri query {
+                    replace authorization REDACTED
+                }
+            }
+        }
+    }
 
-	encode zstd gzip
+    tls {
+        issuer internal {
+            lifetime 365d
+        }
+    }
 
-	import security
-	import cache
+    route {
+        root * "{$APP_PUBLIC_PATH}"
+		encode zstd br gzip
 
-	{$CADDY_SERVER_EXTRA_DIRECTIVES}
+        import security
+        import cache
 
-	php_fastcgi unix//run/php/php8.4-fpm.sock {
-		trusted_proxies private_ranges
-		resolve_root_symlink
-	}
+        {$CADDY_SERVER_EXTRA_DIRECTIVES}
 
-	file_server
+        php_server {
+            index frankenphp-worker.php
+            try_files {path} frankenphp-worker.php
+            # Required for the public/storage/ directory...
+            resolve_root_symlink
+        }
+    }
 }
 
 ws.senshudo.local {

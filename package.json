@@ -43,6 +43,7 @@
         "@vue/typescript-plugin": "^2.2.0",
         "autoprefixer": "^10.4.19",
         "axios": "^1.6.8",
+        "chokidar": "^4.0.3",
         "cssnano": "^6.1.2",
         "eslint": "^9.15.0",
         "eslint-config-prettier": "9.1.0",

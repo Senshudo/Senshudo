@@ -6,7 +6,7 @@ use App\Models\Article;
 
 class AmpController extends Controller
 {
-    public function index()
+    public function index(): void
     {
         // Login to list articles
     }

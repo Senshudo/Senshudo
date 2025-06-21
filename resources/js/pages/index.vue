@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useGetImage } from '@/composables/useGetImage'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import type { RouterGlobal } from 'momentum-trail/dist/types/router'
-import { useGetImage } from '@/composables/useGetImage'
 
 const props = defineProps<{
     featured: App.Article[]

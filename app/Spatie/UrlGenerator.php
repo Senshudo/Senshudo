@@ -9,7 +9,7 @@ class UrlGenerator extends DefaultUrlGenerator
 {
     public function getUrl(): string
     {
-        if ($this->conversion !== null) {
+        if ($this->conversion instanceof \Spatie\MediaLibrary\Conversions\Conversion) {
             return URL::route('media.conversion', [
                 'media' => $this->media,
                 'conversionName' => $this->conversion->getName(),

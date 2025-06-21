@@ -19,6 +19,7 @@
         "laravel/framework": "^12.19.3",
         "laravel/horizon": "^5.33.1",
         "laravel/nightwatch": "^1.7.4",
+        "laravel/octane": ">=2.10",
         "laravel/reverb": "^1.5.1",
         "laravel/sanctum": "^4.1.1",
         "laravel/scout": "^10.15.0",
@@ -29,7 +30,7 @@
         "php-http/curl-client": "^2.3.3",
         "predis/predis": "^2.4.0",
         "saade/filament-laravel-log": "^3.2.3",
-        "saloonphp/saloon": "^3.13.0",
+        "saloonphp/saloon": "^3.14.0",
         "spatie/laravel-medialibrary": "^11.13.0",
         "spatie/laravel-sitemap": "^7.3.6",
         "spatie/laravel-sluggable": "^3.7.5",
@@ -40,7 +41,6 @@
         "typesense/typesense-php": "^4.9.3"
     },
     "require-dev": {
-        "ext-pcov": "*",
         "barryvdh/laravel-ide-helper": "^3.5.5",
         "brianium/paratest": "^7.8.3",
         "driftingly/rector-laravel": "^2.0.5",

@@ -52,7 +52,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property-read int|null $categories_count
  * @property-read \App\Models\Event|null $event
  * @property-read bool $is_published
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
  * @property-read int|null $media_count
  * @property-read \App\Models\Review|null $review
  *

@@ -43,9 +43,7 @@ composer_install:
 
 db_reset:
 	@echo "Resetting the database..."
-	./vendor/bin/sail artisan passport:keys --force
 	./vendor/bin/sail artisan migrate:fresh --seed
-	./vendor/bin/sail artisan passport:client --password
 
 ide_helper:
 	@echo "Generating IDE helper files..."
