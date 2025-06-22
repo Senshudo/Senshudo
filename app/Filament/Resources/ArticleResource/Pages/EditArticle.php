@@ -44,7 +44,7 @@ class EditArticle extends EditRecord
         $article = $record;
 
         if (Arr::get($data, 'type') === 'article' || $article->review === null) {
-            $article->update($data);
+            $article->update(Arr::except($data, ['type']));
 
             return $article;
         }

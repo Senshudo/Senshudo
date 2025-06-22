@@ -27,7 +27,7 @@ class AuthorController extends Controller
                 'media',
             ])
             ->orderByDesc('id')
-            ->paginate(16);
+            ->paginate(15);
 
         return inertia('news/author', [
             'author' => AuthorResource::make($author),

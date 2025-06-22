@@ -29,7 +29,9 @@ class NewsController extends Controller
 
     public function show(Request $request, Article $article): Response
     {
-        abort_if($article->status !== ArticleStatus::PUBLISHED, 404);
+        if (! user() instanceof \App\Models\User) {
+            abort_if($article->status !== ArticleStatus::PUBLISHED, 404);
+        }
 
         $article->load([
             'categories',

@@ -79,13 +79,12 @@ function handleClose() {
                 <MagnifyingGlassIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
             </div>
             <div class="absolute inset-y-[0.3rem] right-1 space-x-1">
-                <kbd class="kbd">{{ isMac ? '⌘' : 'Ctrl' }}</kbd>
-                <kbd class="kbd">K</kbd>
+                <kbd class="kbd">{{ isMac ? '⌘' : 'Ctrl' }} K</kbd>
             </div>
             <input
                 id="search"
                 name="search"
-                class="dark:border-base-content/20 dark:bg-base-100 dark:ring-base-content/10 dark:focus:border-base-content dark:focus:ring-base-content block w-full rounded-md border-0 bg-white py-1.5 pr-3 pl-10 text-gray-900 ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 focus:ring-inset sm:text-sm sm:leading-6"
+                class="dark:border-base-content/20 dark:ring-base-content/10 dark:focus:border-base-content dark:focus:ring-base-content block w-full rounded-md border-0 bg-white py-1.5 pr-3 pl-10 text-gray-900 ring-1 ring-gray-300 ring-inset focus:ring-2 focus:ring-indigo-600 focus:ring-inset sm:text-sm sm:leading-6 dark:bg-gray-700 dark:text-gray-200 dark:placeholder:text-gray-200"
                 placeholder="Search"
                 type="search"
                 @click="showModal = true"

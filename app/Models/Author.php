@@ -22,7 +22,6 @@ use Spatie\Sluggable\SlugOptions;
  * @property bool $is_active
  * @property string|null $position
  * @property string|null $twitter
- * @property int|null $discord_user_id
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
@@ -37,7 +36,6 @@ use Spatie\Sluggable\SlugOptions;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Author newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Author query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Author whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Author whereDiscordUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Author whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Author whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Author whereName($value)

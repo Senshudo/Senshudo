@@ -10,7 +10,6 @@ declare module 'vue' {
     AppFooter: typeof import('./../components/AppFooter.vue')['default']
     AppHead: typeof import('./../components/AppHead.vue')['default']
     ArticlesCard: typeof import('./../components/Articles/Card.vue')['default']
-    ArticlesFeatured: typeof import('./../components/Articles/Featured.vue')['default']
     ArticlesFeaturedSection: typeof import('./../components/Articles/FeaturedSection.vue')['default']
     IconsFacebook: typeof import('./../components/Icons/Facebook.vue')['default']
     IconsIconLoading: typeof import('./../components/Icons/IconLoading.vue')['default']

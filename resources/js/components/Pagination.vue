@@ -152,7 +152,8 @@ function calcPageRange() {
                         :aria-current="data.page.current === p ? 'page' : undefined"
                         class="btn btn-default relative inline-flex items-center rounded-none"
                         :class="{
-                            'btn-primary z-10': data.page.current === p,
+                            'btn-primary dark:bg-base-100 z-10 dark:text-white':
+                                data.page.current === p,
                         }"
                         @click.prevent="emits('page-change', p)"
                     >

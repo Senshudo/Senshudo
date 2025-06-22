@@ -23,7 +23,7 @@ const normalArticles = computed(() => props.articles?.data?.slice(5))
 
 function pageChange(page: number) {
     router.visit(route(current('news.index') ? 'news.index' : 'reviews', { page }), {
-        only: ['previous'],
+        only: ['articles'],
         onStart: () => (isLoading.value = true),
         onFinish: () => (isLoading.value = false),
     })
@@ -31,28 +31,29 @@ function pageChange(page: number) {
 </script>
 
 <template>
-    <div class="mx-auto max-w-7xl p-4">
-        <AppHead :title="pageTitle" />
+    <AppHead :title="pageTitle" />
 
-        <ArticlesFeaturedSection v-if="featuredArticles.length > 0" :articles="featuredArticles" />
+    <div class="mx-auto my-4 max-w-2xl space-y-4 px-4 lg:max-w-7xl">
+        <ArticlesFeaturedSection :articles="featuredArticles" />
 
-        <div
-            v-if="isLoading"
-            class="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center"
-        >
-            <div class="absolute inset-0 flex items-center justify-center">
-                <IconsIconLoading
-                    class="text-primary-500 mr-4 size-8 animate-spin dark:text-white"
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-6">
+            <template v-if="isLoading">
+                <ArticlesCard
+                    v-for="index in 6"
+                    :key="`featured-loading-${index}`"
+                    :loading="true"
                 />
-                <span class="font-medium dark:text-white">Loading Articles...</span>
-            </div>
-        </div>
-        <div v-else class="mt-4 mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-            <ArticlesCard v-for="article in normalArticles" :key="article?.id" :article="article" />
+            </template>
+            <ArticlesCard
+                v-for="(article, index) in normalArticles"
+                v-else
+                :key="`article${index}`"
+                :article
+            />
         </div>
 
         <Pagination
-            v-if="articles.meta.total > 0"
+            v-if="articles?.meta?.total > 0 && !isLoading"
             :meta="articles?.meta"
             @page-change="pageChange"
         />

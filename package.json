@@ -1,7 +1,7 @@
 {
     "private": true,
     "type": "module",
-    "browserslist": "> 0.2%, last 2 versions, Firefox ESR, not dead",
+    "browserslist": ["> 0.2%", "last 2 versions", "Firefox ESR", "not dead"],
     "scripts": {
         "dev": "run-p routes lint && vite",
         "build:dev": "run-p routes lint && vite build --mode development && vite build --mode development --ssr",
@@ -21,6 +21,7 @@
         "@tailwindcss/vite": "^4.1.9",
         "@vue/server-renderer": "^3.4.21",
         "@vueuse/core": "^10.9.0",
+        "autoprefixer": "^10.4.19",
         "dayjs": "^1.11.10",
         "lodash": "^4.17.21",
         "mini-svg-data-uri": "^1.4.4",
@@ -41,7 +42,6 @@
         "@typescript-eslint/parser": "^8.16.0",
         "@vitejs/plugin-vue": "^5.2.1",
         "@vue/typescript-plugin": "^2.2.0",
-        "autoprefixer": "^10.4.19",
         "axios": "^1.6.8",
         "chokidar": "^4.0.3",
         "cssnano": "^6.1.2",

@@ -10,7 +10,7 @@ const props = withDefaults(
         ogType?: string
         slug?: string
         description?: string
-        thumbnail?: string
+        thumbnail?: App.Media | string
         imageWidth?: number
         imageHeight?: number
         imageAlt?: string
@@ -38,6 +38,15 @@ const props = withDefaults(
 )
 
 const url = computed(() => usePage().props.location)
+
+const thumbnailUrl = computed(() => {
+    if (typeof props.thumbnail === 'string') {
+        return props.thumbnail
+    } else if (props.thumbnail && props.thumbnail.url) {
+        return props.thumbnail.url
+    }
+    return socialBanner
+})
 
 const pageTitle = computed(() =>
     props.title
@@ -74,14 +83,14 @@ watch(
                         name: 'Senshudo',
                         logo: {
                             '@type': 'ImageObject',
-                            url: 'https://cdn.ampproject.org/logo.jpg',
-                            width: 600,
-                            height: 60,
+                            url: 'https://senshudo.tv/images/logo-black.svg',
+                            width: 705,
+                            height: 237,
                         },
                     },
                     image: {
                         '@type': 'ImageObject',
-                        url: props.thumbnail,
+                        url: thumbnailUrl.value,
                         height: props.imageHeight,
                         width: props.imageWidth,
                         alt: props.imageAlt ?? props.title,
@@ -107,7 +116,7 @@ watch(
         <meta property="og:type" :content="ogType" />
         <meta property="og:title" :content="pageTitle" />
         <meta property="og:description" :content="description" />
-        <meta property="og:image" :content="thumbnail" />
+        <meta property="og:image" :content="thumbnailUrl" />
         <meta property="og:image:width" :content="imageWidth?.toString()" />
         <meta property="og:image:height" :content="imageHeight?.toString()" />
         <meta property="og:image:alt" :content="imageAlt ?? pageTitle" />
@@ -115,12 +124,12 @@ watch(
         <meta property="og:site_name" content="Senshudo" />
         <meta name="twitter:title" :content="pageTitle" />
         <meta name="twitter:description" :content="description" />
-        <meta name="twitter:image" :content="thumbnail" />
+        <meta name="twitter:image" :content="thumbnailUrl" />
         <meta name="twitter:card" content="summary_large_image" />
         <template v-if="ogType === 'article'">
-            <meta property="article:published_time" :content="publishedAt" />
-            <meta property="article:modified_time" :content="updatedAt" />
-            <meta property="og:updated_time" :content="updatedAt" />
+            <meta v-if="publishedAt" property="article:published_time" :content="publishedAt" />
+            <meta v-if="updatedAt" property="article:modified_time" :content="updatedAt" />
+            <meta v-if="updatedAt" property="og:updated_time" :content="updatedAt" />
             <meta v-if="category" property="article:section" :content="category" />
             <meta v-if="authorTwitter" name="twitter:creator" :content="`@${authorTwitter}`" />
             <link rel="amphtml" :href="`https://amp.senshudo.tv/${slug}`" />

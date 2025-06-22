@@ -34,13 +34,17 @@ class HomepageController extends Controller
             ->whereNotIn('id', $featuredArticles->pluck('id')->toArray())
             ->where('status', ArticleStatus::PUBLISHED)
             ->orderByDesc('id')
-            ->paginate(6);
+            ->limit(6)
+            ->get();
+
+        $reviews = Article::with(['categories', 'author', 'review', 'media'])->whereHas('review')->where('status', ArticleStatus::PUBLISHED)->orderByDesc('id')->limit(3)->get();
 
         $liveStream = Channel::query()->where('is_online', true)->inRandomOrder()->first();
 
         return inertia('index', [
             'featured' => ArticleResource::collection($featuredArticles),
             'articles' => ArticleResource::collection($articles),
+            'reviews' => ArticleResource::collection($reviews),
             'liveStream' => $liveStream ? ChannelResource::make($liveStream) : null,
         ]);
     }
