@@ -37,6 +37,9 @@ const props = withDefaults(
     },
 )
 
+const appUrl = computed(() => usePage().props.app_url)
+const ampUrl = computed(() => usePage().props.amp_url)
+
 const url = computed(() => usePage().props.location)
 
 const thumbnailUrl = computed(() => {
@@ -83,7 +86,7 @@ watch(
                         name: 'Senshudo',
                         logo: {
                             '@type': 'ImageObject',
-                            url: 'https://senshudo.tv/images/logo-black.svg',
+                            url: `${appUrl.value}/images/logo-black.svg`,
                             width: 705,
                             height: 237,
                         },
@@ -132,7 +135,7 @@ watch(
             <meta v-if="updatedAt" property="og:updated_time" :content="updatedAt" />
             <meta v-if="category" property="article:section" :content="category" />
             <meta v-if="authorTwitter" name="twitter:creator" :content="`@${authorTwitter}`" />
-            <link rel="amphtml" :href="`https://amp.senshudo.tv/${slug}`" />
+            <link rel="amphtml" :href="`${ampUrl}/${slug}`" />
         </template>
     </InertiaHead>
 </template>

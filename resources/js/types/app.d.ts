@@ -118,6 +118,8 @@ declare namespace App {
 
     export type SharedData = {
         env: string;
+        app_url: string;
+        amp_url: string;
         isWebpSupported: boolean;
         location: string;
         route: string | null;

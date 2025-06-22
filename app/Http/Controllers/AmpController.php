@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ArticleStatus;
 use App\Models\Article;
 
 class AmpController extends Controller
@@ -17,6 +18,19 @@ class AmpController extends Controller
         // TODO: Include scripts for specific AMP Tags
         // https://amp.dev/documentation/examples/websites/introduction/hello_world/
 
-        return view('amp.article', []);
+        if (! user() instanceof \App\Models\User) {
+            abort_if($article->status !== ArticleStatus::PUBLISHED, 404);
+        }
+
+        $article->load([
+            'categories',
+            'author',
+            'review',
+            'media',
+        ]);
+
+        return view('amp.article', [
+            'article' => $article,
+        ]);
     }
 }
