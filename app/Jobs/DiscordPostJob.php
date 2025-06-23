@@ -64,33 +64,37 @@ class DiscordPostJob implements ShouldQueue
                             /** @var Channel $channel */
                             $channel = $part;
 
-                            return $guild->members->fetch($this->article->author->discord_user_id, true)->then(function (Member $member) use ($discord, $channel) {
-                                $author = new Author($discord, [
-                                    'name' => $member->username,
-                                    'icon_url' => $member->avatar,
-                                ]);
+                            return $guild->members->fetch((string) $this->article->author->discord_user_id, true)
+                                ->then(function (Part $part) use ($discord, $channel) {
+                                    /** @var Member $member */
+                                    $member = $part;
 
-                                $embed = new Embed($discord)
-                                    ->setTitle($this->article->title)
-                                    ->setDescription(rtrim(strip_tags(html_entity_decode($this->article->excerpt))).'...')
-                                    ->setUrl(route('news.show', $this->article))
-                                    ->setColor(0x4B0082) // Indigo color
-                                    ->setAuthor($author->name, $author->icon_url, route('author', $this->article->author))
-                                    ->setImage($this->article->getFirstMediaUrl('socialThumbnail'))
-                                    ->setTimestamp($this->article->created_at->getTimestamp());
+                                    $author = new Author($discord, [
+                                        'name' => $member->username,
+                                        'icon_url' => $member->getAvatarAttribute(),
+                                    ]);
 
-                                $messageBuilder = MessageBuilder::new()
-                                    ->setContent($this->article->title)
-                                    ->addEmbed($embed);
+                                    $embed = new Embed($discord)
+                                        ->setTitle($this->article->title)
+                                        ->setDescription(rtrim(strip_tags(html_entity_decode($this->article->excerpt))).'...')
+                                        ->setUrl(route('news.show', $this->article))
+                                        ->setColor(0x4B0082) // Indigo color
+                                        ->setAuthor($author->name, $author->icon_url, route('author', $this->article->author))
+                                        ->setImage($this->article->getFirstMediaUrl('socialThumbnail'))
+                                        ->setTimestamp($this->article->created_at->getTimestamp());
 
-                                return $channel
-                                    ->sendMessage($messageBuilder)
-                                    ->then(function (Part $part) use ($discord): void {
-                                        $discord->close();
-                                    })->catch(function ($e): void {
-                                        Log::error($e);
-                                    });
-                            });
+                                    $messageBuilder = MessageBuilder::new()
+                                        ->setContent($this->article->title)
+                                        ->addEmbed($embed);
+
+                                    return $channel
+                                        ->sendMessage($messageBuilder)
+                                        ->then(function (Part $part) use ($discord): void {
+                                            $discord->close();
+                                        })->catch(function ($e): void {
+                                            Log::error($e);
+                                        });
+                                });
                         });
                 });
         });
