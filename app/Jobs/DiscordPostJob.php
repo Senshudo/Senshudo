@@ -46,7 +46,7 @@ class DiscordPostJob implements ShouldQueue
             'token' => config('services.discord.bot_token'),
             'logger' => new NullLogger,
             'dnsConfig' => '1.1.1.1',
-            'intents' => Intents::getDefaultIntents() | Intents::GUILD_MEMBERS | Intents::GUILD_MESSAGES | Intents::GUILD_MESSAGE_REACTIONS | Intents::GUILD_SCHEDULED_EVENTS | Intents::GUILD_MESSAGE_POLLS,
+            'intents' => Intents::getDefaultIntents(),
         ]);
 
         $discord->once('init', function (Discord $discord): void {
@@ -94,5 +94,7 @@ class DiscordPostJob implements ShouldQueue
                         });
                 });
         });
+
+        $discord->run();
     }
 }
