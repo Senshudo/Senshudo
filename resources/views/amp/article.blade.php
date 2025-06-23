@@ -513,6 +513,35 @@
             line-height: 28px !important;
             text-align: center !important;
         }
+
+        .score-container {
+            margin-bottom: 1rem !important;
+        }
+
+        .score-container > .header {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            margin-bottom: 0.25rem !important;
+        }
+
+        .score-container > .header > span {
+            font-weight: 500 !important;
+        }
+
+        .score-container > .bar {
+            height: calc(0.25rem * 2.5) !important;
+            background-color: oklch(92.8% .006 264.531) !important;
+            border-radius: 3.40282e38px !important;
+            width: 100% !important;
+        }
+
+        .score-container > .bar > .progress {
+            height: calc(0.25rem * 2.5) !important;
+            background-color: oklch(58.5% .233 277.117) !important;
+            border-radius: 3.40282e38px !important;
+        }
     </style>
 </head>
 <body>
@@ -544,7 +573,33 @@
                     <div class="prose">
                         {!! $article->review->quote !!}
                     </div>
-                    <div></div>
+                    <div class="score-container">
+                        <div class="header">
+                            <span>Story</span>
+                            <span>{{ ((100 * $article->review->story) / 10) }}%</span>
+                        </div>
+                        <div class="bar">
+                            <div class="progress" style="width: {{ ((100 * $article->review->story) / 10) }}%;"></div>
+                        </div>
+                    </div>
+                    <div class="score-container">
+                        <div class="header">
+                            <span>Gameplay</span>
+                            <span>{{ ((100 * $article->review->gameplay) / 10) }}%</span>
+                        </div>
+                        <div class="bar">
+                            <div class="progress" style="width: {{ ((100 * $article->review->gameplay) / 10) }}%;"></div>
+                        </div>
+                    </div>
+                    <div class="score-container">
+                        <div class="header">
+                            <span>Graphics</span>
+                            <span>{{ ((100 * $article->review->graphics) / 10) }}%</span>
+                        </div>
+                        <div class="bar">
+                            <div class="progress" style="width: {{ ((100 * $article->review->graphics) / 10) }}%;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         @endif
