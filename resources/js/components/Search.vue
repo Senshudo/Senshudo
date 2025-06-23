@@ -48,8 +48,8 @@ async function handleSearch() {
 
     await useAxios()
         .get<App.Article[]>('/search', { params: { q: search.value.trim() } })
-        .then((response) => {
-            results.value = response.data
+        .then(({ data }) => {
+            results.value = data
             hasResults.value = true
         })
         .catch(() => {
@@ -152,14 +152,14 @@ function handleClose() {
 
                     <template v-if="!isLoading">
                         <p
-                            v-if="hasResults && results.length === 0"
+                            v-if="hasResults && results?.length === 0"
                             class="p-4 text-sm text-gray-500"
                         >
                             No results found.
                         </p>
 
                         <ul
-                            v-else-if="hasResults && results.length > 0"
+                            v-else-if="hasResults && results?.length > 0"
                             id="options"
                             class="max-h-72 scroll-py-2 overflow-y-auto py-2 text-sm text-gray-800"
                         >

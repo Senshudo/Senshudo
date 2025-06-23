@@ -10,7 +10,7 @@
     <style amp-custom>
         body {
             background-color:#f3f4f6;
-            font-family:Roboto, sans-serif !important;
+            font-family:Roboto, sans-serif;
         }
 
         header {
@@ -26,7 +26,7 @@
         article p,
         article p span,
         article span {
-            color:#000 !important;
+            color:#000;
         }
 
         .article-title {
@@ -41,8 +41,8 @@
         .prose p,
         .prose span,
         .prose p span {
-            font-size:1rem !important;
-            line-height:1.75rem !important;
+            font-size:1rem;
+            line-height:1.75rem;
         }
 
         .prose p {
@@ -457,92 +457,124 @@
         }
 
         .sources {
-            display: flex !important;
-            flex-direction: row !important;
-            flex-wrap: wrap !important;
-            gap: calc(.25rem * 4) !important;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: calc(.25rem * 4);
         }
 
         .btn {
-            cursor: pointer !important;
-            text-align: center !important;
-            font-size: var(--text-sm) !important;
-            font-weight: 500 !important;
-            border-style: solid !important;
-            padding: calc(.25rem * 2) !important;
-            padding-inline: calc(.25rem * 4) !important;
-            border-width: 1px !important;
-            border-radius: 0.25rem !important;
-            background-color: #fff !important;
-            color: oklch(21% .034 264.665) !important;
-            box-shadow: 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a  !important;
-            border-color: oklch(87.2% .01 258.338) !important;
-            text-decoration: none !important;
+            cursor: pointer;
+            text-align: center;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            border-style: solid;
+            padding: calc(.25rem * 2);
+            padding-inline: calc(.25rem * 4);
+            border-width: 1px;
+            border-radius: 0.25rem;
+            background-color: #fff;
+            color: oklch(21% .034 264.665);
+            box-shadow: 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a ;
+            border-color: oklch(87.2% .01 258.338);
+            text-decoration: none;
         }
 
         .prose .btn {
-            text-decoration: none !important;
+            text-decoration: none;
         }
 
         .prose iframe[allowfullscreen] {
-            width: 100% !important;
-            height: auto !important;
-            aspect-ratio: 16/9 !important;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
         }
 
         .hexagon {
             clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-            background-color: oklch(58.5% .233 277.117) !important;
-            padding: calc(.25rem * 2) !important;
-            font-weight: 600 !important;
-            color: #fff !important;
-            justify-content: center !important;
-            align-items: center !important;
-            display: flex !important;
+            background-color: oklch(58.5% .233 277.117);
+            padding: calc(.25rem * 2);
+            font-weight: 600;
+            color: #fff;
+            justify-content: center;
+            align-items: center;
+            display: flex;
             font-size:3.75rem;
             line-height: 1!important;
-            width: 200px !important;
-            height: 180px !important;
-            margin: 0 auto calc(.25rem * 6) auto !important;
+            width: 200px;
+            height: 180px;
+            margin: 0 auto calc(.25rem * 6) auto;
         }
 
         .review .breakdown > p:first-child {
-            font-style: italic !important;
-            font-weight: 600 !important;
-            font-size: 1.25em !important;
-            line-height: 28px !important;
-            text-align: center !important;
+            font-style: italic;
+            font-weight: 600;
+            font-size: 1.25em;
+            line-height: 28px;
+            text-align: center;
         }
 
         .score-container {
-            margin-bottom: 1rem !important;
+            margin-bottom: 1rem;
         }
 
         .score-container > .header {
-            display: flex !important;
-            flex-direction: row !important;
-            justify-content: space-between !important;
-            align-items: center !important;
-            margin-bottom: 0.25rem !important;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.25rem;
         }
 
         .score-container > .header > span {
-            font-weight: 500 !important;
+            font-weight: 500;
         }
 
         .score-container > .bar {
-            height: calc(0.25rem * 2.5) !important;
-            background-color: oklch(92.8% .006 264.531) !important;
-            border-radius: 3.40282e38px !important;
-            width: 100% !important;
+            height: calc(0.25rem * 2.5);
+            background-color: oklch(92.8% .006 264.531);
+            border-radius: 3.40282e38px;
+            width: 100%;
         }
 
         .score-container > .bar > .progress {
-            height: calc(0.25rem * 2.5) !important;
-            background-color: oklch(58.5% .233 277.117) !important;
-            border-radius: 3.40282e38px !important;
+            height: calc(0.25rem * 2.5);
+            background-color: oklch(58.5% .233 277.117);
+            border-radius: 3.40282e38px;
         }
     </style>
+    <script type="application/ld+json">
+        {
+            '@context': 'http://schema.org',
+            '@type': 'Article',
+            mainEntityOfPage: '{{ config('app.url').route('news.show', $article, false) }}',
+            headline: '{{ $article->title }}',
+            datePublished: '{{ $article->published_at->toIso8601String() }}',
+            dateModified: '{{ $article->updated_at->toIso8601String() }}',
+            description: '{{ $article->excerpt }}',
+            author: {
+                '@type': 'Person',
+                name: '{{ $article->author->name }}',
+            },
+            publisher: {
+                '@type': 'Organization',
+                name: 'Senshudo',
+                logo: {
+                    '@type': 'ImageObject',
+                    url: `{{ config('app.url') }}/images/logo-black.svg`,
+                    width: 705,
+                    height: 237,
+                },
+            },
+            image: {
+                '@type': 'ImageObject',
+                url: {{ str_replace(config('app.amp_url'), config('app.url'), $article->getFirstMediaUrl('background')) }},
+                height: 630,
+                width: 1200,
+                alt: '{{ $article->title }}',
+            },
+        }
+    </script>
 </head>
 <body>
     <header>
