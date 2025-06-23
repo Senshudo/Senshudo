@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Enums\ArticleStatus;
+use App\Jobs\DiscordPostJob;
 use App\Jobs\ScheduledArticleJob;
 use App\Mail\NewArticle;
 use App\Models\Article;
@@ -45,6 +46,8 @@ class ArticleObserver
             $article->update([
                 'published_at' => now(),
             ]);
+
+            DiscordPostJob::dispatch($article);
         }
 
         if ($article->isDirty('status') && $article->status === ArticleStatus::SCHEDULED) {
