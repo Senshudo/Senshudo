@@ -23,7 +23,7 @@ class CreateArticle extends CreateRecord
         }
 
         if (Arr::get($data, 'type') === 'article') {
-            return static::getModel()::create($data);
+            return static::getModel()::create(Arr::except($data, ['type']));
         }
 
         /** @var Article $article */

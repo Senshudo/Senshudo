@@ -1,15 +1,24 @@
 @import "tailwindcss";
+@import "./font.css";
 @plugin "@tailwindcss/forms";
 @plugin "@tailwindcss/typography";
 
 @config "../../tailwind.config.mjs";
 
-html {
-    @apply h-full w-full;
-}
+@layer app {
+    html {
+        @apply h-full w-full;
+    }
 
-body {
-    @apply h-full w-full font-sans antialiased dark:bg-base-100 dark:text-base-content;
+    body {
+        font-family: "Montserrat", sans-serif;
+        font-optical-sizing: auto;
+        @apply h-full w-full antialiased bg-gray-100 dark:bg-base-100 dark:text-base-content;
+    }
+
+    #app {
+        @apply flex min-h-screen flex-col;
+    }
 }
 
 .bg-gradient-cover {
@@ -21,7 +30,7 @@ body {
 }
 
 [class*='btn-'] {
-    @apply rounded border border-transparent p-2 px-4 text-center text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
+    @apply rounded border cursor-pointer border-transparent p-2 px-4 text-center text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
 }
 
 [class*='btn-']:disabled {
@@ -62,7 +71,7 @@ body {
         height: initial;
         z-index: 1;
 
-        @apply bg-gradient-to-t from-[#fff] dark:from-[#2a303c];
+        @apply bg-linear-to-t from-[var(--color-gray-100)];
     }
 
     & > .hero-copy {
@@ -94,6 +103,14 @@ body {
     }
 }
 
+.dark {
+    .hero-banner {
+        &::before {
+            @apply from-[#2A303C]!;
+        }
+    }
+}
+
 .hexagon {
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
     @apply flex items-center justify-center bg-indigo-500 p-2 font-semibold text-white;
@@ -107,6 +124,15 @@ body {
 
 .twitter-tweet.twitter-tweet-rendered {
     @apply mx-auto;
+}
+
+.prose {
+    & > p,
+    & > span,
+    & > * > span {
+        font-family: Roboto, sans-serif !important;
+        @apply text-black! dark:text-base-content!;
+    }
 }
 
 .prose iframe[allowfullscreen] {

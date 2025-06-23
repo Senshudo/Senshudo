@@ -1,67 +1,88 @@
 <script lang="ts" setup>
-import Facebook from '@/components/Icons/Facebook.vue'
-import Instagram from '@/components/Icons/Instagram.vue'
-import Tiktok from '@/components/Icons/Tiktok.vue'
-import Twitch from '@/components/Icons/Twitch.vue'
-import X from '@/components/Icons/X.vue'
-import Youtube from '@/components/Icons/Youtube.vue'
-
 const copyrightYear = ref(new Date().getFullYear())
 
-const navigation = [
-    {
-        name: 'Facebook',
-        href: 'https://www.facebook.com/senshudo/',
-        icon: Facebook,
-    },
-    {
-        name: 'Instagram',
-        href: 'https://www.instagram.com/senshudo/',
-        icon: Instagram,
-    },
-    {
-        name: 'X',
-        href: 'https://x.com/senshudo',
-        icon: X,
-    },
-    {
-        name: 'YouTube',
-        href: 'https://www.youtube.com/@SenshudoTvOfficial',
-        icon: Youtube,
-    },
-    {
-        name: 'TikTok',
-        href: 'https://www.tiktok.com/@senshudotv',
-        icon: Tiktok,
-    },
-    {
-        name: 'Twitch',
-        href: 'https://www.twitch.tv/senshudo',
-        icon: Twitch,
-    },
-]
+const navigation = {
+    company: [
+        { name: 'News', href: '/news', route: 'news.*', current: false },
+        { name: 'Reviews', href: '/reviews', route: 'reviews', current: false },
+        //{ name: 'Guides', href: '/guides', route: 'guides', current: false },
+        { name: 'Schedule', href: '/schedule', route: 'schedule', current: false },
+        //{ name: 'About', href: '/about', route: 'about', current: false },
+    ],
+    legal: [
+        { name: 'Terms of service', href: '#' },
+        { name: 'Privacy policy', href: '#' },
+    ],
+}
 </script>
 
 <template>
-    <footer>
-        <div
-            class="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8"
-        >
-            <div class="flex justify-center space-x-6 md:order-2">
-                <a
-                    v-for="item in navigation"
-                    :key="item.name"
-                    :href="item.href"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="fill-gray-400 hover:fill-gray-500 dark:fill-gray-300 dark:hover:fill-white"
-                >
-                    <span class="sr-only">{{ item.name }}</span>
-                    <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
-                </a>
+    <footer class="inset-px bg-white shadow-sm ring-1 ring-black/5 dark:bg-slate-700">
+        <div class="mx-auto max-w-7xl px-6 pt-16 pb-8 sm:pt-24 lg:px-8 lg:pt-32">
+            <div class="xl:grid xl:grid-cols-3 xl:gap-8">
+                <div class="space-y-8">
+                    <img
+                        loading="lazy"
+                        decoding="async"
+                        class="block h-8 w-auto dark:hidden"
+                        src="@/../images/logo-black.svg"
+                        alt="Senshudo"
+                    />
+                    <img
+                        loading="lazy"
+                        decoding="async"
+                        class="hidden h-8 w-auto dark:block"
+                        src="@/../images/logo-white.svg"
+                        alt="Senshudo"
+                    />
+                    <p class="text-sm/6 text-balance text-gray-700 dark:text-gray-300">
+                        The way of the player.
+                    </p>
+                    <div class="flex gap-x-6">
+                        <Socials />
+                    </div>
+                </div>
+                <div class="mt-16 grid gap-8 md:grid-cols-2 xl:col-span-2 xl:mt-0">
+                    <div class="hidden md:grid md:grid-cols-2 md:gap-8">
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="md:grid md:grid-cols-2 md:gap-8">
+                        <div>
+                            <h3 class="text-sm/6 font-semibold text-black dark:text-white">
+                                Company
+                            </h3>
+                            <ul role="list" class="mt-6 space-y-4">
+                                <li v-for="item in navigation.company" :key="item.name">
+                                    <a
+                                        :href="item.href"
+                                        class="text-sm/6 text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white"
+                                    >
+                                        {{ item.name }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mt-10 md:mt-0">
+                            <h3 class="text-sm/6 font-semibold text-black dark:text-white">
+                                Legal
+                            </h3>
+                            <ul role="list" class="mt-6 space-y-4">
+                                <li v-for="item in navigation.legal" :key="item.name">
+                                    <a
+                                        :href="item.href"
+                                        class="text-sm/6 text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white"
+                                    >
+                                        {{ item.name }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="mt-8 md:order-1 md:mt-0">
-                <p class="text-center text-xs leading-5">
+            <div class="mt-16 border-t border-gray-200 pt-8 sm:mt-20 lg:mt-24 dark:border-white/10">
+                <p class="text-sm/6 text-gray-700 dark:text-gray-300">
                     &copy; {{ copyrightYear }} Senshudo. All rights reserved.
                 </p>
             </div>

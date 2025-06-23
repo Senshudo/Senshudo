@@ -11,7 +11,7 @@ watchEffect(() => (mode.value = state.value as BasicColorSchema))
 </script>
 
 <template>
-    <button @click="next()">
+    <button aria-label="Toggle theme" @click="next()">
         <MoonIcon
             v-if="state === 'dark'"
             aria-hidden="true"

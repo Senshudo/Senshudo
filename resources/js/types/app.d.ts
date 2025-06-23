@@ -7,9 +7,9 @@ declare namespace App {
         review?: Review;
         title: string;
         slug: string;
-        thumbnail?: string | null;
-        socialThumbnail?: string | null;
-        background?: string | null;
+        thumbnail?: Media | null;
+        socialThumbnail?: Media | null;
+        background?: Media | null;
         excerpt: string;
         content: string;
         keywords: string;
@@ -71,6 +71,19 @@ declare namespace App {
         updated_at: string;
     }
 
+    export type Media = {
+        uuid: string;
+        name: string;
+        size: number;
+        mime_type: string | null;
+        collection_name: string;
+        human_size: string;
+        url: string;
+        conversions: { name: string; url: string }[];
+        path: string;
+        created_at: string;
+    }
+
     export type PageResource<T> = {
         data: T[];
         meta: PageMeta;
@@ -105,6 +118,9 @@ declare namespace App {
 
     export type SharedData = {
         env: string;
+        app_url: string;
+        amp_url: string;
+        isWebpSupported: boolean;
         location: string;
         route: string | null;
     }

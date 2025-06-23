@@ -1,30 +1,50 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 defineProps<{
     featured: App.Article[]
-    articles: App.PageResource<App.Article>
+    articles: App.Article[]
     liveStream: App.Channel | null
+    reviews: App.Article[]
 }>()
 </script>
 
 <template>
-    <div class="mx-auto max-w-7xl p-4">
+    <div>
         <AppHead />
 
-        <LiveStream :live-stream="liveStream" />
+        <div class="mx-auto my-4 max-w-2xl space-y-4 px-4 lg:max-w-7xl">
+            <LiveStream :live-stream="liveStream" />
 
-        <ArticlesFeatured v-if="featured.length > 0" :article="featured.at(0)" />
+            <ArticlesFeaturedSection :articles="featured" />
 
-        <ArticlesFeaturedSection v-if="featured.length > 0" :articles="featured.slice(1)" />
+            <div
+                class="mb-4 flex items-center justify-between gap-4 border-b border-b-gray-200 pb-1"
+            >
+                <h2 class="text-2xl font-bold">Articles</h2>
+                <InertiaLink :href="route('news.index')">View All</InertiaLink>
+            </div>
 
-        <div
-            v-if="articles.data.length > 0"
-            class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4"
-        >
-            <ArticlesCard
-                v-for="index in 12"
-                :key="`news${index}`"
-                :article="articles.data.at(index)"
-            />
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-6">
+                <ArticlesCard
+                    v-for="(article, index) in articles"
+                    :key="`article${index}`"
+                    :article
+                />
+            </div>
+
+            <div
+                class="mb-4 flex items-center justify-between gap-4 border-b border-b-gray-200 pb-1"
+            >
+                <h2 class="text-2xl font-bold">Reviews</h2>
+                <InertiaLink :href="route('reviews')">View All</InertiaLink>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-6">
+                <ArticlesCard
+                    v-for="(review, index) in reviews"
+                    :key="`review${index}`"
+                    :article="review"
+                />
+            </div>
         </div>
     </div>
 </template>

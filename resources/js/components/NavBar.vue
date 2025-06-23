@@ -45,10 +45,10 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <Disclosure v-slot="{ open }" as="nav" class="dark:bg-neutral bg-white shadow">
-        <div class="mx-auto max-w-7xl px-2 sm:px-4">
-            <div class="flex h-16 justify-between">
-                <div class="flex px-2 lg:px-0">
+    <Disclosure v-slot="{ open }" as="header" class="dark:bg-neutral bg-white shadow">
+        <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-gray-700 lg:px-8">
+            <div class="relative flex h-16 justify-between">
+                <div class="relative z-10 flex px-2 lg:px-0">
                     <InertiaLink href="/" class="flex flex-shrink-0 items-center">
                         <img
                             loading="lazy"
@@ -65,63 +65,64 @@ onBeforeMount(() => {
                             alt="Senshudo"
                         />
                     </InertiaLink>
-                    <div class="hidden lg:ml-6 lg:flex lg:space-x-8">
-                        <InertiaLink
-                            v-for="(item, index) in navigationItems"
-                            :key="index"
-                            :href="item.href"
-                            :class="[
-                                'dark:hover:border-base-content dark:hover:text-base-content inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium hover:border-gray-300 hover:text-gray-700',
-                                {
-                                    'dark:text-base-content/80 border-transparent text-gray-500':
-                                        !item.current,
-                                    'border-indigo-500 text-gray-900 dark:border-white dark:text-white':
-                                        item.current,
-                                },
-                            ]"
-                        >
-                            {{ item.name }}
-                        </InertiaLink>
-                    </div>
                 </div>
                 <div
-                    class="flex flex-1 items-center justify-center gap-6 px-2 sm:gap-2 lg:ml-6 lg:justify-end"
+                    class="relative flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0"
                 >
-                    <theme-toggle />
-                    <search />
+                    <div class="grid w-full grid-cols-1 sm:max-w-xs">
+                        <Search />
+                    </div>
                 </div>
-                <div class="flex items-center lg:hidden">
+                <div class="relative z-10 flex items-center lg:hidden">
                     <!-- Mobile menu button -->
                     <DisclosureButton
-                        class="dark:hover:bg-base-100 relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none focus:ring-inset"
+                        class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset"
                     >
                         <span class="absolute -inset-0.5" />
-                        <span class="sr-only">Open main menu</span>
-                        <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
-                        <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
+                        <span class="sr-only">Open menu</span>
+                        <Bars3Icon v-if="!open" class="block size-6" aria-hidden="true" />
+                        <XMarkIcon v-else class="block size-6" aria-hidden="true" />
                     </DisclosureButton>
                 </div>
+                <div class="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
+                    <ThemeToggle />
+                </div>
             </div>
-        </div>
-
-        <DisclosurePanel class="lg:hidden">
-            <div class="space-y-1 pt-2 pb-3">
-                <InertiaLink
-                    v-for="(item, index) in navigationItems"
-                    :key="index"
+            <nav class="hidden lg:flex lg:justify-center lg:space-x-8 lg:py-2" aria-label="Global">
+                <a
+                    v-for="item in navigationItems"
+                    :key="item.name"
                     :href="item.href"
                     :class="[
-                        'block border-l-4 py-2 pr-4 pl-3 text-base font-medium hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800',
-                        {
-                            'dark:text-base-content/80 border-transparent text-gray-600':
-                                !item.current,
-                            'dark:bg-base-100 border-indigo-500 bg-indigo-50 text-indigo-700 dark:border-white dark:text-white':
-                                item.current,
-                        },
+                        item.current
+                            ? 'bg-gray-100 text-black dark:bg-gray-900 dark:text-white'
+                            : 'text-gray-700 hover:bg-gray-100 hover:text-black dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white',
+                        'inline-flex items-center rounded-md px-3 py-2 text-sm font-medium',
                     ]"
+                    :aria-current="item.current ? 'page' : undefined"
                 >
                     {{ item.name }}
-                </InertiaLink>
+                </a>
+            </nav>
+        </div>
+
+        <DisclosurePanel as="nav" class="lg:hidden" aria-label="Global">
+            <div class="space-y-1 px-2 pt-2 pb-3">
+                <DisclosureButton
+                    v-for="item in navigationItems"
+                    :key="item.name"
+                    as="a"
+                    :href="item.href"
+                    :class="[
+                        item.current
+                            ? 'bg-gray-900 text-white'
+                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                        'block rounded-md px-3 py-2 text-base font-medium',
+                    ]"
+                    :aria-current="item.current ? 'page' : undefined"
+                >
+                    {{ item.name }}
+                </DisclosureButton>
             </div>
         </DisclosurePanel>
     </Disclosure>

@@ -54,6 +54,8 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'amp_url' => env('APP_AMP_DOMAIN'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

@@ -21,8 +21,6 @@ class HandleInertiaRequests extends Middleware
 
     public function handle(Request $request, Closure $next): Response
     {
-        Vite::useIntegrityKey('integrity');
-
         return parent::handle($request, $next);
     }
 
@@ -48,6 +46,9 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'env' => config('app.env'),
+            'app_url' => config('app.url'),
+            'amp_url' => config('app.amp_url'),
+            'isWebpSupported' => $request->accepts(['image/webp']),
             'location' => $request->url(),
             'route' => $request->route()->getName(),
         ];

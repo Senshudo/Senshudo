@@ -1,12 +1,102 @@
 <script lang="ts" setup>
-withDefaults(defineProps<{ articles?: App.Article[]; isLoading?: boolean }>(), {
+import { useGetImage } from '@/composables/useGetImage'
+
+const props = withDefaults(defineProps<{ articles?: App.Article[]; isLoading?: boolean }>(), {
     articles: () => [],
     isLoading: false,
+})
+
+const topFeatured = computed(() => props.articles.at(0))
+
+const otherFeatured = computed(() => {
+    return props.articles.slice(1, 5)
 })
 </script>
 
 <template>
-    <div class="grid grid-cols-1 gap-y-4 sm:gap-y-1 lg:grid-cols-2 lg:gap-x-1 lg:gap-y-0">
+    <div
+        class="inset-px hidden h-[600px] w-full grid-cols-5 overflow-hidden rounded-lg shadow-sm ring-1 ring-black/5 lg:grid"
+    >
+        <InertiaLink
+            :href="route('news.show', topFeatured?.slug)"
+            class="relative col-span-2 flex items-end bg-gray-50 bg-cover p-4"
+            :style="`background-image: url(${useGetImage(topFeatured, 'background')})`"
+        >
+            <div v-if="topFeatured?.review" class="hexagon absolute top-2 right-2 w-[50px]">
+                <div>{{ topFeatured?.review?.overall }}</div>
+            </div>
+            <div
+                class="-mx-4 -mb-4 flex max-w-[calc(100%+2rem)] flex-col bg-linear-to-t from-black to-transparent p-4 whitespace-nowrap text-white"
+            >
+                <span class="max-w-full overflow-hidden text-lg font-bold text-ellipsis">
+                    {{ topFeatured?.title }}
+                </span>
+                <span class="max-w-full overflow-hidden text-sm text-ellipsis">
+                    {{ topFeatured?.author?.name }}
+                </span>
+            </div>
+            <div
+                class="pointer-events-none absolute inset-px rounded-lg shadow-sm ring-1 ring-black/5"
+            />
+        </InertiaLink>
+        <div class="col-span-3 grid grid-cols-2">
+            <InertiaLink
+                v-for="(article, index) in otherFeatured"
+                :key="`featured-${index + 1}`"
+                :href="route('news.show', article?.slug)"
+                :class="`relative bg-gray-${index}00 flex items-end bg-cover p-4`"
+                :style="`background-image: url(${useGetImage(article, 'background')})`"
+            >
+                <div v-if="article?.review" class="hexagon absolute top-2 right-2 w-[50px]">
+                    <div>{{ article?.review?.overall }}</div>
+                </div>
+                <div
+                    class="-mx-4 -mb-4 flex max-w-[calc(100%+2rem)] flex-col bg-linear-to-t from-black to-transparent p-4 whitespace-nowrap text-white"
+                >
+                    <span class="max-w-full overflow-hidden text-lg font-bold text-ellipsis">
+                        {{ article?.title }}
+                    </span>
+                    <span class="max-w-full overflow-hidden text-sm text-ellipsis">
+                        {{ article?.author?.name }}
+                    </span>
+                </div>
+                <div
+                    :class="[
+                        'pointer-events-none absolute inset-px shadow-sm ring-1 ring-black/5',
+                        {
+                            'rounded-tr-lg': index === 1,
+                            'rounded-bl-lg': index === 3,
+                        },
+                    ]"
+                />
+            </InertiaLink>
+        </div>
+    </div>
+
+    <div class="block space-y-4 lg:hidden">
+        <InertiaLink
+            v-for="(article, index) in articles"
+            :key="`featured-${index}`"
+            :href="route('news.show', article?.slug)"
+            :class="`relative bg-gray-${index}00 flex h-60 items-end overflow-hidden rounded-lg bg-cover p-4 shadow-sm ring-1 ring-black/5`"
+            :style="`background-image: url(${useGetImage(article, 'background')})`"
+        >
+            <div
+                class="-mx-4 -mb-4 flex max-w-[calc(100%+2rem)] flex-col bg-linear-to-t from-black to-transparent p-4 whitespace-nowrap text-white"
+            >
+                <span class="max-w-full overflow-hidden text-lg font-bold text-ellipsis">
+                    {{ article?.title }}
+                </span>
+                <span class="max-w-full overflow-hidden text-sm text-ellipsis">
+                    {{ article?.author?.name }}
+                </span>
+            </div>
+            <div
+                class="pointer-events-none absolute inset-px rounded-lg shadow-sm ring-1 ring-black/5"
+            />
+        </InertiaLink>
+    </div>
+    <!--<div class="grid grid-cols-1 gap-y-4 sm:gap-y-1 lg:grid-cols-2 lg:gap-x-1 lg:gap-y-0">
         <article class="relative hidden overflow-hidden rounded sm:block">
             <div v-if="isLoading">
                 <div class="h-auto min-h-[350px] w-full rounded bg-gray-300 lg:max-w-[638px]"></div>
@@ -298,5 +388,5 @@ withDefaults(defineProps<{ articles?: App.Article[]; isLoading?: boolean }>(), {
 
             <articles-card class="block sm:hidden" :article="articles?.at(4)" />
         </div>
-    </div>
+    </div>-->
 </template>

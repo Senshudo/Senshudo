@@ -9,8 +9,10 @@ onMounted(() => {
 
 <template>
     <NavBar v-if="status !== 503" />
-    <main class="">
+
+    <main class="flex-1">
         <slot />
     </main>
+
     <AppFooter />
 </template>

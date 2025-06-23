@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 const props = defineProps<{ status: number }>()
 
 const pageTitle = computed(() => {
@@ -30,8 +30,9 @@ const description = computed(() => {
 </script>
 
 <template>
-    <main class="grid min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8">
-        <AppHead :title="pageTitle" />
+    <AppHead :title="pageTitle" />
+
+    <div class="mx-auto my-4 max-w-2xl space-y-4 px-4 lg:max-w-7xl">
         <div class="text-center">
             <p class="text-base font-semibold text-indigo-600 dark:text-white">{{ status }}</p>
             <h1
@@ -46,5 +47,7 @@ const description = computed(() => {
                 <InertiaLink href="/" class="btn-primary">Go back home</InertiaLink>
             </div>
         </div>
-    </main>
+    </div>
 </template>
+
+<style scoped></style>

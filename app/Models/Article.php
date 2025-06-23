@@ -25,6 +25,7 @@ use Laravel\Scout\Searchable;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sitemap\Contracts\Sitemapable;
 use Spatie\Sitemap\Tags\Url;
 use Spatie\Sluggable\HasSlug;
@@ -42,16 +43,16 @@ use Spatie\Sluggable\SlugOptions;
  * @property array<array-key, mixed>|null $sources
  * @property bool $is_featured
  * @property ArticleStatus $status
- * @property \Illuminate\Support\Carbon|null $published_at
+ * @property \Carbon\CarbonImmutable|null $published_at
  * @property string|null $scheduled_for
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \App\Models\Author $author
  * @property-read Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
  * @property-read \App\Models\Event|null $event
  * @property-read bool $is_published
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
  * @property-read int|null $media_count
  * @property-read \App\Models\Review|null $review
  *
@@ -144,6 +145,12 @@ class Article extends Model implements HasMedia, Sitemapable
         $this->addMediaCollection('images');
     }
 
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('webp')
+            ->format('webp');
+    }
+
     /** @return BelongsToMany<Category, $this> */
     public function categories(): BelongsToMany
     {
@@ -168,9 +175,29 @@ class Article extends Model implements HasMedia, Sitemapable
         return $this->belongsTo(Review::class, 'id', 'article_id');
     }
 
+    /** @return Attribute<bool, never> */
     protected function isPublished(): Attribute
     {
-        return Attribute::make(fn (): bool => $this->published_at !== null);
+        return Attribute::make(
+            get: fn (): bool => $this->published_at !== null,
+        );
+    }
+
+    /** @return Attribute<string, string> */
+    protected function excerpt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value): string => trim(strip_tags(html_entity_decode($value))).'...',
+            set: fn (string $value): string => $value,
+        );
+    }
+
+    protected function content(): attribute
+    {
+        return Attribute::make(
+            get: fn (string $value): string => preg_replace('/<p\b[^>]*>\s*&nbsp;\s*<\/p>/i', '', $value),
+            set: fn (string $value): string => $value,
+        );
     }
 
     /**

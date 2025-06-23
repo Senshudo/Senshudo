@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 const props = defineProps<{ author: App.Author; articles: App.PageResource<App.Article> }>()
 
 const isLoading = ref(false)
@@ -23,37 +23,39 @@ function pageChange(page: number) {
 </script>
 
 <template>
-    <div class="mx-auto max-w-7xl p-4">
-        <AppHead :title="pageTitle" />
+    <AppHead :title="pageTitle" />
 
-        <!-- TODO: AUTHOR Card -->
-
-        <h1 class="my-4 text-3xl font-semibold dark:text-white">Articles by {{ author.name }}</h1>
-
-        <div
-            v-if="isLoading"
-            class="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center"
-        >
-            <div class="absolute inset-0 flex items-center justify-center">
-                <IconsIconLoading
-                    class="text-primary-500 mr-4 size-8 animate-spin dark:text-white"
-                />
-                <span class="font-medium dark:text-white">Loading Articles...</span>
+    <div class="mx-auto my-4 max-w-2xl space-y-4 px-4 lg:max-w-7xl">
+        <div class="flex flex-col space-y-4">
+            <img
+                :src="author?.avatar ?? undefined"
+                :alt="author?.name ?? undefined"
+                class="mx-auto h-24 w-24 rounded-full"
+            />
+            <div class="mx-auto">
+                <h1 class="text-bold text-5xl">{{ author.name }}</h1>
             </div>
         </div>
 
-        <div v-else class="mt-4 mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-6">
+            <template v-if="isLoading">
+                <ArticlesCard
+                    v-for="index in 6"
+                    :key="`featured-loading-${index}`"
+                    :is-loading="true"
+                />
+            </template>
             <ArticlesCard
-                v-for="article in articles.data"
-                :key="article.id"
-                :article="article"
-                :author="author"
+                v-for="(article, index) in articles.data"
+                v-else
+                :key="`article${index}`"
+                :article
             />
         </div>
 
         <Pagination
-            v-if="articles.meta.total > 0"
-            :meta="articles.meta"
+            v-if="articles?.meta?.total > 0 && !isLoading"
+            :meta="articles?.meta"
             @page-change="pageChange"
         />
     </div>

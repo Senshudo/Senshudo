@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 defineProps<{
     liveStream: App.Channel | null
 }>()
@@ -30,7 +30,7 @@ const times = [
         day: 'Saturday',
         events: [
             {
-                start: '18:00',
+                start: '19:00',
                 end: '22:00',
                 timezone: 'UTC',
                 title: 'SweptSquash',
@@ -52,30 +52,37 @@ function setTime(day: number, time: string) {
 </script>
 
 <template>
-    <div class="mx-auto max-w-7xl p-4 pt-8 dark:text-white">
-        <AppHead title="Schedule" />
+    <AppHead title="Schedule" />
 
+    <div class="mx-auto my-4 max-w-2xl space-y-4 px-4 lg:max-w-7xl">
         <LiveStream :live-stream="liveStream" />
 
         <template v-for="(weekDay, index) in times" :key="index">
             <div>
-                <h2 class="my-4 text-2xl font-bold">{{ weekDay.day }}</h2>
-                <div v-if="weekDay.events" class="grid grid-cols-1 gap-4">
+                <p class="my-4 text-2xl font-bold">{{ weekDay.day }}</p>
+                <div class="relative">
+                    <div class="absolute inset-px rounded-lg bg-white dark:bg-slate-700" />
                     <div
-                        v-for="(event, eventIndex) in weekDay.events"
-                        :key="eventIndex"
-                        class="bg-base-100/20 dark:bg-neutral p-4 shadow"
+                        class="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)]"
                     >
-                        <div class="flex justify-between">
-                            <h3 class="text-lg font-bold">{{ event.title }}</h3>
-                            <p class="text-sm">
-                                {{ setTime(index, event.start) }} - {{ setTime(index, event.end) }}
-                            </p>
-                        </div>
+                        <template v-if="weekDay.events">
+                            <div
+                                v-for="(event, eventIndex) in weekDay.events"
+                                :key="eventIndex"
+                                class="flex justify-between p-6"
+                            >
+                                <h3 class="text-lg font-bold">{{ event.title }}</h3>
+                                <p class="text-sm">
+                                    {{ setTime(index, event.start) }} -
+                                    {{ setTime(index, event.end) }}
+                                </p>
+                            </div>
+                        </template>
+                        <div v-else class="p-6 text-center">No scheduled streams</div>
                     </div>
-                </div>
-                <div v-else class="bg-base-100/20 dark:bg-neutral p-4 text-center shadow">
-                    No Scheduled Streams
+                    <div
+                        class="pointer-events-none absolute inset-px rounded-lg shadow-sm ring-1 ring-black/5"
+                    />
                 </div>
             </div>
         </template>

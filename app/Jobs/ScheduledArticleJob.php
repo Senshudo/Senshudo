@@ -34,5 +34,7 @@ class ScheduledArticleJob implements ShouldQueue
             'status' => ArticleStatus::PUBLISHED,
             'scheduled_for' => null,
         ]);
+
+        DiscordPostJob::dispatch($this->article);
     }
 }
