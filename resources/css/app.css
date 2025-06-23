@@ -127,9 +127,11 @@
 }
 
 .prose {
-    & > p, & > p > span, & > span {
+    & > p,
+    & > span,
+    & > * > span {
         font-family: Roboto, sans-serif !important;
-        @apply text-black dark:text-base-content;
+        @apply text-black! dark:text-base-content!;
     }
 }
 

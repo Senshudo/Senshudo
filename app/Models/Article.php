@@ -192,6 +192,14 @@ class Article extends Model implements HasMedia, Sitemapable
         );
     }
 
+    protected function content(): attribute
+    {
+        return Attribute::make(
+            get: fn (string $value): string => preg_replace('/<p\b[^>]*>\s*&nbsp;\s*<\/p>/i', '', $value),
+            set: fn (string $value): string => $value,
+        );
+    }
+
     /**
      * Determine if the model should be searchable.
      */
