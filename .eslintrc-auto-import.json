@@ -307,6 +307,11 @@
     "useTemplateRef": true,
     "defineLayout": true,
     "useIsWebpSupported": true,
-    "useGetImage": true
+    "useGetImage": true,
+    "createRef": true,
+    "onElementRemoval": true,
+    "useCountdown": true,
+    "usePreferredReducedTransparency": true,
+    "useSSRWidth": true
   }
 }

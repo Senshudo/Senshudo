@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { Link as InertiaLink } from '@inertiajs/vue3'
 import type { RouterGlobal } from 'momentum-trail/dist/types/router'
 
 const navigationItems = ref<
@@ -89,7 +90,7 @@ onBeforeMount(() => {
                 </div>
             </div>
             <nav class="hidden lg:flex lg:justify-center lg:space-x-8 lg:py-2" aria-label="Global">
-                <a
+                <InertiaLink
                     v-for="item in navigationItems"
                     :key="item.name"
                     :href="item.href"
@@ -102,7 +103,7 @@ onBeforeMount(() => {
                     :aria-current="item.current ? 'page' : undefined"
                 >
                     {{ item.name }}
-                </a>
+                </InertiaLink>
             </nav>
         </div>
 
@@ -111,7 +112,7 @@ onBeforeMount(() => {
                 <DisclosureButton
                     v-for="item in navigationItems"
                     :key="item.name"
-                    as="a"
+                    :as="InertiaLink"
                     :href="item.href"
                     :class="[
                         item.current

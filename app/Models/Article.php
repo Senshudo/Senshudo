@@ -187,7 +187,7 @@ class Article extends Model implements HasMedia, Sitemapable
     protected function excerpt(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value): string => trim(strip_tags(html_entity_decode($value))).'...',
+            get: fn (string $value): string => trim(html_entity_decode($value)).'...',
             set: fn (string $value): string => $value,
         );
     }

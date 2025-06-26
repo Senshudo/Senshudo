@@ -19,7 +19,8 @@ class ArticleObserver
             $article->published_at = now();
         }
 
-        $article->excerpt = substr(strip_tags($article->content), 0, 255);
+        $article->excerpt = trim(substr(strip_tags(html_entity_decode($article->content)), 0, 255));
+        $article->content = $this->parseContent($article->content);
 
         if ($article->status === ArticleStatus::SCHEDULED) {
             ScheduledArticleJob::dispatch($article)->delay((int) now()->diffInSeconds($article->scheduled_for));
@@ -37,7 +38,8 @@ class ArticleObserver
 
     public function updating(Article $article): void
     {
-        $article->excerpt = substr(strip_tags($article->content), 0, 255);
+        $article->excerpt = trim(substr(strip_tags(html_entity_decode($article->content)), 0, 255));
+        $article->content = $this->parseContent($article->content);
     }
 
     public function updated(Article $article): void
@@ -59,5 +61,34 @@ class ArticleObserver
                 ->get()
                 ->each(fn (User $user) => Mail::to($user)->send(new NewArticle($article, $user)));
         }
+    }
+
+    private function parseContent(string $content): string
+    {
+        return preg_replace_callback(
+            '/\s*style\s*=\s*([\'"])(.*?)\1/i',
+            function ($matches): string {
+                $styles = [];
+                preg_match_all('/([\w\-]+)\s*:\s*([^;]+)\s*;?/', (string) $matches[2], $styleMatches, PREG_SET_ORDER);
+                foreach ($styleMatches as $style) {
+                    $name = strtolower($style[1]);
+                    $value = trim($style[2]);
+                    if (in_array($name, ['font-weight', 'font-style'])) {
+                        $styles[] = sprintf('%s: %s', $name, $value);
+                    } elseif ($name === 'font-size') {
+                        if (preg_match('/^(\d+(?:\.\d+)?)pt$/i', $value, $sizeMatch) && (float) $sizeMatch[1] > 16) {
+                            $styles[] = sprintf('%s: %s', $name, $value);
+                        }
+                    }
+                }
+
+                if ($styles !== []) {
+                    return ' style="'.implode('; ', $styles).'"';
+                }
+
+                return '';
+            },
+            $content
+        );
     }
 }

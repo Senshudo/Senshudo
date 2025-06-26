@@ -5,11 +5,11 @@ const props = withDefaults(
     defineProps<{
         title?: string
         index?: boolean
-        author?: string
-        authorTwitter?: string | null
+        author?: App.Author | string
         ogType?: string
         slug?: string
         description?: string
+        keywords?: string
         thumbnail?: App.Media | string
         imageWidth?: number
         imageHeight?: number
@@ -22,10 +22,11 @@ const props = withDefaults(
         title: undefined,
         index: true,
         author: 'Senshudo',
-        authorTwitter: undefined,
         ogType: 'website',
         slug: undefined,
         description:
+            'Senshudo, Video Game News, Gaming News, Game Rankings, Game Reviews, Video Game Reviews',
+        keywords:
             'Senshudo, Video Game News, Gaming News, Game Rankings, Game Reviews, Video Game Reviews',
         thumbnail: socialBanner,
         imageWidth: 1200,
@@ -77,9 +78,17 @@ watch(
                     datePublished: props.publishedAt,
                     dateModified: props.updatedAt,
                     description: props.description,
+                    keywords: props.keywords ?? undefined,
                     author: {
                         '@type': 'Person',
-                        name: props.author,
+                        name:
+                            typeof props.author === 'object'
+                                ? (props.author?.name ?? 'Senshudo')
+                                : 'Senshudo',
+                        url:
+                            typeof props.author === 'object'
+                                ? `https://senshudo.tv/author/${props.author?.slug}`
+                                : undefined,
                     },
                     publisher: {
                         '@type': 'Organization',
@@ -112,8 +121,9 @@ watch(
     <InertiaHead :title="pageTitle">
         <link rel="canonical" :content="url" />
         <meta name="description" :content="description" />
-        <meta name="author" :content="author" />
+        <meta name="author" :content="typeof author === 'object' ? author?.name : author" />
         <meta name="robots" :content="index ? 'index, follow' : 'noindex, nofollow'" />
+        <meta name="keywords" :content="keywords" />
         <meta property="fb:app_id" content="635861056474584" />
         <meta property="og:url" :content="url" />
         <meta property="og:type" :content="ogType" />
@@ -134,7 +144,11 @@ watch(
             <meta v-if="updatedAt" property="article:modified_time" :content="updatedAt" />
             <meta v-if="updatedAt" property="og:updated_time" :content="updatedAt" />
             <meta v-if="category" property="article:section" :content="category" />
-            <meta v-if="authorTwitter" name="twitter:creator" :content="`@${authorTwitter}`" />
+            <meta
+                v-if="typeof author === 'object'"
+                name="twitter:creator"
+                :content="`@${author?.twitter}`"
+            />
             <link rel="amphtml" :href="`${ampUrl}/${slug}`" />
         </template>
     </InertiaHead>

@@ -19,16 +19,17 @@ onMounted(() => {
         activeChannel.value = liveStream.channel_name
     }
 
-    echo
-        ?.channel('App.Stream')
-        ?.listen('LiveStreamUpdated', (event: { channelName: string; isLive: boolean }) => {
+    echo?.channel('App.Stream')?.listen(
+        'LiveStreamUpdated',
+        (event: { channelName: string; isLive: boolean }) => {
             if (event.isLive) {
                 isLive.value = true
                 activeChannel.value = event.channelName
             } else {
                 isLive.value = false
             }
-        })
+        },
+    )
 })
 
 onBeforeUnmount(() => {

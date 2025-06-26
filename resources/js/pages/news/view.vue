@@ -25,11 +25,11 @@ function getPercentage(value: number) {
     <div class="relative">
         <AppHead
             :title="article?.title"
-            :author="article?.author?.name"
-            :author-twitter="article?.author?.twitter ?? undefined"
+            :author="article?.author"
             og-type="article"
             :slug="article?.slug"
             :description="article?.excerpt"
+            :keywords="article?.keywords"
             :thumbnail="article?.socialThumbnail ?? undefined"
             :published-at="
                 article?.published_at ? useDayJs(article?.published_at).toISOString() : undefined

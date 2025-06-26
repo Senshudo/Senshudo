@@ -48,7 +48,7 @@ async function handleSearch() {
 
     await useAxios()
         .get<App.Article[]>('/search', { params: { q: search.value.trim() } })
-        .then(({ data }) => {
+        .then((data) => {
             results.value = data
             hasResults.value = true
         })

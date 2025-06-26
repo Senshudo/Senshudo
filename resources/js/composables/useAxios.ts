@@ -5,7 +5,7 @@ export default (): Axios => {
     const axiosService = axios.create({
         baseURL:
             usePage().props.env === 'local'
-                ? 'http://localhost:8000/api'
+                ? 'https://senshudo.local/api'
                 : usePage().props.env === 'production'
                   ? 'https://senshudo.tv/api'
                   : 'https://staging.senshudo.tv/api',
