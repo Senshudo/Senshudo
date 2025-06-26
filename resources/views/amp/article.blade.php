@@ -556,7 +556,7 @@
             "author": {
                 "@type": "Person",
                 "name": "{{ $article->author->name }}",
-                "url": "{{ config('app.url').route('author', $article->author, false) }}",
+                "url": "{{ config('app.url').route('author', $article->author, false) }}"
             },
             "publisher": {
                 "@type": "Organization",
@@ -565,22 +565,22 @@
                     "@type": "ImageObject",
                     "url": "{{ config('app.url') }}/images/logo-black.svg",
                     "width": 705,
-                    "height": 237,
-                },
+                    "height": 237
+                }
             },
             "image": {
                 "@type": "ImageObject",
                 "url": "{{ str_replace(config('app.amp_url'), config('app.url'), $article->getFirstMediaUrl('background')) }}",
                 "height": 630,
                 "width": 1200,
-                "alt": "{{ html_entity_decode($article->title) }}",
-            },
+                "alt": "{{ html_entity_decode($article->title) }}"
+            }
         }
     </script>
 </head>
 <body>
     <header>
-        <amp-img src="{{ asset('images/logo-white.svg') }}" height="40" width="117" loading="lazy" decoding="async" alt="Senshudo"></amp-img>
+        <amp-img src="{{ asset('images/logo-white.svg') }}" height="40" width="117" alt="Senshudo"></amp-img>
     </header>
     <amp-img src="{{ str_replace(config('app.amp_url'), config('app.url'), $article->getFirstMediaUrl('background')) }}" layout="responsive" width="390" height="200" alt="{{ $article->title }}"></amp-img>
     <article class="prose">
