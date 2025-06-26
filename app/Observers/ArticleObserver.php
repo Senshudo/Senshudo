@@ -67,9 +67,9 @@ class ArticleObserver
     {
         return preg_replace_callback(
             '/\s*style\s*=\s*([\'"])(.*?)\1/i',
-            function ($matches): string {
+            function (array $matches): string {
                 $styles = [];
-                preg_match_all('/([\w\-]+)\s*:\s*([^;]+)\s*;?/', (string) $matches[2], $styleMatches, PREG_SET_ORDER);
+                preg_match_all('/([\w\-]+)\s*:\s*([^;]+)\s*;?/', $matches[2], $styleMatches, PREG_SET_ORDER);
                 foreach ($styleMatches as $style) {
                     $name = strtolower($style[1]);
                     $value = trim($style[2]);

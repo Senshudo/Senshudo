@@ -13,8 +13,10 @@ use App\Http\Controllers\VideoVerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::domain('amp.senshudo.tv')->group(function () {
-    Route::get('/', [AmpController::class, 'index'])->name('amp.home');
+$ampDomain = app()->isProduction() ? 'amp.senshudo.tv' : 'amp.senshudo.local';
+
+Route::domain($ampDomain)->group(function () {
+    // Route::get('/', [AmpController::class, 'index'])->name('amp.home');
     Route::get('/{article}', [AmpController::class, 'show'])->name('amp.article.show');
 });
 

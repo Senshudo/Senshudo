@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <script async custom-element="amp-youtube" src="https://cdn.ampproject.org/v0/amp-youtube-0.1.js"></script>
     <title>{{ $article->title }} - Senshudo</title>
     <link rel="canonical" href="{{ config('app.url').route('news.show', $article, false) }}">
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
@@ -547,45 +548,45 @@
         {
             "@context": "http://schema.org",
             "@type": "Article",
-            mainEntityOfPage: "{{ config('app.url').route('news.show', $article, false) }}",
-            headline: "{{ html_entity_decode($article->title) }}",
-            datePublished: "{{ $article->published_at->toIso8601String() }}",
-            dateModified: "{{ $article->updated_at->toIso8601String() }}",
-            description: "{{ $article->excerpt }}",
-            author: {
+            "mainEntityOfPage": "{{ config('app.url').route('news.show', $article, false) }}",
+            "headline": "{{ html_entity_decode($article->title) }}",
+            "datePublished": "{{ $article->published_at->toIso8601String() }}",
+            "dateModified": "{{ $article->updated_at->toIso8601String() }}",
+            "description": "{{ $article->excerpt }}",
+            "author": {
                 "@type": "Person",
-                name: "{{ $article->author->name }}",
-                url: "{{ config('app.url').route('author', $article->author, false) }}",
+                "name": "{{ $article->author->name }}",
+                "url": "{{ config('app.url').route('author', $article->author, false) }}",
             },
-            publisher: {
+            "publisher": {
                 "@type": "Organization",
-                name: "Senshudo",
-                logo: {
+                "name": "Senshudo",
+                "logo": {
                     "@type": "ImageObject",
-                    url: "{{ config('app.url') }}/images/logo-black.svg",
-                    width: 705,
-                    height: 237,
+                    "url": "{{ config('app.url') }}/images/logo-black.svg",
+                    "width": 705,
+                    "height": 237,
                 },
             },
-            image: {
+            "image": {
                 "@type": "ImageObject",
-                url: "{{ str_replace(config('app.amp_url'), config('app.url'), $article->getFirstMediaUrl('background')) }}",
-                height: 630,
-                width: 1200,
-                alt: "{{ html_entity_decode($article->title) }}",
+                "url": "{{ str_replace(config('app.amp_url'), config('app.url'), $article->getFirstMediaUrl('background')) }}",
+                "height": 630,
+                "width": 1200,
+                "alt": "{{ html_entity_decode($article->title) }}",
             },
         }
     </script>
 </head>
 <body>
     <header>
-        <img src="{{ asset('images/logo-white.svg') }}" height="40" width="117" loading="lazy" decoding="async" alt="Senshudo" />
+        <amp-img src="{{ asset('images/logo-white.svg') }}" height="40" width="117" loading="lazy" decoding="async" alt="Senshudo"></amp-img>
     </header>
     <amp-img src="{{ str_replace(config('app.amp_url'), config('app.url'), $article->getFirstMediaUrl('background')) }}" layout="responsive" width="390" height="200" alt="{{ $article->title }}"></amp-img>
     <article class="prose">
         <h1 class="article-title">{{ $article->title }}</h1>
         <p class="author">By <strong>{{ $article->author->name }}</strong></p>
-        {!! $article->content !!}
+        {!! $article->amp_content !!}
 
         @if(count($article->sources) > 0)
             <hr />

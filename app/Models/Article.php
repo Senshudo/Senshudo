@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Actions\AmpContentAction;
 use App\Enums\ArticleStatus;
 use App\Observers\ArticleObserver;
 use Database\Factories\ArticleFactory;
@@ -47,6 +48,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property string|null $scheduled_for
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property-read mixed $amp_content
  * @property-read \App\Models\Author $author
  * @property-read Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
@@ -192,11 +194,20 @@ class Article extends Model implements HasMedia, Sitemapable
         );
     }
 
+    /** @return Attribute<string, string> */
     protected function content(): attribute
     {
         return Attribute::make(
             get: fn (string $value): string => preg_replace('/<p\b[^>]*>\s*&nbsp;\s*<\/p>/i', '', $value),
             set: fn (string $value): string => $value,
+        );
+    }
+
+    /** @return Attribute<string, never> */
+    protected function ampContent(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => AmpContentAction::make($this->content),
         );
     }
 
