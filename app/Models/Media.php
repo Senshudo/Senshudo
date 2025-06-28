@@ -37,7 +37,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
  * @method static \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, static> get($columns = ['*'])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Media newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Media newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Media ordered()
+ * @method static Builder<static>|Media ordered()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Media query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Media whereCollectionName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Media whereConversionsDisk($value)

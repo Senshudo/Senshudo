@@ -3,15 +3,18 @@
 namespace App\Models;
 
 use App\Actions\AmpContentAction;
+use App\Enums\ArticleApprovalStatus;
 use App\Enums\ArticleStatus;
 use App\Observers\ArticleObserver;
 use Database\Factories\ArticleFactory;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Get;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,17 +48,21 @@ use Spatie\Sluggable\SlugOptions;
  * @property bool $is_featured
  * @property ArticleStatus $status
  * @property \Carbon\CarbonImmutable|null $published_at
- * @property string|null $scheduled_for
+ * @property \Carbon\CarbonImmutable|null $scheduled_for
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read mixed $amp_content
+ * @property-read string $amp_content
  * @property-read \App\Models\Author $author
  * @property-read Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
  * @property-read \App\Models\Event|null $event
  * @property-read bool $is_published
+ * @property-read bool $is_scheduled
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
  * @property-read int|null $media_count
+ * @property string $meta_description
+ * @property string $meta_keywords
+ * @property string $meta_title
  * @property-read \App\Models\Review|null $review
  *
  * @method static \Database\Factories\ArticleFactory factory($count = null, $state = [])
@@ -97,22 +104,27 @@ class Article extends Model implements HasMedia, Sitemapable
         'excerpt',
         'content',
         'keywords',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
         'sources',
         'is_featured',
         'status',
+        'approval_status',
         'published_at',
         'scheduled_for',
     ];
 
-    /** @return array{status: 'App\Enums\ArticleStatus', sources: 'array', is_featured: 'boolean', published_at: 'datetime', scheduled_at: 'datetime'} */
+    /** @return array{status: 'App\Enums\ArticleStatus', approval_status: 'App\Enums\ArticleApprovalStatus', sources: 'array', is_featured: 'boolean', published_at: 'datetime', scheduled_for: 'datetime'} */
     protected function casts(): array
     {
         return [
             'status' => ArticleStatus::class,
+            'approval_status' => ArticleApprovalStatus::class,
             'sources' => 'array',
             'is_featured' => 'boolean',
             'published_at' => 'datetime',
-            'scheduled_at' => 'datetime',
+            'scheduled_for' => 'datetime',
         ];
     }
 
@@ -211,6 +223,45 @@ class Article extends Model implements HasMedia, Sitemapable
         );
     }
 
+    /** @return Attribute<string, string> */
+    protected function metaTitle(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value): string => $value !== '' && $value !== '0' ? $value : trim(html_entity_decode($this->title)),
+            set: fn (string $value): string => trim(html_entity_decode($value)),
+        );
+    }
+
+    /** @return Attribute<string, string> */
+    protected function metaDescription(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value): string => $value !== '' && $value !== '0' ? $value : trim(html_entity_decode($this->excerpt)),
+            set: fn (string $value): string => trim(html_entity_decode($value)).'...',
+        );
+    }
+
+    /** @return Attribute<string, string> */
+    protected function metaKeywords(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value): string => $value !== '' && $value !== '0' ? $value : trim(html_entity_decode((string) $this->keywords)),
+            set: fn (string $value) => collect(explode(',', $value))
+                ->map(fn ($keyword): string => trim(html_entity_decode((string) $keyword)))
+                ->filter()
+                ->unique()
+                ->implode(',')
+        );
+    }
+
+    /** @return Attribute<bool, never> */
+    protected function isScheduled(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): bool => $this->status === ArticleStatus::SCHEDULED,
+        );
+    }
+
     /**
      * Determine if the model should be searchable.
      */
@@ -262,7 +313,7 @@ class Article extends Model implements HasMedia, Sitemapable
         ];
     }
 
-    public static function getForm(): array
+    public static function getForm(?self $article = null): array
     {
         return [
             TextInput::make('title')
@@ -305,10 +356,7 @@ class Article extends Model implements HasMedia, Sitemapable
             TinyEditor::make('content')
                 ->setConvertUrls(false)
                 ->required()
-                ->columnSpanFull(),
-
-            TagsInput::make('keywords')
-                ->separator()
+                ->minHeight(500)
                 ->columnSpanFull(),
 
             Repeater::make('sources')
@@ -321,14 +369,39 @@ class Article extends Model implements HasMedia, Sitemapable
                 ->default([])
                 ->columnSpanFull(),
 
+            TagsInput::make('keywords')
+                ->hint('These will be used for the site search.')
+                ->separator()
+                ->columnSpanFull(),
+
+            TextInput::make('meta_title')
+                ->hint('This will be used as the title in search engines and social media.')
+                ->maxLength(255)
+                ->columnSpanFull(),
+
+            TextInput::make('meta_description')
+                ->hint('This will be used as the description in search engines and social media.')
+                ->maxLength(150)
+                ->columnSpanFull(),
+
+            TagsInput::make('meta_keywords')
+                ->hint('These will be used for search engines and social media.')
+                ->separator()
+                ->columnSpanFull(),
+
             Toggle::make('is_featured'),
 
             Select::make('status')
                 ->options(ArticleStatus::toSelectOptions())
                 ->default(ArticleStatus::DRAFT->value)
-                ->disableOptionWhen(fn (string $value): bool => ($value === 'scheduled' || $value === 'published') && ! user()->is_super)
-                ->required()
-                ->hidden(fn (?Article $record): bool => $record?->status === ArticleStatus::PUBLISHED),
+                ->disableOptionWhen(fn (Get $get): bool => ($get('status') === 'scheduled' || $get('status') === 'published') && ! user()->is_super)
+                ->hidden(fn (Get $get): bool => $get('status') === ArticleStatus::PUBLISHED)
+                ->live()
+                ->required(),
+
+            DateTimePicker::make('scheduled_at')
+                ->label('Scheduled For')
+                ->hint('This will be used to schedule the article for publication.'),
         ];
     }
 

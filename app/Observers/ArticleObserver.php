@@ -38,8 +38,10 @@ class ArticleObserver
 
     public function updating(Article $article): void
     {
-        $article->excerpt = trim(substr(strip_tags(html_entity_decode($article->content)), 0, 255));
-        $article->content = $this->parseContent($article->content);
+        if ($article->isDirty('content')) {
+            $article->excerpt = trim(substr(strip_tags(html_entity_decode($article->content)), 0, 255));
+            $article->content = $this->parseContent($article->content);
+        }
     }
 
     public function updated(Article $article): void
