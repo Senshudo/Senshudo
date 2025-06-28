@@ -8,7 +8,7 @@ class AmpContentAction
     {
         $content = preg_replace_callback(
             '/<img([^>]+?)\/?>/i',
-            function ($matches): string {
+            function (array $matches): string {
                 $imgTag = $matches[1];
 
                 if (in_array(preg_match('/width\s*=\s*["\']?\d+["\']?/i', $imgTag), [0, false], true)) {
@@ -26,7 +26,7 @@ class AmpContentAction
 
         return preg_replace_callback(
             '/<iframe[^>]+src=["\']https?:\/\/(?:www\.)?youtube\.com\/embed\/([a-zA-Z0-9_-]+)[^"\']*["\'][^>]*><\/iframe>/i',
-            function ($matches): string {
+            function (array $matches): string {
                 $videoId = $matches[1];
 
                 return sprintf('<amp-youtube data-videoid="%s" layout="responsive" width="480" height="270"></amp-youtube>', $videoId);

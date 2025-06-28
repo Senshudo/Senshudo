@@ -48,7 +48,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property string|null $scheduled_for
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read mixed $amp_content
+ * @property-read string $amp_content
  * @property-read \App\Models\Author $author
  * @property-read Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count

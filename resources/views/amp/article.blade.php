@@ -588,7 +588,7 @@
         <p class="author">By <strong>{{ $article->author->name }}</strong></p>
         {!! $article->amp_content !!}
 
-        @if(count($article->sources) > 0)
+        @if(count($article->sources ?? []) > 0)
             <hr />
             <h2>Sources</h2>
             <div class="sources">
