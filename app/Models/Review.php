@@ -24,6 +24,11 @@ use Overtrue\LaravelVersionable\VersionStrategy;
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \App\Models\Article $article
+ * @property-read \Overtrue\LaravelVersionable\Version|null $firstVersion
+ * @property-read \Overtrue\LaravelVersionable\Version|null $lastVersion
+ * @property-read \Overtrue\LaravelVersionable\Version|null $latestVersion
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Overtrue\LaravelVersionable\Version> $versions
+ * @property-read int|null $versions_count
  *
  * @method static \Database\Factories\ReviewFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Review newModelQuery()
