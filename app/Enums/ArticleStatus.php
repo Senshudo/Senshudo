@@ -42,10 +42,10 @@ enum ArticleStatus: string
     public static function toSelectOptions(): array
     {
         return [
-            self::DRAFT->value => 'Draft',
-            self::REVIEW->value => 'Ready For Review',
-            self::SCHEDULED->value => 'Scheduled',
-            self::PUBLISHED->value => 'Published',
+            self::DRAFT->value => self::DRAFT->getLabel(),
+            self::REVIEW->value => self::REVIEW->getLabel(),
+            self::SCHEDULED->value => self::SCHEDULED->getLabel(),
+            self::PUBLISHED->value => self::PUBLISHED->getLabel(),
         ];
     }
 }

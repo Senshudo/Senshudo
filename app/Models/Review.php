@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use Overtrue\LaravelVersionable\Versionable;
+use Overtrue\LaravelVersionable\VersionStrategy;
 
 /**
  * @property int $id
@@ -22,6 +24,11 @@ use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \App\Models\Article $article
+ * @property-read \Overtrue\LaravelVersionable\Version|null $firstVersion
+ * @property-read \Overtrue\LaravelVersionable\Version|null $lastVersion
+ * @property-read \Overtrue\LaravelVersionable\Version|null $latestVersion
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Overtrue\LaravelVersionable\Version> $versions
+ * @property-read int|null $versions_count
  *
  * @method static \Database\Factories\ReviewFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Review newModelQuery()
@@ -44,6 +51,18 @@ use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 class Review extends Model
 {
     use HasFactory;
+    use Versionable;
+
+    protected $versionable = [
+        'oneliner',
+        'quote',
+        'overall',
+        'graphics',
+        'story',
+        'gameplay',
+    ];
+
+    protected $versionStrategy = VersionStrategy::SNAPSHOT;
 
     protected $fillable = [
         'article_id',

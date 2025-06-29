@@ -12,8 +12,11 @@ declare namespace App {
         background?: Media | null;
         excerpt: string;
         content: string;
-        keywords: string;
         sources: { name: string; url: string }[] | null;
+        keywords: string;
+        meta_title: string | null;
+        meta_description: string | null;
+        meta_keywords: string | null;
         is_featured: boolean;
         published_at: string;
         created_at: string;
