@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('articles', function (Blueprint $table): void {
-            $table->string('approval_status')->after('status')->default(\App\Enums\ArticleApprovalStatus::PENDING->value);
+            $table->string('approval_status')->after('status')->nullable()->default(\App\Enums\ArticleApprovalStatus::PENDING->value);
         });
 
-        \App\Models\Article::query()->whereNotNull('published_at')->chunk(200, function ($articles) {
+        \App\Models\Article::query()->whereNotNull('published_at')->chunk(200, function ($articles): void {
             $ids = $articles->pluck('id');
 
-            \App\Models\Article::whereIn('id', $ids)
+            \App\Models\Article::query()->whereIn('id', $ids)
                 ->update(['approval_status' => \App\Enums\ArticleApprovalStatus::APPROVED]);
         });
     }

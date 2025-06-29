@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Validation\Rules\File;
 use Laravel\Scout\Searchable;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use Overtrue\LaravelVersionable\Versionable;
+use Overtrue\LaravelVersionable\VersionStrategy;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -44,9 +46,13 @@ use Spatie\Sluggable\SlugOptions;
  * @property string $excerpt
  * @property string $content
  * @property string|null $keywords
+ * @property string $meta_title
+ * @property string $meta_description
+ * @property string $meta_keywords
  * @property array<array-key, mixed>|null $sources
  * @property bool $is_featured
  * @property ArticleStatus $status
+ * @property ArticleApprovalStatus|null $approval_status
  * @property \Carbon\CarbonImmutable|null $published_at
  * @property \Carbon\CarbonImmutable|null $scheduled_for
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -56,19 +62,22 @@ use Spatie\Sluggable\SlugOptions;
  * @property-read Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
  * @property-read \App\Models\Event|null $event
+ * @property-read \Overtrue\LaravelVersionable\Version|null $firstVersion
  * @property-read bool $is_published
  * @property-read bool $is_scheduled
+ * @property-read \Overtrue\LaravelVersionable\Version|null $lastVersion
+ * @property-read \Overtrue\LaravelVersionable\Version|null $latestVersion
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
  * @property-read int|null $media_count
- * @property string $meta_description
- * @property string $meta_keywords
- * @property string $meta_title
  * @property-read \App\Models\Review|null $review
+ * @property-read Collection<int, \Overtrue\LaravelVersionable\Version> $versions
+ * @property-read int|null $versions_count
  *
  * @method static \Database\Factories\ArticleFactory factory($count = null, $state = [])
  * @method static Builder<static>|Article newModelQuery()
  * @method static Builder<static>|Article newQuery()
  * @method static Builder<static>|Article query()
+ * @method static Builder<static>|Article whereApprovalStatus($value)
  * @method static Builder<static>|Article whereAuthorId($value)
  * @method static Builder<static>|Article whereContent($value)
  * @method static Builder<static>|Article whereCreatedAt($value)
@@ -77,6 +86,9 @@ use Spatie\Sluggable\SlugOptions;
  * @method static Builder<static>|Article whereId($value)
  * @method static Builder<static>|Article whereIsFeatured($value)
  * @method static Builder<static>|Article whereKeywords($value)
+ * @method static Builder<static>|Article whereMetaDescription($value)
+ * @method static Builder<static>|Article whereMetaKeywords($value)
+ * @method static Builder<static>|Article whereMetaTitle($value)
  * @method static Builder<static>|Article wherePublishedAt($value)
  * @method static Builder<static>|Article whereScheduledFor($value)
  * @method static Builder<static>|Article whereSlug($value)
@@ -95,6 +107,19 @@ class Article extends Model implements HasMedia, Sitemapable
     use HasSlug;
     use InteractsWithMedia;
     use Searchable;
+    use Versionable;
+
+    protected $versionable = [
+        'title',
+        'content',
+        'keywords',
+        'sources',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+    ];
+
+    protected $versionStrategy = VersionStrategy::SNAPSHOT;
 
     protected $fillable = [
         'author_id',
@@ -177,6 +202,11 @@ class Article extends Model implements HasMedia, Sitemapable
         return $this->belongsTo(Author::class);
     }
 
+    public function authorUser(): User
+    {
+        return $this->author->user;
+    }
+
     /** @return BelongsTo<\App\Models\Event, $this> */
     public function event(): BelongsTo
     {
@@ -227,7 +257,7 @@ class Article extends Model implements HasMedia, Sitemapable
     protected function metaTitle(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value): string => $value !== '' && $value !== '0' ? $value : trim(html_entity_decode($this->title)),
+            get: fn (?string $value): string => $value === null || $value === '' || $value === '0' ? trim(html_entity_decode($this->title)) : $value,
             set: fn (string $value): string => trim(html_entity_decode($value)),
         );
     }
@@ -236,7 +266,7 @@ class Article extends Model implements HasMedia, Sitemapable
     protected function metaDescription(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value): string => $value !== '' && $value !== '0' ? $value : trim(html_entity_decode($this->excerpt)),
+            get: fn (?string $value): string => $value === null || $value === '' || $value === '0' ? trim(html_entity_decode($this->excerpt)) : $value,
             set: fn (string $value): string => trim(html_entity_decode($value)).'...',
         );
     }
@@ -245,9 +275,9 @@ class Article extends Model implements HasMedia, Sitemapable
     protected function metaKeywords(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value): string => $value !== '' && $value !== '0' ? $value : trim(html_entity_decode((string) $this->keywords)),
+            get: fn (?string $value): string => $value === null || $value === '' || $value === '0' ? trim(html_entity_decode((string) $this->keywords)) : $value,
             set: fn (string $value) => collect(explode(',', $value))
-                ->map(fn ($keyword): string => trim(html_entity_decode((string) $keyword)))
+                ->map(fn ($keyword): string => trim(html_entity_decode($keyword)))
                 ->filter()
                 ->unique()
                 ->implode(',')
@@ -308,6 +338,7 @@ class Article extends Model implements HasMedia, Sitemapable
             'author' => $this->author->name,
             'title' => $this->title,
             'content' => strip_tags(html_entity_decode($this->content)),
+            'keywords' => $this->keywords,
             'created_at' => $this->created_at->timestamp,
             'published_at' => $this->published_at->timestamp,
         ];
@@ -371,22 +402,26 @@ class Article extends Model implements HasMedia, Sitemapable
 
             TagsInput::make('keywords')
                 ->hint('These will be used for the site search.')
+                ->nullable()
                 ->separator()
                 ->columnSpanFull(),
 
             TextInput::make('meta_title')
-                ->hint('This will be used as the title in search engines and social media.')
+                ->hint('This will be used as the title in search engines and social media. (Leave empty to use the article title.)')
+                ->nullable()
                 ->maxLength(255)
                 ->columnSpanFull(),
 
             TextInput::make('meta_description')
-                ->hint('This will be used as the description in search engines and social media.')
+                ->hint('This will be used as the description in search engines and social media. (Leave empty to use the article excerpt.)')
                 ->maxLength(150)
+                ->nullable()
                 ->columnSpanFull(),
 
             TagsInput::make('meta_keywords')
-                ->hint('These will be used for search engines and social media.')
+                ->hint('These will be used for search engines and social media. (Leave empty to use the article keywords.)')
                 ->separator()
+                ->nullable()
                 ->columnSpanFull(),
 
             Toggle::make('is_featured'),
@@ -401,6 +436,7 @@ class Article extends Model implements HasMedia, Sitemapable
 
             DateTimePicker::make('scheduled_at')
                 ->label('Scheduled For')
+                ->nullable()
                 ->hint('This will be used to schedule the article for publication.'),
         ];
     }

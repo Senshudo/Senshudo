@@ -32,7 +32,7 @@ class ScheduledArticleJob implements ShouldQueue
     {
         $this->article->update([
             'status' => ArticleStatus::PUBLISHED,
-            'scheduled_for' => null,
+            'published_at' => now(),
         ]);
 
         DiscordPostJob::dispatch($this->article);

@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class NewArticle extends Mailable
+class RejectedArticle extends Mailable
 {
     use Queueable;
     use SerializesModels;
@@ -18,10 +18,7 @@ class NewArticle extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private readonly Article $article, private readonly User $user)
-    {
-        $this->article->load('author');
-    }
+    public function __construct(private readonly Article $article, private readonly User $user) {}
 
     /**
      * Get the message envelope.
@@ -29,7 +26,7 @@ class NewArticle extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Article Ready For Review',
+            subject: 'Article Rejected',
         );
     }
 
@@ -39,7 +36,7 @@ class NewArticle extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.article.new',
+            markdown: 'mail.article.rejected',
             with: [
                 'user' => $this->user,
                 'article' => $this->article,

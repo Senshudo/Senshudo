@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use Overtrue\LaravelVersionable\Versionable;
+use Overtrue\LaravelVersionable\VersionStrategy;
 
 /**
  * @property int $id
@@ -44,6 +46,18 @@ use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 class Review extends Model
 {
     use HasFactory;
+    use Versionable;
+
+    protected $versionable = [
+        'oneliner',
+        'quote',
+        'overall',
+        'graphics',
+        'story',
+        'gameplay',
+    ];
+
+    protected $versionStrategy = VersionStrategy::SNAPSHOT;
 
     protected $fillable = [
         'article_id',

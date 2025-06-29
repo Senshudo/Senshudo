@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\ArticleApprovalStatus;
 use App\Enums\ArticleStatus;
+use App\Filament\Resources\ArticleResource\Pages\ArticleRevisions;
 use App\Filament\Resources\ArticleResource\Pages\CreateArticle;
 use App\Filament\Resources\ArticleResource\Pages\EditArticle;
 use App\Filament\Resources\ArticleResource\Pages\ListArticles;
@@ -30,6 +32,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
+use Mansoor\FilamentVersionable\Table\RevisionsAction;
 
 class ArticleResource extends Resource
 {
@@ -129,8 +132,8 @@ class ArticleResource extends Resource
                         /** @var Article $article */
                         $article = $model;
 
-                        return $article->status === ArticleStatus::SCHEDULED
-                            ? ($article->scheduled_for > now() ? 'Scheduled for '.$article->scheduled_for->format('d/m/Y H:i') : 'Published at '.$article->scheduled_for->format('d/m/Y H:i'))
+                        return $article->scheduled_for !== null
+                            ? ($article->scheduled_for > now() ? 'Scheduled for '.$article->scheduled_for->format('d/m/Y H:i') : 'Published at '.$article->published_at->format('d/m/Y H:i'))
                             : 'Not scheduled';
                     })
                     ->boolean()
@@ -165,8 +168,8 @@ class ArticleResource extends Resource
 
                 Filter::make('published_at')
                     ->form([
-                        DatePicker::make('from'),
-                        DatePicker::make('until'),
+                        DatePicker::make('from')->label('Published from'),
+                        DatePicker::make('until')->label('Published until'),
                     ])
                     ->query(fn (Builder $query, array $data): Builder => $query
                         ->when(
@@ -177,33 +180,95 @@ class ArticleResource extends Resource
                             $data['until'],
                             fn (Builder $query, string $date): Builder => $query->whereDate('published_at', '<=', $date),
                         )),
+
+                Filter::make('scheduled_for')
+                    ->form([
+                        DatePicker::make('from')->label('Scheduled from'),
+                        DatePicker::make('until')->label('Scheduled until'),
+                    ])
+                    ->query(fn (Builder $query, array $data): Builder => $query
+                        ->when(
+                            $data['from'],
+                            fn (Builder $query, string $date): Builder => $query->whereDate('scheduled_for', '>=', $date),
+                        )
+                        ->when(
+                            $data['until'],
+                            fn (Builder $query, string $date): Builder => $query->whereDate('scheduled_for', '<=', $date),
+                        )),
             ])
             ->actions([
-                EditAction::make()
-                    ->hidden(),
+                EditAction::make()->hidden(),
+                RevisionsAction::make(),
             ])
             ->bulkActions([
                 BulkAction::make('approve')
                     ->label('Mark as approved')
                     ->requiresConfirmation()
                     ->color('success')
-                    ->hidden(fn () => ! user()->is_super)
+                    ->hidden(fn (): bool => ! user()->is_super)
                     ->action(function (Collection $records): void {
-                       $records = $records
-                           ->filter(function (Model $record): bool {)
-                               /** @var Article $article */
-                               $article = $record;
+                        $records
+                            ->filter(function (Model $record): bool {
+                                /** @var Article $article */
+                                $article = $record;
 
-                               return $article->status === ArticleStatus::REVIEW;
-                           })
-                           ->groupBy(function (Model $record): string {
-                               /** @var Article $article */
-                               $article = $record;
+                                return $article->status === ArticleStatus::REVIEW;
+                            })
+                            ->groupBy(function (Model $record): string {
+                                /** @var Article $article */
+                                $article = $record;
 
-                               return $article->scheduled_for ? 'scheduled' : 'publish';
-                           });
+                                return $article->scheduled_for ? 'scheduled' : 'publish';
+                            })
+                            ->each(function (Collection $articles, string $group): void {
+                                if ($group === 'publish') {
+                                    $ids = $articles->pluck('id');
 
+                                    Article::query()
+                                        ->whereIn('id', $ids)
+                                        ->update([
+                                            'approval_status' => ArticleApprovalStatus::APPROVED,
+                                            'status' => ArticleStatus::PUBLISHED,
+                                        ]);
+                                }
 
+                                if ($group === 'scheduled') {
+                                    $ids = $articles->pluck('id');
+
+                                    Article::query()
+                                        ->whereIn('id', $ids)
+                                        ->update([
+                                            'approval_status' => ArticleApprovalStatus::APPROVED,
+                                            'status' => ArticleStatus::SCHEDULED,
+                                        ]);
+                                }
+                            });
+
+                    })
+                    ->deselectRecordsAfterCompletion(),
+
+                BulkAction::make('reject')
+                    ->label('Mark as rejected')
+                    ->requiresConfirmation()
+                    ->color('danger')
+                    ->hidden(fn (): bool => ! user()->is_super)
+                    ->action(function (Collection $records): void {
+                        $records = $records
+                            ->filter(function (Model $record): bool {
+                                /** @var Article $article */
+                                $article = $record;
+
+                                return $article->status === ArticleStatus::REVIEW;
+                            });
+
+                        $records = $records->pluck('id');
+
+                        Article::query()
+                            ->whereIn('id', $records)
+                            ->update([
+                                'approval_status' => ArticleApprovalStatus::REJECTED,
+                                'status' => ArticleStatus::DRAFT,
+                            ]);
                     })
                     ->deselectRecordsAfterCompletion(),
                 BulkActionGroup::make([
@@ -218,6 +283,7 @@ class ArticleResource extends Resource
             'index' => ListArticles::route('/'),
             'create' => CreateArticle::route('/create'),
             'edit' => EditArticle::route('/{record}/edit'),
+            'revisions' => ArticleRevisions::route('/{record}/revisions'),
         ];
     }
 }
