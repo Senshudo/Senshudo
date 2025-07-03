@@ -253,34 +253,35 @@ class Article extends Model implements HasMedia, Sitemapable
         );
     }
 
-    /** @return Attribute<string, string> */
+    /** @return Attribute<string, string|null> */
     protected function metaTitle(): Attribute
     {
         return Attribute::make(
             get: fn (?string $value): string => $value === null || $value === '' || $value === '0' ? trim(html_entity_decode($this->title)) : $value,
-            set: fn (string $value): string => trim(html_entity_decode($value)),
+            set: fn (?string $value): ?string => $value !== null && $value !== '' && $value !== '0' ? trim(html_entity_decode($value)) : $value,
         );
     }
 
-    /** @return Attribute<string, string> */
+    /** @return Attribute<string, string|null> */
     protected function metaDescription(): Attribute
     {
         return Attribute::make(
             get: fn (?string $value): string => $value === null || $value === '' || $value === '0' ? trim(html_entity_decode($this->excerpt)) : $value,
-            set: fn (string $value): string => trim(html_entity_decode($value)).'...',
+            set: fn (?string $value): ?string => $value !== null && $value !== '' && $value !== '0' ? trim(html_entity_decode($value)).'...' : $value,
         );
     }
 
-    /** @return Attribute<string, string> */
+    /** @return Attribute<string, string|null> */
     protected function metaKeywords(): Attribute
     {
         return Attribute::make(
             get: fn (?string $value): string => $value === null || $value === '' || $value === '0' ? trim(html_entity_decode((string) $this->keywords)) : $value,
-            set: fn (string $value) => collect(explode(',', $value))
+            set: fn (?string $value): ?string => $value !== null && $value !== '' && $value !== '0' ? collect(explode(',', $value))
+                ->filter()
                 ->map(fn ($keyword): string => trim(html_entity_decode($keyword)))
                 ->filter()
                 ->unique()
-                ->implode(',')
+                ->implode(',') : $value
         );
     }
 
@@ -434,7 +435,7 @@ class Article extends Model implements HasMedia, Sitemapable
                 ->live()
                 ->required(),
 
-            DateTimePicker::make('scheduled_at')
+            DateTimePicker::make('scheduled_for')
                 ->label('Scheduled For')
                 ->nullable()
                 ->hint('This will be used to schedule the article for publication.'),
