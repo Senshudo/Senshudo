@@ -9,6 +9,8 @@ const props = withDefaults(
         ogType?: string
         slug?: string
         description?: string
+        metaTitle?: string
+        metaDescription?: string
         keywords?: string
         thumbnail?: App.Media | string
         imageWidth?: number
@@ -26,6 +28,8 @@ const props = withDefaults(
         slug: undefined,
         description:
             'Senshudo, Video Game News, Gaming News, Game Rankings, Game Reviews, Video Game Reviews',
+        metaTitle: undefined,
+        metaDescription: undefined,
         keywords:
             'Senshudo, Video Game News, Gaming News, Game Rankings, Game Reviews, Video Game Reviews',
         thumbnail: socialBanner,
@@ -127,16 +131,16 @@ watch(
         <meta property="fb:app_id" content="635861056474584" />
         <meta property="og:url" :content="url" />
         <meta property="og:type" :content="ogType" />
-        <meta property="og:title" :content="pageTitle" />
-        <meta property="og:description" :content="description" />
+        <meta property="og:title" :content="metaTitle ?? pageTitle" />
+        <meta property="og:description" :content="metaDescription ?? description" />
         <meta property="og:image" :content="thumbnailUrl" />
         <meta property="og:image:width" :content="imageWidth?.toString()" />
         <meta property="og:image:height" :content="imageHeight?.toString()" />
         <meta property="og:image:alt" :content="imageAlt ?? pageTitle" />
         <meta property="og:locale" content="en_GB" />
         <meta property="og:site_name" content="Senshudo" />
-        <meta name="twitter:title" :content="pageTitle" />
-        <meta name="twitter:description" :content="description" />
+        <meta name="twitter:title" :content="metaTitle ?? pageTitle" />
+        <meta name="twitter:description" :content="metaDescription ?? description" />
         <meta name="twitter:image" :content="thumbnailUrl" />
         <meta name="twitter:card" content="summary_large_image" />
         <template v-if="ogType === 'article'">

@@ -29,7 +29,9 @@ function getPercentage(value: number) {
             og-type="article"
             :slug="article?.slug"
             :description="article?.excerpt"
-            :keywords="article?.keywords"
+            :meta-description="article?.meta_description ?? undefined"
+            :meta-title="article?.meta_title ?? undefined"
+            :keywords="article?.meta_keywords ?? article?.keywords"
             :thumbnail="article?.socialThumbnail ?? undefined"
             :published-at="
                 article?.published_at ? useDayJs(article?.published_at).toISOString() : undefined

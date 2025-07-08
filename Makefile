@@ -44,6 +44,7 @@ composer_install:
 db_reset:
 	@echo "Resetting the database..."
 	./vendor/bin/sail artisan migrate:fresh --seed
+	./vendor/bin/sail artisan octane:reload
 
 ide_helper:
 	@echo "Generating IDE helper files..."

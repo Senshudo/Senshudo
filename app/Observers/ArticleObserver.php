@@ -2,13 +2,14 @@
 
 namespace App\Observers;
 
+use App\Enums\ArticleApprovalStatus;
 use App\Enums\ArticleStatus;
 use App\Jobs\DiscordPostJob;
 use App\Jobs\ScheduledArticleJob;
 use App\Mail\NewArticle;
+use App\Mail\RejectedArticle;
 use App\Models\Article;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 
 class ArticleObserver
@@ -29,7 +30,7 @@ class ArticleObserver
 
     public function created(Article $article): void
     {
-        if ($article->status === ArticleStatus::REVIEW && App::isProduction()) {
+        if ($article->status === ArticleStatus::REVIEW) {
             User::query()->where('is_super', true)
                 ->get()
                 ->each(fn (User $user) => Mail::to($user)->send(new NewArticle($article, $user)));
@@ -38,28 +39,54 @@ class ArticleObserver
 
     public function updating(Article $article): void
     {
-        $article->excerpt = trim(substr(strip_tags(html_entity_decode($article->content)), 0, 255));
-        $article->content = $this->parseContent($article->content);
+        if ($article->isDirty('content')) {
+            $article->excerpt = trim(substr(strip_tags(html_entity_decode($article->content)), 0, 255));
+            $article->content = $this->parseContent($article->content);
+        }
+
+        if ($article->status === ArticleStatus::REVIEW && $article->isDirty('approval_status') && $article->approval_status === ArticleApprovalStatus::REJECTED) {
+            $article->approval_status = null;
+        }
     }
 
     public function updated(Article $article): void
     {
-        if ($article->isDirty('status') && $article->status === ArticleStatus::PUBLISHED && $article->published_at === null) {
+        if ($article->isDirty('approval_status') && $article->approval_status === ArticleApprovalStatus::REJECTED) {
+            Mail::to($article->authorUser())->send(new RejectedArticle($article, $article->authorUser()));
+        }
+
+        if ($article->isDirty('status') && $article->status === ArticleStatus::REVIEW) {
+            User::query()
+                ->where('is_super', true)
+                ->get()
+                ->each(fn (User $user) => Mail::to($user)->send(new NewArticle($article, $user)));
+        }
+
+        if (
+            $article->status !== ArticleStatus::PUBLISHED &&
+            $article->approval_status === ArticleApprovalStatus::APPROVED &&
+            $article->published_at === null &&
+            $article->scheduled_for === null
+        ) {
             $article->update([
+                'status' => ArticleStatus::PUBLISHED,
                 'published_at' => now(),
             ]);
 
             DiscordPostJob::dispatch($article);
         }
 
-        if ($article->isDirty('status') && $article->status === ArticleStatus::SCHEDULED) {
-            ScheduledArticleJob::dispatch($article)->delay((int) now()->diffInSeconds($article->scheduled_for));
-        }
+        if (
+            $article->status !== ArticleStatus::SCHEDULED &&
+            $article->approval_status === ArticleApprovalStatus::APPROVED &&
+            $article->published_at === null &&
+            $article->scheduled_for !== null
+        ) {
+            $article->update([
+                'status' => ArticleStatus::SCHEDULED,
+            ]);
 
-        if ($article->isDirty('status') && $article->status === ArticleStatus::REVIEW && App::isProduction()) {
-            User::query()->where('is_super', true)
-                ->get()
-                ->each(fn (User $user) => Mail::to($user)->send(new NewArticle($article, $user)));
+            ScheduledArticleJob::dispatch($article)->delay((int) now()->diffInSeconds($article->scheduled_for));
         }
     }
 
