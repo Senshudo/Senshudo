@@ -15,7 +15,7 @@ class ArticleThumbnailDispatcher
         $media = $event->media;
 
         if ($media->collection_name === 'background' && $media->model instanceof Article) {
-            GenerateSocialThumbnail::dispatch($media->model);
+            dispatch(new GenerateSocialThumbnail($media->model));
         }
     }
 }

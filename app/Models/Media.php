@@ -28,7 +28,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read mixed $extension
  * @property-read mixed $human_readable_size
- * @property-read \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Model $model
+ * @property-read \Illuminate\Database\Eloquent\Model $model
  * @property-read mixed $original_url
  * @property-read mixed $preview_url
  * @property-read mixed $type
@@ -37,7 +37,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
  * @method static \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, static> get($columns = ['*'])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Media newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Media newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Media ordered()
+ * @method static Builder<static>|Media ordered()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Media query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Media whereCollectionName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Media whereConversionsDisk($value)

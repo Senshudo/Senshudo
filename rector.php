@@ -13,7 +13,6 @@ return RectorConfig::configure()
         __DIR__.'/bootstrap/app.php',
         __DIR__.'/config',
         __DIR__.'/database',
-        __DIR__.'/public',
     ])
     ->withPhpSets(php84: true)
     ->withPhpVersion(PhpVersion::PHP_84)
@@ -28,7 +27,6 @@ return RectorConfig::configure()
         privatization: true,
         instanceOf: true,
         earlyReturn: true,
-        strictBooleans: true,
         carbon: true,
     )->withSets([
         LaravelSetList::LARAVEL_120,
@@ -40,4 +38,5 @@ return RectorConfig::configure()
         LaravelSetList::LARAVEL_CONTAINER_STRING_TO_FULLY_QUALIFIED_NAME,
         LaravelSetList::LARAVEL_ARRAYACCESS_TO_METHOD_CALL,
         LaravelSetList::LARAVEL_COLLECTION,
-    ]);
+    ])
+    ->withImportNames(importDocBlockNames: false);

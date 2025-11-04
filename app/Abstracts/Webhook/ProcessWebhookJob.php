@@ -36,7 +36,7 @@ abstract class ProcessWebhookJob extends BaseProcessWebhookJob
     {
         $validator = Validator::make((array) $this->webhookCall->payload, $this->validation());
 
-        throw_if($validator->fails(), new ValidationException($validator));
+        throw_if($validator->fails(), ValidationException::class, $validator);
 
         $this->payload = $validator->validated();
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ArticleStatus;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
@@ -29,7 +30,7 @@ class NewsController extends Controller
 
     public function show(Request $request, Article $article): Response
     {
-        if (! user() instanceof \App\Models\User) {
+        if (! user() instanceof User) {
             abort_if($article->status !== ArticleStatus::PUBLISHED, 404);
         }
 

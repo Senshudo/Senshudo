@@ -26,6 +26,6 @@ class TestWebhookCommand extends Command
      */
     public function handle(): void
     {
-        LiveStreamUpdated::dispatch('senshudo', true);
+        event(new LiveStreamUpdated('senshudo', true));
     }
 }

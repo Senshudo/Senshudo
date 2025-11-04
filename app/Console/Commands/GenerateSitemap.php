@@ -30,7 +30,7 @@ class GenerateSitemap extends Command
     {
         $articles = Article::with('review')->orderByDesc('id')->get();
 
-        $review = $articles->where('review', '!=', null)->first();
+        $review = $articles->whereNotNull('review')->first();
 
         Sitemap::create()
             ->add(

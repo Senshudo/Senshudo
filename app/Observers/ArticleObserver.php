@@ -23,7 +23,7 @@ class ArticleObserver
         $article->content = $this->parseContent($article->content);
 
         if ($article->status === ArticleStatus::SCHEDULED) {
-            ScheduledArticleJob::dispatch($article)->delay((int) now()->diffInSeconds($article->scheduled_for));
+            dispatch(new ScheduledArticleJob($article))->delay((int) now()->diffInSeconds($article->scheduled_for));
         }
     }
 
@@ -49,11 +49,11 @@ class ArticleObserver
                 'published_at' => now(),
             ]);
 
-            DiscordPostJob::dispatch($article);
+            dispatch(new DiscordPostJob($article));
         }
 
         if ($article->isDirty('status') && $article->status === ArticleStatus::SCHEDULED) {
-            ScheduledArticleJob::dispatch($article)->delay((int) now()->diffInSeconds($article->scheduled_for));
+            dispatch(new ScheduledArticleJob($article))->delay((int) now()->diffInSeconds($article->scheduled_for));
         }
 
         if ($article->isDirty('status') && $article->status === ArticleStatus::REVIEW && App::isProduction()) {

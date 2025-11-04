@@ -3,13 +3,14 @@
 namespace App\Spatie;
 
 use Illuminate\Support\Facades\URL;
+use Spatie\MediaLibrary\Conversions\Conversion;
 use Spatie\MediaLibrary\Support\UrlGenerator\DefaultUrlGenerator;
 
 class UrlGenerator extends DefaultUrlGenerator
 {
     public function getUrl(): string
     {
-        if ($this->conversion instanceof \Spatie\MediaLibrary\Conversions\Conversion) {
+        if ($this->conversion instanceof Conversion) {
             return URL::route('media.conversion', [
                 'media' => $this->media,
                 'conversionName' => $this->conversion->getName(),

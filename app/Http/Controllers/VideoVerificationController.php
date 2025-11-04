@@ -12,7 +12,7 @@ class VideoVerificationController extends Controller
     public function index(Request $request): Response|RedirectResponse
     {
         if ($request->cookie('ageVerified')) {
-            return redirect()->route('video_verification.show', ['video' => $request->query('vid')]);
+            return to_route('video_verification.show', ['video' => $request->query('vid')]);
         }
 
         return inertia('embed/age-verification', [
@@ -24,8 +24,7 @@ class VideoVerificationController extends Controller
     {
         abort_if(! $request->has('video'), 404, 'No video ID provided');
 
-        return redirect()
-            ->route('video_verification.show', ['video' => $request->input('video')])
+        return to_route('video_verification.show', ['video' => $request->input('video')])
             ->withCookie(cookie('ageVerified', 'true', 10080));
     }
 

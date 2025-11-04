@@ -35,7 +35,7 @@ class GenerateSocialThumbnail implements ShouldQueue
 
         $imageContents = $this->getBase64String();
 
-        if ($imageContents === null || $imageContents === '' || $imageContents === '0') {
+        if (in_array($imageContents, [null, '', '0'], true)) {
             $this->fail('No image found for article '.$this->article->id);
         }
 
@@ -55,7 +55,7 @@ class GenerateSocialThumbnail implements ShouldQueue
     {
         $path = $this->article->getFirstMedia('background')?->getPathRelativeToRoot();
 
-        if ($path === null || $path === '' || $path === '0') {
+        if (in_array($path, [null, '', '0'], true)) {
             $this->fail('No background image found for article '.$this->article->id);
         }
 

@@ -8,8 +8,8 @@ use App\Models\Author;
 use App\Models\Category;
 use App\Models\Event;
 use App\Models\Review;
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
 class OldDatabaseMigrationSeeder extends Seeder
@@ -41,8 +41,8 @@ class OldDatabaseMigrationSeeder extends Seeder
                 'website' => $event->website,
                 'description' => $event->description,
                 'keywords' => $event->keywords,
-                'start_date' => Carbon::parse($event->start_date),
-                'end_date' => Carbon::parse($event->end_date),
+                'start_date' => Date::parse($event->start_date),
+                'end_date' => Date::parse($event->end_date),
             ]);
         }
 
@@ -101,9 +101,9 @@ class OldDatabaseMigrationSeeder extends Seeder
                 'sources' => $article->sources === 'NULL' ? null : $article->sources,
                 'is_featured' => (bool) $article->is_featured,
                 'status' => ArticleStatus::PUBLISHED,
-                'published_at' => Carbon::parse($article->published_at),
-                'created_at' => Carbon::parse($article->published_at),
-                'updated_at' => $article->updated_at ? Carbon::parse($article->updated_at) : Carbon::parse($article->published_at),
+                'published_at' => Date::parse($article->published_at),
+                'created_at' => Date::parse($article->published_at),
+                'updated_at' => $article->updated_at ? Date::parse($article->updated_at) : Date::parse($article->published_at),
             ]);
 
             if ($article->categories) {
@@ -123,8 +123,8 @@ class OldDatabaseMigrationSeeder extends Seeder
                     'story' => $article->story,
                     'gameplay' => $article->gameplay,
                     'graphics' => $article->graphics,
-                    'created_at' => Carbon::parse($article->published_at),
-                    'updated_at' => $article->updated_at ? Carbon::parse($article->updated_at) : Carbon::parse($article->published_at),
+                    'created_at' => Date::parse($article->published_at),
+                    'updated_at' => $article->updated_at ? Date::parse($article->updated_at) : Date::parse($article->published_at),
                 ]);
             }
         }
