@@ -544,11 +544,11 @@
             border-radius: 3.4px;
         }
     </style>
-    <script type="application/ld+json">
-        @json([
+    @php
+        $structuredData = [
             '@context' => 'http://schema.org',
             '@type' => 'Article',
-            'mainEntityOfPage' => config('app.url').route('news.show', $article, false),
+            'mainEntityOfPage' => config('app.url') . route('news.show', $article, false),
             'headline' => html_entity_decode($article->title),
             'datePublished' => $article->published_at->toIso8601String(),
             'dateModified' => $article->updated_at->toIso8601String(),
@@ -556,14 +556,14 @@
             'author' => [
                 '@type' => 'Person',
                 'name' => $article->author->name,
-                'url' => config('app.url').route('author', $article->author, false),
+                'url' => config('app.url') . route('author', $article->author, false),
             ],
             'publisher' => [
                 '@type' => 'Organization',
                 'name' => 'Senshudo',
                 'logo' => [
                     '@type' => 'ImageObject',
-                    'url' => config('app.url').'/images/logo-black.svg',
+                    'url' => config('app.url') . '/images/logo-black.svg',
                     'width' => 705,
                     'height' => 237,
                 ],
@@ -575,7 +575,10 @@
                 'width' => 1200,
                 'alt' => html_entity_decode($article->title),
             ],
-        ])
+        ];
+    @endphp
+    <script type="application/ld+json">
+        @json($structuredData)
     </script>
 </head>
 <body>
