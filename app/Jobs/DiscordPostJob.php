@@ -79,7 +79,7 @@ class DiscordPostJob implements ShouldQueue
                                         ->setDescription(rtrim(strip_tags(html_entity_decode($this->article->excerpt))).'...')
                                         ->setUrl(route('news.show', $this->article))
                                         ->setColor(0x4B0082) // Indigo color
-                                        ->setAuthor($author->name, $author->icon_url, route('author', $this->article->author))
+                                        ->setAuthor($author->name, $author->icon_url, route('author', $this->article->author)) // @phpstan-ignore-line
                                         ->setImage($this->article->getFirstMediaUrl('socialThumbnail'))
                                         ->setTimestamp($this->article->created_at->getTimestamp());
 

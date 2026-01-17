@@ -23,24 +23,22 @@ class CreateArticle extends CreateRecord
         }
 
         if (Arr::get($data, 'type') === 'article') {
-            return static::getModel()::create(Arr::except($data, ['type']));
+            return static::getModel()::query()->create(Arr::except($data, ['type']));
         }
 
         /** @var Article $article */
-        $article = static::getModel()::create(
-            Arr::except(
-                $data,
-                [
-                    'type',
-                    'oneliner',
-                    'quote',
-                    'overall',
-                    'graphics',
-                    'story',
-                    'gameplay',
-                ],
-            ),
-        );
+        $article = static::getModel()::query()->create(Arr::except(
+            $data,
+            [
+                'type',
+                'oneliner',
+                'quote',
+                'overall',
+                'graphics',
+                'story',
+                'gameplay',
+            ],
+        ));
 
         Review::query()->create([
             'article_id' => $article->id,
