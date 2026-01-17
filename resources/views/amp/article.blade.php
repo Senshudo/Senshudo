@@ -545,37 +545,37 @@
         }
     </style>
     <script type="application/ld+json">
-        {
-            "@context": "http://schema.org",
-            "@type": "Article",
-            "mainEntityOfPage": "{{ config('app.url').route('news.show', $article, false) }}",
-            "headline": "{{ html_entity_decode($article->title) }}",
-            "datePublished": "{{ $article->published_at->toIso8601String() }}",
-            "dateModified": "{{ $article->updated_at->toIso8601String() }}",
-            "description": "{{ $article->excerpt }}",
-            "author": {
-                "@type": "Person",
-                "name": "{{ $article->author->name }}",
-                "url": "{{ config('app.url').route('author', $article->author, false) }}"
-            },
-            "publisher": {
-                "@type": "Organization",
-                "name": "Senshudo",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "{{ config('app.url') }}/images/logo-black.svg",
-                    "width": 705,
-                    "height": 237
-                }
-            },
-            "image": {
-                "@type": "ImageObject",
-                "url": "{{ str_replace(config('app.amp_url'), config('app.url'), $article->getFirstMediaUrl('background')) }}",
-                "height": 630,
-                "width": 1200,
-                "alt": "{{ html_entity_decode($article->title) }}"
-            }
-        }
+        @json([
+            '@context' => 'http://schema.org',
+            '@type' => 'Article',
+            'mainEntityOfPage' => config('app.url').route('news.show', $article, false),
+            'headline' => html_entity_decode($article->title),
+            'datePublished' => $article->published_at->toIso8601String(),
+            'dateModified' => $article->updated_at->toIso8601String(),
+            'description' => $article->excerpt,
+            'author' => [
+                '@type' => 'Person',
+                'name' => $article->author->name,
+                'url' => config('app.url').route('author', $article->author, false),
+            ],
+            'publisher' => [
+                '@type' => 'Organization',
+                'name' => 'Senshudo',
+                'logo' => [
+                    '@type' => 'ImageObject',
+                    'url' => config('app.url').'/images/logo-black.svg',
+                    'width' => 705,
+                    'height' => 237,
+                ],
+            ],
+            'image' => [
+                '@type' => 'ImageObject',
+                'url' => str_replace(config('app.amp_url'), config('app.url'), $article->getFirstMediaUrl('background')),
+                'height' => 630,
+                'width' => 1200,
+                'alt' => html_entity_decode($article->title),
+            ],
+        ])
     </script>
 </head>
 <body>

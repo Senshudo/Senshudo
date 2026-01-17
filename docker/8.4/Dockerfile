@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 LABEL maintainer="Taylor Otwell"
 
 ARG WWWGROUP
-ARG NODE_VERSION=22
+ARG NODE_VERSION=24
 ARG MYSQL_CLIENT="mysql-client"
 ARG POSTGRES_VERSION=17
 
@@ -13,13 +13,10 @@ WORKDIR /var/www/html
 # - Caddyfile
 # - supervisord.conf
 ENV PHP_VERSION="8.4"
-
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
 ENV SUPERVISOR_PHP_COMMAND="/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan serve --host=0.0.0.0 --port=80"
 ENV SUPERVISOR_PHP_USER="sail"
-ENV COMPOSER_HOME=/composer
-ENV COMPOSER_CACHE_DIR=/composer/cache
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -84,10 +81,10 @@ RUN setcap "cap_net_bind_service=+ep" /usr/bin/php${PHP_VERSION}
 RUN userdel -r ubuntu
 RUN groupadd --force -g $WWWGROUP sail
 RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
+RUN git config --global --add safe.directory /var/www/html
 
-RUN mkdir -p mkdir /tmp/psysh /.local /.config ${COMPOSER_CACHE_DIR}
-RUN chown -R sail:sail ${COMPOSER_HOME}
-RUN chmod -R ugo+rw ${COMPOSER_CACHE_DIR}
+RUN mkdir -p /tmp/phpstan/cache
+RUN chmod -R 777 /tmp/phpstan
 
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY start-container /usr/local/bin/start-container
@@ -97,5 +94,8 @@ COPY xdebug.ini /etc/php/${PHP_VERSION}/cli/conf.d/99_xdebug.ini
 RUN chmod +x /usr/local/bin/start-container
 
 EXPOSE 80/tcp
+EXPOSE 443/tcp
+EXPOSE 443/udp
+EXPOSE 2019/tcp
 
 ENTRYPOINT ["start-container"]
