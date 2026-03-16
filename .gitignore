@@ -28,5 +28,6 @@ _ide_helper.php
 
 **/caddy
 **/chromium
+**/composer
 frankenphp
 frankenphp-worker.php
