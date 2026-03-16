@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
@@ -25,11 +27,11 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
  * @property array<array-key, mixed> $generated_conversions
  * @property array<array-key, mixed> $responsive_images
  * @property int|null $order_column
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read mixed $extension
  * @property-read mixed $human_readable_size
- * @property-read \Illuminate\Database\Eloquent\Model $model
+ * @property-read Model|Model $model
  * @property-read mixed $original_url
  * @property-read mixed $preview_url
  * @property-read mixed $type
@@ -59,7 +61,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
  * @method static Builder<static>|Media whereUpdatedAt($value)
  * @method static Builder<static>|Media whereUuid($value)
  *
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin Model
  */
 class Media extends BaseMedia
 {

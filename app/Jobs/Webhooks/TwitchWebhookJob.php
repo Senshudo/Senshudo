@@ -16,7 +16,7 @@ class TwitchWebhookJob extends ProcessWebhookJob
     public function validation(): array
     {
         return [
-            'challenge' => [Rule::requiredIf(fn (): bool => in_array($this->webhookCall->headers()->get('twitch-eventsub-message-type'), ['webhook_callback_verification', 'webhook_callback_verification_pending'])), 'string'],
+            'challenge' => [Rule::requiredIf(fn (): bool => in_array($this->webhookCall->headers()->get('twitch-eventsub-message-type'), ['webhook_callback_verification', 'webhook_callback_verification_pending'], true)), 'string'],
             'subscription' => ['required', 'array'],
             'subscription.id' => ['required', 'string'],
             'subscription.status' => ['required', 'string'],

@@ -11,12 +11,14 @@
 |
 */
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Saloon\Http\Faking\MockClient;
 use Spatie\WebhookClient\Models\WebhookCall;
+use Tests\TestCase;
 
 uses(
-    Tests\TestCase::class,
-    Illuminate\Foundation\Testing\RefreshDatabase::class,
+    TestCase::class,
+    RefreshDatabase::class,
 )
     ->beforeEach(function () {
         MockClient::destroyGlobal();

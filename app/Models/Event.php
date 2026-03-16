@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Database\Factories\EventFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,9 +22,9 @@ use Spatie\Sluggable\SlugOptions;
  * @property string|null $keywords
  * @property string|null $start_date
  * @property string|null $end_date
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property-read Collection<int, Article> $articles
  * @property-read int|null $articles_count
  *
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
@@ -41,7 +43,7 @@ use Spatie\Sluggable\SlugOptions;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|\Illuminate\Support\Facades\Event whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|\Illuminate\Support\Facades\Event whereWebsite($value)
  *
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin Model
  */
 #[UseFactory(EventFactory::class)]
 class Event extends Model

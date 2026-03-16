@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Actions\AmpContentAction;
 use App\Enums\ArticleStatus;
 use App\Observers\ArticleObserver;
+use Carbon\CarbonImmutable;
 use Database\Factories\ArticleFactory;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -26,6 +27,7 @@ use Laravel\Scout\Searchable;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sitemap\Contracts\Sitemapable;
 use Spatie\Sitemap\Tags\Url;
@@ -44,19 +46,19 @@ use Spatie\Sluggable\SlugOptions;
  * @property array<array-key, mixed>|null $sources
  * @property bool $is_featured
  * @property ArticleStatus $status
- * @property \Carbon\CarbonImmutable|null $published_at
+ * @property CarbonImmutable|null $published_at
  * @property string|null $scheduled_for
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read string $amp_content
- * @property-read \App\Models\Author $author
- * @property-read Collection<int, \App\Models\Category> $categories
+ * @property-read Author $author
+ * @property-read Collection<int, Category> $categories
  * @property-read int|null $categories_count
- * @property-read \App\Models\Event|null $event
+ * @property-read Event|null $event
  * @property-read bool $is_published
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
+ * @property-read MediaCollection<int, \App\Models\Media> $media
  * @property-read int|null $media_count
- * @property-read \App\Models\Review|null $review
+ * @property-read Review|null $review
  *
  * @method static \Database\Factories\ArticleFactory factory($count = null, $state = [])
  * @method static Builder<static>|Article newModelQuery()
@@ -78,7 +80,7 @@ use Spatie\Sluggable\SlugOptions;
  * @method static Builder<static>|Article whereTitle($value)
  * @method static Builder<static>|Article whereUpdatedAt($value)
  *
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin Model
  */
 #[ObservedBy(ArticleObserver::class)]
 #[UseFactory(ArticleFactory::class)]
@@ -165,7 +167,7 @@ class Article extends Model implements HasMedia, Sitemapable
         return $this->belongsTo(Author::class);
     }
 
-    /** @return BelongsTo<\App\Models\Event, $this> */
+    /** @return BelongsTo<\Illuminate\Support\Facades\Event, $this> */
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
@@ -195,7 +197,7 @@ class Article extends Model implements HasMedia, Sitemapable
     }
 
     /** @return Attribute<string, string> */
-    protected function content(): attribute
+    protected function content(): Attribute
     {
         return Attribute::make(
             get: fn (string $value): string => preg_replace('/<p\b[^>]*>\s*&nbsp;\s*<\/p>/i', '', $value),

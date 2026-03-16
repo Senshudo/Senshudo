@@ -73,7 +73,7 @@ class ArticleObserver
                 foreach ($styleMatches as $style) {
                     $name = strtolower($style[1]);
                     $value = trim($style[2]);
-                    if (in_array($name, ['font-weight', 'font-style'])) {
+                    if (in_array($name, ['font-weight', 'font-style'], true)) {
                         $styles[] = sprintf('%s: %s', $name, $value);
                     } elseif ($name === 'font-size') {
                         if (preg_match('/^(\d+(?:\.\d+)?)pt$/i', $value, $sizeMatch) && (float) $sizeMatch[1] > 16) {

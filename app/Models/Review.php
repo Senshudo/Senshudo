@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Database\Factories\ReviewFactory;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
@@ -19,9 +20,9 @@ use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
  * @property float|null $graphics
  * @property float|null $story
  * @property float|null $gameplay
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \App\Models\Article $article
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property-read Article $article
  *
  * @method static \Database\Factories\ReviewFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Review newModelQuery()
@@ -38,7 +39,7 @@ use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Review whereStory($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Review whereUpdatedAt($value)
  *
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin Model
  */
 #[UseFactory(ReviewFactory::class)]
 class Review extends Model
