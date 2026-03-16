@@ -1,0 +1,25 @@
+{
+    "agents": [
+        "copilot",
+        "cursor"
+    ],
+    "guidelines": true,
+    "herd_mcp": false,
+    "mcp": true,
+    "nightwatch_mcp": true,
+    "packages": [
+        "filament/filament",
+        "spatie/laravel-medialibrary",
+        "spatie/laravel-ray"
+    ],
+    "sail": false,
+    "skills": [
+        "configuring-horizon",
+        "scout-development",
+        "pest-testing",
+        "inertia-vue-development",
+        "tailwindcss-development",
+        "medialibrary-development",
+        "debugging-output-and-previewing-html-using-ray"
+    ]
+}
