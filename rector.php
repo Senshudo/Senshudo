@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
+use Rector\Php85\Rector\Property\AddOverrideAttributeToOverriddenPropertiesRector;
 use Rector\ValueObject\PhpVersion;
 use RectorLaravel\Set\LaravelSetList;
 
@@ -14,10 +15,11 @@ return RectorConfig::configure()
         __DIR__.'/config',
         __DIR__.'/database',
     ])
-    ->withPhpSets(php84: true)
-    ->withPhpVersion(PhpVersion::PHP_84)
+    ->withPhpSets(php85: true)
+    ->withPhpVersion(PhpVersion::PHP_85)
     ->withSkip([
         AddOverrideAttributeToOverriddenMethodsRector::class,
+        AddOverrideAttributeToOverriddenPropertiesRector::class,
     ])
     ->withPreparedSets(
         deadCode: true,
