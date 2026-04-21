@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\WebhookResponse\TwitchWebhookResponse;
 use App\Jobs\Webhooks\TwitchWebhookJob;
 use App\Spatie\Webhooks\TwitchSignatureValidator;

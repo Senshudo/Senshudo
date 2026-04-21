@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'debug' => env('OG_IMAGE_DEBUG', false), // disable caching og images for development
 

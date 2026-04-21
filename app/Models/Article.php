@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Actions\AmpContentAction;
 use App\Enums\ArticleStatus;
+use App\Models\Event as EventModel;
 use App\Observers\ArticleObserver;
 use Carbon\CarbonImmutable;
 use Database\Factories\ArticleFactory;
@@ -54,7 +55,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property-read Author $author
  * @property-read Collection<int, Category> $categories
  * @property-read int|null $categories_count
- * @property-read Event|null $event
+ * @property-read EventModel|null $event
  * @property-read bool $is_published
  * @property-read MediaCollection<int, \App\Models\Media> $media
  * @property-read int|null $media_count
@@ -167,10 +168,10 @@ class Article extends Model implements HasMedia, Sitemapable
         return $this->belongsTo(Author::class);
     }
 
-    /** @return BelongsTo<\Illuminate\Support\Facades\Event, $this> */
+    /** @return BelongsTo<EventModel, $this> */
     public function event(): BelongsTo
     {
-        return $this->belongsTo(Event::class);
+        return $this->belongsTo(EventModel::class);
     }
 
     /** @return BelongsTo<Review, $this> */

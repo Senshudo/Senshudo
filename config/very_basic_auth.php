@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Olssonm\VeryBasicAuth\Handlers\DefaultResponseHandler;
 
 /**
